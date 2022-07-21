@@ -1,13 +1,22 @@
-import { useWeb3React } from '@web3-react/core';
-import { ethers } from 'ethers';
-import { useBidProvider } from 'lib/hooks/useBidProvider';
-import { useZnsSdk } from 'lib/hooks/sdk';
+//- React Imports
 import { useEffect, useRef, useState } from 'react';
-import { BigNumber } from 'ethers';
 
-import { BidTableRowData } from './BidTableRow';
-import { Bid } from '@zero-tech/zauction-sdk';
+//- Components Imports
 import BidTable from './BidTable';
+
+//- Library Imports
+import { useWeb3React } from '@web3-react/core';
+import { BigNumber, ethers } from 'ethers';
+import { Bid } from '@zero-tech/zauction-sdk';
+import { useZnsSdk } from 'lib/hooks/sdk';
+import getPaymentTokenInfo from 'lib/paymentToken';
+import { useBidProvider } from 'lib/hooks/useBidProvider';
+
+//- Types Imports
+import { BidTableData } from './BidTable.types';
+
+//- Constants Imports
+import { Errors } from './BidTable.constants';
 
 const BidTableContainer = () => {
 	const isMounted = useRef<boolean>();
@@ -16,7 +25,7 @@ const BidTableContainer = () => {
 	const { account } = useWeb3React();
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
-	const [bidData, setBidData] = useState<BidTableRowData[] | undefined>();
+	const [bidData, setBidData] = useState<BidTableData[] | undefined>();
 
 	const getData = async () => {
 		if (!account) {
@@ -30,7 +39,7 @@ const BidTableContainer = () => {
 			bids = await getBidsForAccount(account);
 		} catch (e) {
 			console.error(e);
-			throw new Error('Failed to retrieve bids for account.');
+			throw new Error(Errors.FAILED_TO_RETRIEVE_BIDS);
 		}
 
 		// Create array of unique domain IDs
@@ -45,29 +54,42 @@ const BidTableContainer = () => {
 		const getDomainDataPromises = Promise.all(
 			uniqueDomainIds.map((id) => sdk.getDomainById(id)),
 		);
-		let existingBids: any[], domainData: any[];
+
+		// TODO: Optimize this
+		const getPaymentTokenPromises = Promise.all(
+			uniqueDomainIds.map(async (id) =>
+				getPaymentTokenInfo(
+					sdk,
+					await sdk.zauction.getPaymentTokenForDomain(id),
+				),
+			),
+		);
+		let existingBids: any[], domainData: any[], paymentTokenData: any[];
 		try {
 			const data = await Promise.all([
 				getExistingBidsPromises,
 				getDomainDataPromises,
+				getPaymentTokenPromises,
 			]);
 			existingBids = data[0];
 			domainData = data[1];
+			paymentTokenData = data[2];
 		} catch (e) {
 			console.error(e);
 			throw new Error('Failed to retrieve bid data.');
 		}
 
-		let highestBids: any[], tableData: BidTableRowData[];
+		let highestBids: any[], tableData: BidTableData[];
 		try {
 			// Convert existing bids into "highest bid"
-			highestBids = existingBids.map((domain) => {
+			highestBids = existingBids.map((domain, index) => {
 				const highestBid = domain.sort((a: Bid, b: Bid) =>
 					BigNumber.from(a.amount).gte(b.amount) ? 0 : 1,
 				)[0] as Bid;
 				return {
 					id: highestBid.tokenId,
 					amount: BigNumber.from(highestBid.amount),
+					paymentTokenInfo: paymentTokenData[index],
 				};
 			});
 
@@ -76,6 +98,9 @@ const BidTableContainer = () => {
 			tableData = bids!
 				.map((bid) => {
 					const domain = domainData.filter((d) => d.id === bid.tokenId)[0];
+					const highestBidData = highestBids.filter(
+						(d) => d.id === bid.tokenId,
+					)[0];
 					return {
 						bidNonce: bid.bidNonce,
 						domainName: domain.name,
@@ -83,15 +108,15 @@ const BidTableContainer = () => {
 						domainMetadataUrl: domain.metadataUri,
 						date: bid.date,
 						yourBid: ethers.utils.parseEther(bid.amount.toString()),
-						highestBid: highestBids.filter((d) => d.id === bid.tokenId)[0]
-							.amount,
+						highestBid: highestBidData.amount,
 						domain: domain,
+						paymentTokenInfo: highestBidData.paymentTokenInfo,
 					};
 				})
 				.sort((a, b) => b.date.getTime() - a.date.getTime());
 		} catch (e) {
 			console.error(e);
-			throw new Error('Failed to parse bid data.');
+			throw new Error(Errors.FAILED_TO_PARSE_BID_DATA);
 		}
 
 		if (isMounted.current) {

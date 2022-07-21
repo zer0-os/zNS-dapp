@@ -14,6 +14,7 @@ import {
 import { Overlay } from 'components';
 
 //- Containers Imports
+import ClaimNFT from 'containers/flows/ClaimNFT';
 import MakeABid from 'containers/flows/MakeABid/MakeABid';
 import SetBuyNow from 'containers/flows/SetBuyNow';
 import { BidList } from 'containers';
@@ -49,6 +50,7 @@ export const NFTViewModalProvider = ({
 					<MakeABid
 						domain={modalContent.contentProps.domain!}
 						onBid={modalContent.contentProps.onBid}
+						paymentTokenInfo={modalContent.contentProps.paymentTokenInfo}
 						onClose={closeModal}
 					/>
 				)}
@@ -57,6 +59,7 @@ export const NFTViewModalProvider = ({
 						domainId={modalContent.contentProps.domainId}
 						onCancel={closeModal}
 						onSuccess={modalContent.contentProps.onSuccess}
+						paymentTokenInfo={modalContent.contentProps.paymentTokenInfo}
 					/>
 				)}
 				{modalContent?.modalType === NFTViewModalType.BID_LIST && (
@@ -67,6 +70,21 @@ export const NFTViewModalProvider = ({
 						onAccept={modalContent.contentProps.onAccept}
 						highestBid={modalContent.contentProps.highestBid}
 						isLoading={modalContent.contentProps.isLoading}
+						paymentTokenInfo={modalContent.contentProps.paymentTokenInfo}
+					/>
+				)}
+				{modalContent?.modalType === NFTViewModalType.CLAIM_NFT && (
+					<ClaimNFT
+						privateSaleEndTime={modalContent.contentProps.privateSaleEndTime}
+						onClose={closeModal}
+						setClaimDropStage={modalContent.contentProps.setClaimDropStage}
+					/>
+				)}
+				{modalContent?.modalType === NFTViewModalType.CLAIM_NFT && (
+					<ClaimNFT
+						privateSaleEndTime={modalContent.contentProps.privateSaleEndTime}
+						onClose={closeModal}
+						setClaimDropStage={modalContent.contentProps.setClaimDropStage}
 					/>
 				)}
 			</Overlay>

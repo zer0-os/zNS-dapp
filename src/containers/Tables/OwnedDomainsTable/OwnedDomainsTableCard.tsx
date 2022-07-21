@@ -9,7 +9,7 @@ import { Spinner } from 'components';
 //- Library Imports
 import { useHistory } from 'react-router-dom';
 import { BigNumber } from 'ethers';
-import { Domain } from '@zero-tech/zns-sdk/lib/types';
+import { ConvertedTokenInfo, Domain } from '@zero-tech/zns-sdk';
 import useBidData from 'lib/hooks/useBidData';
 import { formatEther } from '@ethersproject/units';
 import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
@@ -21,7 +21,6 @@ import styles from './OwnedDomainsTableCard.module.scss';
 
 //- Constants Imports
 import { LABELS } from './OwnedDomainsTable.constants';
-import { CURRENCY } from 'constants/currency';
 import { ROUTES } from 'constants/routes';
 
 //- Utils Imports
@@ -29,15 +28,14 @@ import ImageCard from 'components/Cards/ImageCard/ImageCard';
 
 type OwnedDomainsTableRowProps = {
 	refetch: () => void;
-	wildPriceUsd: number;
-	data: Domain;
+	data: Domain & { paymentTokenInfo: ConvertedTokenInfo };
 	// this should be refactored when GenericTable has better typing
 	[x: string]: any;
+	domainsPaymentTokenInfo: any[];
 };
 
 const SubdomainTableCard = ({
 	refetch,
-	wildPriceUsd,
 	data: domain,
 }: OwnedDomainsTableRowProps) => {
 	const { push: goTo } = useHistory(); // for navigating on row click
@@ -47,6 +45,8 @@ const SubdomainTableCard = ({
 
 	const highestBid = bidData?.highestBid;
 
+	const paymentTokenInfo = domain.paymentTokenInfo || {};
+
 	// Retrieve Metadata
 	const domainMetadata = useDomainMetadata(domain.metadataUri);
 
@@ -54,14 +54,15 @@ const SubdomainTableCard = ({
 	const bidAmountWild = highestBid
 		? `${Number(
 				formatEther(BigNumber.from(highestBid.amount)),
-		  ).toLocaleString()} ${CURRENCY.WILD}`
+		  ).toLocaleString()} ${paymentTokenInfo?.symbol}`
 		: '-';
 
 	// Bid amount usd
 	const bidAmountUsd =
 		highestBid &&
 		`$${formatNumber(
-			Number(ethers.utils.formatEther(highestBid.amount)) * wildPriceUsd,
+			Number(ethers.utils.formatEther(highestBid.amount)) *
+				Number(paymentTokenInfo.priceInUsd),
 		)}`;
 
 	// Navigates to domain
@@ -89,7 +90,7 @@ const SubdomainTableCard = ({
 							<>
 								<label>{LABELS.TOP_BID}</label>
 								<span className={styles.Crypto}>{bidAmountWild}</span>
-								{wildPriceUsd > 0 && (
+								{Number(paymentTokenInfo?.priceInUsd) > 0 && (
 									<span className={styles.Fiat}>{bidAmountUsd}</span>
 								)}
 							</>

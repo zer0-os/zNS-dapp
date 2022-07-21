@@ -6,18 +6,43 @@ import {
 	DomainBidEvent,
 	DomainSaleEvent,
 	DomainBuyNowSaleEvent,
-} from '@zero-tech/zns-sdk/lib/types';
+	ConvertedTokenInfo,
+} from '@zero-tech/zns-sdk';
 import { URLS } from 'constants/urls';
 import { ethers } from 'ethers';
 import { truncateWalletAddress } from 'lib/utils';
 import { DomainEvents } from '../../../NFTView.types';
 import styles from '../../../NFTView.module.scss';
+import { Maybe } from 'lib/types';
+import useAsyncEffect from 'use-async-effect';
+import { useZnsSdk } from 'lib/hooks/sdk';
+import { useState } from 'react';
+import getPaymentTokenInfo from 'lib/paymentToken';
 
 type HistoryItemProps = {
 	item: DomainEvents;
 };
 
 const HistoryItem = ({ item }: HistoryItemProps) => {
+	const { instance: sdk } = useZnsSdk();
+	const [paymentTokenInfo, setPaymentTokenInfo] =
+		useState<Maybe<ConvertedTokenInfo>>();
+	useAsyncEffect(async () => {
+		const data = item as
+			| DomainBidEvent
+			| DomainSaleEvent
+			| DomainBuyNowSaleEvent;
+		if (
+			(item.type === DomainEventType.bid ||
+				item.type === DomainEventType.sale ||
+				item.type === DomainEventType.buyNow) &&
+			data.paymentToken
+		) {
+			const token = await getPaymentTokenInfo(sdk, data.paymentToken);
+			setPaymentTokenInfo(token);
+		}
+	}, [sdk]);
+
 	switch (item.type) {
 		case DomainEventType.bid:
 			item = item as DomainBidEvent;
@@ -38,7 +63,7 @@ const HistoryItem = ({ item }: HistoryItemProps) => {
 						made an offer of{' '}
 						<b>
 							{Number(ethers.utils.formatEther(item.amount!)).toLocaleString()}{' '}
-							WILD
+							{paymentTokenInfo?.symbol}
 						</b>
 					</div>
 					<div className={styles.From}>
@@ -139,7 +164,7 @@ const HistoryItem = ({ item }: HistoryItemProps) => {
 									{Number(
 										ethers.utils.formatEther(item.amount!),
 									).toLocaleString()}{' '}
-									WILD
+									{paymentTokenInfo?.symbol}
 								</b>
 							</>
 						)}
@@ -184,7 +209,7 @@ const HistoryItem = ({ item }: HistoryItemProps) => {
 									{Number(
 										ethers.utils.formatEther(item.amount!),
 									).toLocaleString()}{' '}
-									WILD
+									{paymentTokenInfo?.symbol}
 								</b>
 							</>
 						)}

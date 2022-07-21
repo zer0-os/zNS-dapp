@@ -9,26 +9,27 @@ import { Modals } from '../Modals';
 import { StepContent } from '../../MakeABid.types';
 
 //- Constants
-import { LABELS } from 'constants/labels';
+import { Labels } from 'constants/labels';
 
 import {
 	MESSAGES,
 	BUTTONS,
 	PLACE_BID_LABELS,
-	getWildBalance,
 	getBidAmountText,
+	getBalanceString,
 } from '../../MakeABid.constants';
 
 //- Styles Imports
 import styles from './Details.module.scss';
 
 //-Library Imports
-import { formatBidAmount } from 'lib/utils';
+import { formatBidAmount, replaceWildWithProperToken } from 'lib/utils';
 import { DomainBidData } from 'lib/utils/bids';
 import { toFiat } from 'lib/currency';
 
 //- Utils Imports
-import { getBidToHighWarning, getUsdFiatEstimation } from './Details.utils';
+import { getBidTooHighWarning, getUsdFiatEstimation } from './Details.utils';
+import { ConvertedTokenInfo } from '@zero-tech/zns-sdk';
 
 type DetailsProps = {
 	stepContent: StepContent;
@@ -37,14 +38,14 @@ type DetailsProps = {
 	creator: string;
 	domainName: string;
 	title: string;
-	wildBalance: number;
+	tokenBalance: number;
 	isModalOpen?: boolean;
-	wildPriceUsd?: number;
 	walletAddress?: string;
 	highestBid?: string;
 	error?: string;
 	bid: string;
 	isBidValid?: boolean;
+	paymentTokenInfo: ConvertedTokenInfo;
 	setBid?: (bid: string) => void;
 	onClose: () => void;
 	onConfirm?: () => void;
@@ -57,12 +58,12 @@ const Details = ({
 	creator,
 	domainName,
 	title,
-	wildBalance,
-	wildPriceUsd,
+	tokenBalance,
 	highestBid,
 	error,
 	bid,
 	isBidValid,
+	paymentTokenInfo,
 	setBid,
 	onClose,
 	onConfirm,
@@ -70,10 +71,13 @@ const Details = ({
 	// State
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	// Format numbers
-	const formattedHighestBidAmount = formatBidAmount(highestBid);
-	const formattedBidAmountWILD = getBidAmountText(bid);
+	const formattedHighestBidAmount = formatBidAmount(
+		highestBid,
+		paymentTokenInfo.symbol,
+	);
+	const formattedBidAmount = getBidAmountText(bid, paymentTokenInfo.symbol);
 	// Balance loading
-	const loadingWildBalance = wildBalance === undefined;
+	const loadingTokenBalance = tokenBalance === undefined;
 	// Step content
 	const onSubmitButtonText =
 		stepContent === StepContent.Details
@@ -82,8 +86,8 @@ const Details = ({
 				: BUTTONS[StepContent.Details].PRIMARY
 			: BUTTONS[StepContent.Success];
 	const bidString =
-		isBidValid && wildPriceUsd
-			? toFiat(parseFloat(bid) * wildPriceUsd)
+		isBidValid && paymentTokenInfo.priceInUsd
+			? toFiat(parseFloat(bid) * Number(paymentTokenInfo.priceInUsd))
 			: PLACE_BID_LABELS.ZERO_VALUE;
 	const onSubmit = stepContent === StepContent.Details ? onConfirm : onClose;
 
@@ -98,7 +102,7 @@ const Details = ({
 					setIsModalOpen={setIsModalOpen}
 					isModalOpen={isModalOpen}
 					bidData={bidData}
-					wildPriceUsd={wildPriceUsd}
+					paymentTokenInfo={paymentTokenInfo}
 				/>
 			)}
 			<div className={styles.NFTDetailsContainer}>
@@ -113,7 +117,7 @@ const Details = ({
 					otherDetails={[
 						// Highest Bid
 						{
-							name: highestBid ? LABELS.HIGHEST_BID_LABEL : '',
+							name: Labels.HIGHEST_BID_LABEL,
 							value: highestBid ? formattedHighestBidAmount : '',
 						},
 						{
@@ -122,25 +126,26 @@ const Details = ({
 									? PLACE_BID_LABELS.YOUR_BID
 									: '',
 							value:
-								stepContent === StepContent.Success
-									? formattedBidAmountWILD
-									: '',
+								stepContent === StepContent.Success ? formattedBidAmount : '',
 						},
 					]}
 				/>
 			</div>
 
-			{stepContent === StepContent.Details && wildBalance === 0 && (
+			{stepContent === StepContent.Details && tokenBalance === 0 && (
 				<div className={styles.Error}>
-					You do not have enough WILD tokens to place a bid on this domain.
+					You do not have enough {paymentTokenInfo.symbol} tokens to place a bid
+					on this domain.
 				</div>
 			)}
 
 			{/* Details Step */}
-			{stepContent === StepContent.Details && wildBalance > 0 && (
+			{stepContent === StepContent.Details && tokenBalance > 0 && (
 				<div className={styles.PlaceBidContainer}>
 					<div className={styles.TextContainer}>{MESSAGES.ENTER_AMOUNT}</div>
-					<span className={styles.Estimate}>{getWildBalance(wildBalance)}</span>
+					<span className={styles.Estimate}>
+						{getBalanceString(tokenBalance, paymentTokenInfo.symbol)}
+					</span>
 					<form onSubmit={onConfirm}>
 						<TextInput
 							numeric
@@ -148,11 +153,19 @@ const Details = ({
 							error={Boolean(error)}
 							className={styles.TextInput}
 							onChange={(text: string) => setBid && setBid(text)}
-							placeholder={PLACE_BID_LABELS.INPUT_PLACEHOLDER}
+							placeholder={replaceWildWithProperToken(
+								PLACE_BID_LABELS.INPUT_PLACEHOLDER,
+								paymentTokenInfo.symbol,
+							)}
 						/>
 					</form>
-					{getUsdFiatEstimation(bidString, wildPriceUsd)}
-					{getBidToHighWarning(loadingWildBalance, bid, wildBalance)}
+					{getUsdFiatEstimation(bidString, Number(paymentTokenInfo.priceInUsd))}
+					{getBidTooHighWarning(
+						loadingTokenBalance,
+						bid,
+						tokenBalance,
+						paymentTokenInfo.symbol,
+					)}
 				</div>
 			)}
 
@@ -170,8 +183,8 @@ const Details = ({
 				{stepContent === StepContent.Details && (
 					<>
 						<FutureButton
-							glow={isBidValid && Number(bid) < wildBalance!}
-							disabled={isBidValid && Number(bid) > wildBalance!}
+							glow={isBidValid && Number(bid) < tokenBalance!}
+							disabled={isBidValid && Number(bid) > tokenBalance!}
 							onClick={onSubmit}
 						>
 							{onSubmitButtonText}

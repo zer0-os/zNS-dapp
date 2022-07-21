@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
 //- Library Imports
-import { formatNumber, formatEthers } from 'lib/utils';
+import { formatNumber, formatEthers, isRootDomain } from 'lib/utils';
 
 //- Style Imports
 import styles from './ZNS.module.scss';
@@ -12,15 +12,14 @@ import styles from './ZNS.module.scss';
 //- Components & Containers
 import { StatsWidget } from 'components';
 import { NFTViewModalProvider } from 'containers/other/NFTView/providers/NFTViewModalProvider/NFTViewModalProvider';
-
 import { SubdomainTable, CurrentDomainPreview, Raffle } from 'containers';
+import { Stage } from 'containers/flows/MintDropNFT/types';
 
 //- Library Imports
 import { NFTView, TransferOwnership } from 'containers';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 import { DomainMetrics } from '@zero-tech/zns-sdk/lib/types';
 import { ethers } from 'ethers';
-import useCurrency from 'lib/hooks/useCurrency';
 import useMatchMedia from 'lib/hooks/useMatchMedia';
 import { useDidMount } from 'lib/hooks/useDidMount';
 import { useNavbar } from 'lib/hooks/useNavbar';
@@ -47,10 +46,13 @@ const ZNS: React.FC<ZNSProps> = () => {
 	// Web3 Handling //
 	///////////////////
 	const sdk = useZnsSdk();
-	const { wildPriceUsd } = useCurrency();
 
 	//- Domain Data
-	const { domain: znsDomain, domainRaw: domain } = useCurrentDomain();
+	const {
+		domain: znsDomain,
+		domainRaw: domain,
+		paymentTokenInfo: paymentToken,
+	} = useCurrentDomain();
 
 	////////////////////////
 	// Browser Navigation //
@@ -76,6 +78,9 @@ const ZNS: React.FC<ZNSProps> = () => {
 	const [modal, setModal] = useState<Modal | undefined>();
 	const [tradeData, setTradeData] = useState<DomainMetrics | undefined>();
 	const [statsLoaded, setStatsLoaded] = useState(false);
+
+	//- Claim Drop Stage state
+	const [claimDropStage, setClaimDropStage] = useState<Stage>();
 
 	///////////
 	// Hooks //
@@ -173,14 +178,14 @@ const ZNS: React.FC<ZNSProps> = () => {
 				fieldName: 'Floor Price',
 				title: `${
 					tradeData?.lowestSale ? formatEthers(tradeData?.lowestSale) : 0
-				} WILD`,
+				} ${paymentToken?.symbol}`,
 				subTitle:
-					wildPriceUsd > 0
+					Number(paymentToken?.priceInUsd) > 0
 						? `$${
 								tradeData?.lowestSale
 									? formatNumber(
 											Number(ethers.utils.formatEther(tradeData?.lowestSale)) *
-												wildPriceUsd,
+												Number(paymentToken?.priceInUsd),
 									  )
 									: 0
 						  }`
@@ -189,10 +194,12 @@ const ZNS: React.FC<ZNSProps> = () => {
 			{
 				fieldName: 'Volume',
 				title: (tradeData?.volume as any)?.all
-					? `${formatEthers((tradeData?.volume as any)?.all)} WILD`
+					? `${formatEthers((tradeData?.volume as any)?.all)} ${
+							paymentToken?.symbol
+					  }`
 					: '',
 				subTitle:
-					wildPriceUsd > 0
+					Number(paymentToken?.priceInUsd) > 0
 						? `$${
 								(tradeData?.volume as any)?.all
 									? formatNumber(
@@ -200,7 +207,7 @@ const ZNS: React.FC<ZNSProps> = () => {
 												ethers.utils.formatEther(
 													(tradeData?.volume as any)?.all,
 												),
-											) * wildPriceUsd,
+											) * Number(paymentToken?.priceInUsd),
 									  )
 									: 0
 						  }`
@@ -260,11 +267,12 @@ const ZNS: React.FC<ZNSProps> = () => {
 				/>
 			)}
 			{/* ZNS Content */}
-			{enableBanner && <Raffle />}
+			{enableBanner && <Raffle setClaimDropStage={setClaimDropStage} />}
 			{!isNftView && (
 				<div className="main">
 					{previewCard()}
-					{!(isMobile || isMobilePortrait) && nftStats()}
+					{!(isMobile || isMobilePortrait || isRootDomain(znsDomain?.id)) &&
+						nftStats()}
 					{showDomainTable && (
 						<div className={styles.TableContainer}>
 							<SubdomainTable />
@@ -277,6 +285,8 @@ const ZNS: React.FC<ZNSProps> = () => {
 					<NFTView
 						// domain={domain}
 						onTransfer={openTransferOwnershipModal}
+						claimDropStage={claimDropStage}
+						setClaimDropStage={setClaimDropStage}
 					/>
 				</NFTViewModalProvider>
 			)}

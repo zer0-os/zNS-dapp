@@ -18,10 +18,9 @@ export const getNetworkLogo = (zna: string, app: string) => {
 	}
 };
 
-export const getPriceWidget = (zna: string, app: string) => {
+export const getPriceWidget = (zna: string) => {
 	if (ROOT_DOMAIN !== 'wilder') {
-		return !zna.startsWith('wilder');
-	} else {
-		return app !== ROUTES.MARKET;
+		return zna.startsWith('wilder');
 	}
+	return true;
 };

@@ -1,15 +1,22 @@
+//- React Imports
 import React from 'react';
-import { getDomainId } from './utils/domains';
-import { DisplayParentDomain, ParentDomain } from './types';
+
+//- Library Imports
 import useAsyncEffect from 'use-async-effect';
-import { useZnsSdk } from './hooks/sdk';
+import { useZnsSdk } from './sdk';
+
+//- Utils Imports
+import { getDomainId } from '../utils/domains';
+import { filterSearchResultsByNetwork } from 'lib/utils/searchResults';
+
+//- Types Imports
+import { DisplayParentDomain, ParentDomain } from '../types';
 
 export interface DomainSearch {
 	exactMatch?: DisplayParentDomain;
 	matches?: DisplayParentDomain[];
 	setPattern: (pattern: string) => void;
 }
-
 export function useDomainSearch() {
 	const { instance: sdk } = useZnsSdk();
 	const [pattern, setPattern] = React.useState('');
@@ -17,7 +24,6 @@ export function useDomainSearch() {
 		DisplayParentDomain | undefined
 	>(undefined);
 	const [matches, setMatches] = React.useState<DisplayParentDomain[]>([]);
-
 	useAsyncEffect(async () => {
 		const id = getDomainId(pattern);
 		if (id) {
@@ -30,11 +36,8 @@ export function useDomainSearch() {
 					exactDomain.owner = { id: exactDomain.owner };
 					exactDomain.parent = { id: exactDomain.parentId };
 					exactDomain.lockedBy = { id: exactDomain.lockedBy };
-
 					delete exactDomain.parentId;
-
 					let match: DisplayParentDomain | undefined = undefined;
-
 					if (exactDomain) {
 						match = {
 							...exactDomain,
@@ -49,7 +52,6 @@ export function useDomainSearch() {
 		}
 		try {
 			const rawDomains = await sdk.getDomainsByName(pattern);
-
 			let matchesResult: DisplayParentDomain[] = [];
 			const fuzzyMatch = rawDomains.map((item) => {
 				const domain = item as any;
@@ -65,13 +67,16 @@ export function useDomainSearch() {
 					return { ...e } as DisplayParentDomain;
 				});
 			}
-			setMatches(matchesResult);
+
+			// filter network specific search results
+			const networkSearchResults = filterSearchResultsByNetwork(matchesResult);
+
+			setMatches(networkSearchResults);
 		} catch (err) {
 			// TODO: Handle it
 			console.log(err);
 		}
 	}, [pattern]);
-
 	return {
 		exactMatch,
 		matches,

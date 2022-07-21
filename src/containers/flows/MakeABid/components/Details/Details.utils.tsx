@@ -1,4 +1,5 @@
 //- Constants Imports
+import { replaceWildWithProperToken } from 'lib/utils';
 import { ERRORS, getUsdEstimation } from '../../MakeABid.constants';
 
 //- Styles Imports
@@ -16,12 +17,15 @@ export const getUsdFiatEstimation = (bidString: string, wildPrice?: number) => {
 	);
 };
 
-export const getBidToHighWarning = (
+export const getBidTooHighWarning = (
 	isLoading: boolean,
 	bid: string,
-	wildBalance: number,
+	tokenBalance: number,
+	paymentTokenName: string,
 ) => {
-	if (!isLoading && Number(bid) > wildBalance!) {
-		return <p className={styles.Error}>{ERRORS.INSUFFICIENT_FUNDS}</p>;
+	if (!isLoading && Number(bid) > tokenBalance!) {
+		<p className={styles.Error}>
+			{replaceWildWithProperToken(ERRORS.INSUFFICIENT_FUNDS, paymentTokenName)}
+		</p>;
 	}
 };

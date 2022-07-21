@@ -14,7 +14,6 @@ import { DomainSettings } from 'containers/other/NFTView/elements';
 //- Library Imports
 import { useHistory } from 'react-router-dom';
 import { BigNumber } from 'ethers';
-import { Domain } from '@zero-tech/zns-sdk/lib/types';
 import useBidData from 'lib/hooks/useBidData';
 import { formatEther } from '@ethersproject/units';
 import classNames from 'classnames';
@@ -33,6 +32,7 @@ import { ROUTES } from 'constants/routes';
 //- Utils Imports
 import { getActions } from './OwnedDomainsTable.utils';
 import { getNetworkZNA } from 'lib/utils';
+import { ConvertedTokenInfo, Domain } from '@zero-tech/zns-sdk';
 
 enum Modal {
 	ViewBids,
@@ -41,7 +41,7 @@ enum Modal {
 
 type OwnedDomainsTableRowProps = {
 	refetch: () => void;
-	data: Domain;
+	data: Domain & { paymentTokenInfo: ConvertedTokenInfo };
 	// this should be refactored when GenericTable has better typing
 	[x: string]: any;
 };
@@ -56,6 +56,7 @@ const OwnedDomainsTableRow = ({
 	const { bidData, isLoading: isLoadingBidData } = useBidData(domain.id);
 	const bids = bidData?.bids;
 	const highestBid = bidData?.highestBid;
+	const paymentTokenInfo = domain.paymentTokenInfo;
 
 	// Retrieve Metadata
 	const domainMetadata = useDomainMetadata(domain.metadataUri);
@@ -102,6 +103,7 @@ const OwnedDomainsTableRow = ({
 						isLoading={isLoadingBidData}
 						highestBid={highestBid?.amount}
 						isAcceptBidEnabled
+						paymentTokenInfo={paymentTokenInfo}
 					/>
 				</Overlay>
 			);
@@ -143,7 +145,9 @@ const OwnedDomainsTableRow = ({
 					) : highestBid ? (
 						Number(
 							formatEther(BigNumber.from(highestBid.amount)),
-						).toLocaleString()
+						).toLocaleString() +
+						' ' +
+						paymentTokenInfo?.symbol
 					) : (
 						'-'
 					)}

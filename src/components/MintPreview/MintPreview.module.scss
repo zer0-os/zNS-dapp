@@ -65,6 +65,7 @@
 	position: relative;
 	display: flex;
 	flex-direction: column;
+	justify-content: space-between;
 	margin-left: 32px;
 	width: 240px;
 	max-width: 240px;
@@ -82,15 +83,14 @@
 
 	p {
 		padding: 0;
-		margin-bottom: 12px;
 		line-height: 24px;
 	}
 }
 
 .Container {
 	display: flex;
-	flex-direction: row;
-	margin-top: 18px;
+	flex-direction: column;
+	margin-top: 24px;
 	line-height: 24px;
 
 	div {
@@ -99,19 +99,16 @@
 
 	.TextContainer {
 		display: flex;
-		flex-direction: column;
+		flex-direction: row;
 	}
 
 	.ButtonContainer {
-		margin-top: 24px;
-
-		a {
-			font-size: #{typography.$size-small};
-		}
+		margin-bottom: 40px;
 	}
 
 	.Success {
 		color: #{colors.$success-green};
+		font-size: #{typography.$font-weight-bold};
 	}
 }
 

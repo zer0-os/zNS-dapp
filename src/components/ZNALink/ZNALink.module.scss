@@ -67,22 +67,18 @@
 	.ZNALink > a:not(:first-of-type):not(:nth-of-type(2)):not(:last-of-type) {
 		display: none !important;
 	}
-
 	.ZNALink > a:not(:first-of-type) ~ a:last-of-type::before {
 		content: '';
 	}
 
-	.ZNALink > a:nth-last-child(1) {
-		display: block !important;
-		content: '';
-
-		&:before {
-			content: '..' !important;
-		}
-	}
-
 	.isRootWithSubdomain {
-		a:not(:first-of-type) ~ a:last-of-type::before {
+		&.isNetworkSet {
+			a:not(:first-of-type) ~ a:last-of-type::before {
+				content: '..';
+			}
+		}
+
+		a:not(:first-of-type):not(:nth-of-type(2)) ~ a:last-of-type::before {
 			content: '..';
 		}
 	}
@@ -92,7 +88,6 @@
 			display: none !important;
 		}
 	}
-
 	.Dots {
 		display: inline-block;
 	}

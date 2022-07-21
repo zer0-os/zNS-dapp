@@ -22,6 +22,8 @@ import { Web3Provider } from '@ethersproject/providers';
 //- Library Imports
 import CacheBuster from 'react-cache-buster';
 import EnlistProvider from 'lib/providers/EnlistProvider';
+import CurrentDomainProvider from 'lib/providers/CurrentDomainProvider';
+import MvpVersionProvider from 'lib/providers/MvpVersionProvider';
 import { ROUTES } from 'constants/routes';
 
 //- Page Imports
@@ -29,7 +31,6 @@ import { ZNS, Staking, Profile } from 'pages';
 import PageContainer from 'containers/PageContainer';
 import DAO from 'pages/DAO/DAO';
 import { ZnsSdkProvider } from 'lib/providers/ZnsSdkProvider';
-import CurrentDomainProvider from 'lib/providers/CurrentDomainProvider';
 
 function getLibrary(provider: any): Web3Provider {
 	const library = new Web3Provider(provider);
@@ -76,9 +77,12 @@ function wrappedApp() {
 			<ReduxProvider store={store}>
 				<Web3ReactProvider getLibrary={getLibrary}>
 					<ZnsSdkProvider>
-						<EnlistProvider>
-							<App />
-						</EnlistProvider>
+						{/* Our Hooks  */}
+						<MvpVersionProvider>
+							<EnlistProvider>
+								<App />
+							</EnlistProvider>
+						</MvpVersionProvider>
 					</ZnsSdkProvider>
 				</Web3ReactProvider>
 			</ReduxProvider>

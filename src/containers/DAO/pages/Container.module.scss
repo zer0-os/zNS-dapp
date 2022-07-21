@@ -58,6 +58,10 @@
 			@media only screen and (min-width: #{dimensions.$breakpoint-mobile-xl}) {
 				display: block;
 				width: auto;
+      }
+      
+			@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
+				font-size: #{typography.$size-medium};
 			}
 
 			>a {

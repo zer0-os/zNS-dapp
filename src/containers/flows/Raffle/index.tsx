@@ -1,21 +1,44 @@
+//- React Imports
 import { useEffect, useState } from 'react';
-
-import { MintDropNFTBanner, Overlay, Countdown } from 'components';
-import { MintDropNFT } from 'containers';
-import WaitlistRegistration from './WaitlistRegistration';
-import RaffleRegistration from './RaffleRegistration';
 import useAsyncEffect from 'use-async-effect';
 
-const RaffleContainer = () => {
+//- Components Imports
+import { MintDropNFTBanner, Overlay, Countdown } from 'components';
+import WaitlistRegistration from './WaitlistRegistration';
+import RaffleRegistration from './RaffleRegistration';
+
+//- Containers Imports
+import { ClaimNFTContainer } from 'containers';
+
+//- Types Imports
+import { Stage } from '../MintDropNFT/types';
+
+//- Constants Imports
+import {
+	PRIVATE_SALE_END_TIME,
+	RAFFLE_END_TIME,
+	RAFFLE_START_TIME,
+	SALE_START_TIME,
+} from './Drop.constants';
+import { EXTERNAL_URL } from '../ClaimNFT/components/WizardSteps/Details/Details.constants';
+
+// Style Imports
+import styles from './Raffle.module.scss';
+
+type RaffleContainerProps = {
+	setClaimDropStage: (stage?: Stage) => void;
+};
+
+const RaffleContainer = ({ setClaimDropStage }: RaffleContainerProps) => {
 	//////////////////
 	// State & Data //
 	//////////////////
 
 	const currentTime = new Date().getTime();
 
-	// Temporary values
-	const RAFFLE_START_TIME = currentTime - 10000;
-	const RAFFLE_END_TIME = currentTime - 50000;
+	// // Temporary values
+	// const RAFFLE_START_TIME = currentTime - 10000;
+	// const RAFFLE_END_TIME = currentTime - 50000;
 	// const SALE_START_TIME = currentTime + 5000;
 	// const PRIVATE_SALE_END_TIME = currentTime + 10000;
 	// const PUBLIC_SALE_START_TIME = currentTime + 100000;
@@ -24,9 +47,9 @@ const RaffleContainer = () => {
 	// Hardcoded event times
 	// const RAFFLE_START_TIME = 1650589200000;
 	// const RAFFLE_END_TIME = 1650762000000;
-	const SALE_START_TIME = 1651194000000;
-	const PRIVATE_SALE_END_TIME = 1651280400000;
-	const PUBLIC_SALE_START_TIME = 1651280400000;
+	// const SALE_START_TIME = 1655928000000;
+	// const PRIVATE_SALE_END_TIME = 1651280400000;
+	// const PUBLIC_SALE_START_TIME = 1651280400000;
 
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -76,10 +99,7 @@ const RaffleContainer = () => {
 		if (!hasRaffleEnded) {
 			setIsModalOpen(true);
 		} else {
-			window.open(
-				'https://zine.wilderworld.com/aws2-raffle-winners/',
-				'_blank',
-			);
+			window.open(EXTERNAL_URL.CLAIM_ZINE, '_blank');
 		}
 	};
 
@@ -113,7 +133,7 @@ const RaffleContainer = () => {
 		if (hasRaffleEnded) {
 			return (
 				<>
-					AIR WILD Season Two Mintlist Sale Begins in{' '}
+					Wilder Moto Claim Begins in{' '}
 					<b>
 						<Countdown
 							to={SALE_START_TIME}
@@ -201,12 +221,12 @@ const RaffleContainer = () => {
 		return (
 			<>
 				{isModalOpen && overlay()}
-				<div>
+				<div className={styles.BannerContainer}>
 					<MintDropNFTBanner
 						title={
 							hasRaffleEnded
-								? 'Get Your Kicks for the Metaverse'
-								: 'Get Your Kicks for the Metaverse'
+								? 'Claim Your Moto Blessings'
+								: 'Claim Your Moto Blessings'
 						}
 						label={bannerLabel()}
 						buttonText={bannerButtonLabel()}
@@ -218,9 +238,11 @@ const RaffleContainer = () => {
 	}
 
 	return (
-		<MintDropNFT
+		<ClaimNFTContainer
+			requireBanner
 			privateSaleEndTime={PRIVATE_SALE_END_TIME}
-			publicSaleStartTime={PUBLIC_SALE_START_TIME}
+			onClose={closeModal}
+			setClaimDropStage={setClaimDropStage}
 		/>
 	);
 };

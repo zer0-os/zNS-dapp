@@ -17,10 +17,11 @@ import { StatsWidget } from 'components';
 import { toFiat } from 'lib/currency';
 import { useZnsSdk } from 'lib/hooks/sdk';
 import {
+	ConvertedTokenInfo,
 	DomainBidEvent,
 	DomainMetrics,
 	DomainMetricsCollection,
-} from '@zero-tech/zns-sdk/lib/types';
+} from '@zero-tech/zns-sdk';
 
 //- Type Imports
 import { Maybe, DisplayParentDomain } from 'lib/types';
@@ -38,16 +39,16 @@ type Stat = {
 
 type StatsProps = {
 	znsDomain: Maybe<DisplayParentDomain>;
-	wildPriceUsd: number;
 	bids?: DomainBidEvent[];
 	isLoading: boolean;
+	paymentTokenInfo: ConvertedTokenInfo;
 };
 
 export const Stats: React.FC<StatsProps> = ({
 	znsDomain,
-	wildPriceUsd,
 	bids,
 	isLoading,
+	paymentTokenInfo,
 }) => {
 	const isMounted = useRef<boolean>();
 	const sdk = useZnsSdk();
@@ -96,13 +97,16 @@ export const Stats: React.FC<StatsProps> = ({
 				(domainMetrics?.lastSale ?? 0) > 0
 					? Number(
 							ethers.utils.formatEther(domainMetrics!.lastSale),
-					  ).toLocaleString() + ' WILD'
+					  ).toLocaleString() +
+					  ' ' +
+					  paymentTokenInfo.symbol
 					: 'No sales',
 			subTitle:
-				(domainMetrics?.lastSale ?? 0) > 0 && wildPriceUsd > 0
+				(domainMetrics?.lastSale ?? 0) > 0 &&
+				Number(paymentTokenInfo.priceInUsd) > 0
 					? `$${toFiat(
 							Number(ethers.utils.formatEther(domainMetrics!.lastSale)) *
-								wildPriceUsd,
+								Number(paymentTokenInfo.priceInUsd),
 					  )}`
 					: '',
 		};
@@ -113,20 +117,21 @@ export const Stats: React.FC<StatsProps> = ({
 				(domainMetrics?.volume as any)?.all > 0
 					? `${Number(
 							ethers.utils.formatEther((domainMetrics?.volume as any)?.all),
-					  ).toLocaleString()} WILD`
+					  ).toLocaleString()} ${paymentTokenInfo.symbol}`
 					: '0',
 			subTitle:
-				(domainMetrics?.volume as any)?.all > 0 && wildPriceUsd > 0
+				(domainMetrics?.volume as any)?.all > 0 &&
+				Number(paymentTokenInfo.priceInUsd) > 0
 					? toFiat(
 							Number(
 								ethers.utils.formatEther((domainMetrics?.volume as any)?.all),
-							) * wildPriceUsd,
+							) * Number(paymentTokenInfo.priceInUsd),
 					  )
 					: '',
 		};
 
 		return [bidsStat, lastSaleStat, volumeStat];
-	}, [domainMetrics, wildPriceUsd, bids]);
+	}, [domainMetrics, paymentTokenInfo, bids]);
 
 	return (
 		<div className={styles.NFTStats}>

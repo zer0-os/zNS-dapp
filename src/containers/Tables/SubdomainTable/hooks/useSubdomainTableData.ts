@@ -1,9 +1,14 @@
-import { DomainMetricsCollection } from '@zero-tech/zns-sdk';
+import {
+	DomainMetricsCollection,
+	ConvertedTokenInfo,
+} from '@zero-tech/zns-sdk';
 import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 import { useZnsSdk } from 'lib/hooks/sdk';
 import { DisplayDomain } from 'lib/types';
-import { useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import useAsyncEffect from 'use-async-effect';
+import { isRootDomain } from 'lib/utils';
+import getPaymentTokenInfo from 'lib/paymentToken';
 
 export type UseSubdomainTableDataReturn = {
 	isLoading: boolean;
@@ -14,12 +19,14 @@ const useSubdomainTableData = (
 	parentDomainId: string | undefined,
 	subdomains: DisplayDomain[] | undefined,
 ): UseSubdomainTableDataReturn => {
+	const isMounted = useRef<boolean>();
 	const { instance: sdk } = useZnsSdk();
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [data, setData] = useState<any>();
+	const isRoot = isRootDomain(parentDomainId);
 
-	const getData = async () => {
+	const getData = useCallback(async () => {
 		setData(undefined);
 		setIsLoading(true);
 
@@ -36,6 +43,7 @@ const useSubdomainTableData = (
 		var temporary: string[] = [];
 		const chunk = 900;
 		const promises = [];
+
 		for (var i = 0, j = subdomainIds.length; i < j; i += chunk) {
 			temporary = subdomainIds.slice(i, i + chunk);
 			promises.push(
@@ -54,6 +62,9 @@ const useSubdomainTableData = (
 
 		try {
 			var tradeData: DomainMetricsCollection = {};
+			let paymentTokenData:
+				| ConvertedTokenInfo
+				| { id: string; paymentTokenInfo: ConvertedTokenInfo }[];
 			try {
 				const rawData = (await Promise.all(
 					promises,
@@ -61,15 +72,41 @@ const useSubdomainTableData = (
 				for (var m = 0; m < rawData.length; m++) {
 					tradeData = { ...tradeData, ...rawData[m] };
 				}
+
+				// If we're on the root domain, we need to get the payment token info for all the subdomains
+				paymentTokenData = isRoot
+					? await Promise.all(
+							subdomainIds.map(async (id) => {
+								const paymentToken =
+									await sdk.zauction.getPaymentTokenForDomain(id);
+								const paymentTokenInfo: ConvertedTokenInfo =
+									await getPaymentTokenInfo(sdk, paymentToken);
+								return { id, paymentTokenInfo };
+							}),
+					  )
+					: await getPaymentTokenInfo(
+							sdk,
+							await sdk.zauction.getPaymentTokenForDomain(parentDomainId),
+					  );
 			} catch (e) {
 				throw e;
 			}
 			const subDomainsData = subdomains.map((item) => ({
 				...item,
 				metrics: tradeData[item.id],
+				paymentTokenInfo: isRoot
+					? (
+							paymentTokenData as {
+								id: string;
+								paymentTokenInfo: ConvertedTokenInfo;
+							}[]
+					  ).find((i) => i.id === item.id)?.paymentTokenInfo
+					: paymentTokenData,
 			}));
-			setData(subDomainsData);
-			setIsLoading(false);
+			if (isMounted.current) {
+				setData(subDomainsData);
+				setIsLoading(false);
+			}
 		} catch (err) {
 			console.error(
 				`Failed to load subdomain data for parent ${parentDomainId}, found error:`,
@@ -78,7 +115,18 @@ const useSubdomainTableData = (
 			setIsLoading(false);
 			setData(undefined);
 		}
-	};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [parentDomainId, subdomains]);
+
+	/*
+	 * For preventing set state after unmount
+	 */
+	useEffect(() => {
+		isMounted.current = true;
+		return () => {
+			isMounted.current = false;
+		};
+	}, []);
 
 	useAsyncEffect(getData, []);
 	useUpdateEffect(getData, [sdk, subdomains, parentDomainId]);
