@@ -60,7 +60,9 @@ export const ZnsSdkProvider = ({ children }: ZnsSdkProviderProps) => {
 	}, [library, chainId]);
 
 	useEffect(() => {
-		const keys = Object.keys(instance).filter((k) => k.includes('get'));
+		const keys = Object.keys(instance).filter(
+			(k) => k.includes('get') || k.includes('zauction'),
+		);
 		const s: any = {};
 		keys.forEach((key) => {
 			s[key] = (instance as any)[key];
