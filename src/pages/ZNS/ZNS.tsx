@@ -178,7 +178,7 @@ const ZNS: React.FC<ZNSProps> = () => {
 				fieldName: 'Floor Price',
 				title: `${
 					tradeData?.lowestSale ? formatEthers(tradeData?.lowestSale) : 0
-				} ${paymentToken?.name}`,
+				} ${paymentToken?.symbol}`,
 				subTitle:
 					Number(paymentToken?.priceInUsd) > 0
 						? `$${
@@ -195,7 +195,7 @@ const ZNS: React.FC<ZNSProps> = () => {
 				fieldName: 'Volume',
 				title: (tradeData?.volume as any)?.all
 					? `${formatEthers((tradeData?.volume as any)?.all)} ${
-							paymentToken?.name
+							paymentToken?.symbol
 					  }`
 					: '',
 				subTitle:
