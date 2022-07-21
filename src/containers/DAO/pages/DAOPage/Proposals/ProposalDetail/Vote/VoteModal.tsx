@@ -83,7 +83,7 @@ const VoteModal: FC<VoteModalProps> = ({
 					<li>
 						<span>Your Voting Power</span>
 						<span>
-							{formatVotingPowerAmount(votingPower, dao?.votingToken.symbol)}
+							{formatVotingPowerAmount(votingPower, dao?.votingToken, true)}
 						</span>
 					</li>
 				</ul>

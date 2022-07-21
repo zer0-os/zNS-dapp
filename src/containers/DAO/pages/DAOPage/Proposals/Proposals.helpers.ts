@@ -1,5 +1,5 @@
 import { formatUnits } from 'ethers/lib/utils';
-import type { zDAO, Proposal, TokenMetaData } from '@zero-tech/zdao-sdk';
+import type { zDAO, Proposal, TokenMetaData, Token } from '@zero-tech/zdao-sdk';
 import { isEmpty } from 'lodash';
 import moment from 'moment';
 import millify from 'millify';
@@ -140,9 +140,10 @@ export const formatProposalEndTime = (timeDiff: number): string => {
  */
 export const formatVotingPowerAmount = (
 	amount: number,
-	symbol?: string,
+	token?: Token,
+	showSymbol?: boolean,
 ): string | null => {
-	if (!amount || !symbol) return null;
+	if (!amount || !token) return null;
 
 	const formattedAmount =
 		amount >= MILLIFY_THRESHOLD
@@ -152,7 +153,10 @@ export const formatVotingPowerAmount = (
 					minimumFractionDigits: 0,
 			  });
 
-	return formattedAmount + ' ' + symbol;
+	const symbol =
+		token.decimals > 0 ? token.symbol : 'NFT' + (amount > 1 ? 's' : '');
+
+	return formattedAmount + (showSymbol ? ' ' + symbol : '');
 };
 
 /**

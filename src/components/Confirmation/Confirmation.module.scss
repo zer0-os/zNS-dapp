@@ -39,7 +39,7 @@ $gutter: 16px;
 	transform: scale(1.01);
 }
 
-.Image > * {
+.Image>* {
 	height: 100%;
 	width: 100%;
 	object-fit: cover;
@@ -59,18 +59,18 @@ $gutter: 16px;
 	font-weight: #{typography.$font-weight-bold};
 }
 
-.Info > div:first-of-type > span:first-of-type {
+.Info>div:first-of-type>span:first-of-type {
 	display: inline-block;
 	margin-top: 4px;
 }
 
-.Info > div {
+.Info>div {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 }
 
-.Info > h1 {
+.Info>h1 {
 	font-size: 36px;
 }
 
@@ -89,15 +89,15 @@ $gutter: 16px;
 	text-align: center;
 }
 
-.Offer > span {
+.Offer>span {
 	display: inline;
 }
 
-.Offer > span:first-of-type {
+.Offer>span:first-of-type {
 	font-size: 40px;
 }
 
-.Offer > span:last-of-type {
+.Offer>span:last-of-type {
 	font-size: #{typography.$size-large};
 	color: #{colors.$mauve};
 	margin-left: 16px;
@@ -181,7 +181,7 @@ $gutter: 16px;
 		flex-direction: column;
 	}
 
-	.Request > div {
+	.Request>div {
 		width: 100%;
 	}
 
@@ -190,7 +190,7 @@ $gutter: 16px;
 		width: 100%;
 	}
 
-	.Offer > span {
+	.Offer>span {
 		font-size: #{typography.$size-large} !important;
 	}
 }

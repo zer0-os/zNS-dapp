@@ -18,13 +18,19 @@
 * MarkDownViewer Styles
 */
 .MarkDownViewerContainer {
+
 	/* TODO:: update the markdown viewer styles here */
 	:global(.wmde-markdown) {
 		padding: 1rem;
 		background-color: unset;
 	}
 
-	h1, h2, h3, h4, h5, h6 {
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
 		border: none;
 	}
 
@@ -37,4 +43,16 @@
 			text-shadow: var(--glow-text-primary) !important;
 		}
 	}
+}
+
+/**
+* Other Styles
+*/
+.ErrorMessage {
+	display: block;
+	margin-top: 12px;
+	color: #d379ff;
+	font-size: 14px;
+	font-weight: 700;
+	text-align: center;
 }

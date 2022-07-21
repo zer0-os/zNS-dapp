@@ -14,6 +14,7 @@ type FutureButtonProps = {
 	glow?: boolean;
 	loading?: boolean;
 	alt?: boolean;
+	secondary?: boolean;
 	disabled?: boolean;
 };
 
@@ -34,6 +35,7 @@ const FutureButton: React.FC<FutureButtonProps> = ({
 	glow,
 	loading,
 	alt,
+	secondary,
 	disabled = false,
 }) => {
 	const [hasHovered, setHovered] = useState(false);
@@ -52,6 +54,7 @@ const FutureButton: React.FC<FutureButtonProps> = ({
 		Glow: glow,
 		Loading: loading,
 		Alt: alt,
+		Secondary: secondary,
 		Disabled: disabled,
 	});
 

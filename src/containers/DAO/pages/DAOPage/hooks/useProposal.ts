@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { zDAO, Proposal, ProposalId, Vote } from '@zero-tech/zdao-sdk';
+import { DAO_CREATE_PROPOSAL } from '../Proposals/Proposals.constants';
 
 type UseProposalReturn = {
 	proposal?: Proposal;
@@ -65,7 +66,9 @@ const useProposal = (
 	};
 
 	useEffect(() => {
-		fetchProposal();
+		if (id !== DAO_CREATE_PROPOSAL) {
+			fetchProposal();
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [dao, id]);
 

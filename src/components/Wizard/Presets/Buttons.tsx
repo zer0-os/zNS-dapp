@@ -4,6 +4,8 @@ import classNames from 'classnames';
 
 const cx = classNames.bind(styles);
 
+export type ButtonVariants = 'primary' | 'secondary';
+
 export interface ButtonsProps {
 	className?: string;
 	isPrimaryButtonActive?: boolean;
@@ -12,6 +14,8 @@ export interface ButtonsProps {
 	onClickSecondaryButton?: () => void;
 	primaryButtonText?: string;
 	secondaryButtonText?: string;
+	primaryButtonVariant?: ButtonVariants;
+	secondaryButtonVariant?: ButtonVariants;
 }
 
 const Buttons = ({
@@ -22,11 +26,14 @@ const Buttons = ({
 	onClickSecondaryButton,
 	primaryButtonText,
 	secondaryButtonText,
+	primaryButtonVariant = 'primary',
+	secondaryButtonVariant = 'primary',
 }: ButtonsProps) => (
 	<div className={cx(styles.Container, className)}>
 		{onClickSecondaryButton && (
 			<FutureButton
-				alt
+				alt={secondaryButtonVariant === 'primary'}
+				secondary={secondaryButtonVariant === 'secondary'}
 				glow={isSecondaryButtonActive === undefined || isSecondaryButtonActive}
 				onClick={onClickSecondaryButton}
 			>
