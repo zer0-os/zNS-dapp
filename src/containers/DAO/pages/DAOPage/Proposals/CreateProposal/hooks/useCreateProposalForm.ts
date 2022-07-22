@@ -4,7 +4,7 @@ import { isEqual } from 'lodash';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 import type { Proposal, zDAO } from '@zero-tech/zdao-sdk';
-import type { Option } from 'components/Dropdowns/OptionDropdown';
+import type { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
 import { parseUnits } from 'ethers/lib/utils';
 import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 import { usePropsState } from 'lib/hooks/usePropsState';

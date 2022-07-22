@@ -21,7 +21,7 @@ import {
 } from 'components';
 
 // - Types
-import type { Option } from 'components/Dropdowns/OptionDropdown';
+import type { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
 import { VotingDetailItem } from './CreateProposal.types';
 
 // - Constants
