@@ -4,7 +4,7 @@
 @use 'styles/variables/dimensions';
 
 .Container {
-	>* {
+	> * {
 		&:not(:first-child) {
 			margin-top: 9px;
 		}
@@ -15,7 +15,7 @@
 		flex-direction: column;
 		gap: 16px;
 
-		>* {
+		> * {
 			&:last-child {
 				display: none;
 			}
@@ -25,7 +25,7 @@
 			flex-direction: row;
 			margin: 16px 0;
 
-			>* {
+			> * {
 				flex: 1;
 				align-self: stretch;
 
@@ -58,13 +58,13 @@
 			@media only screen and (min-width: #{dimensions.$breakpoint-mobile-xl}) {
 				display: block;
 				width: auto;
-      }
-      
+			}
+
 			@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
 				font-size: #{typography.$size-medium};
 			}
 
-			>a {
+			> a {
 				color: #{colors.$grey-lighter-2};
 				font-weight: #{typography.$font-weight-bold};
 
@@ -95,7 +95,7 @@
 			}
 		}
 
-		>button {
+		> button {
 			margin-left: auto;
 		}
 	}
