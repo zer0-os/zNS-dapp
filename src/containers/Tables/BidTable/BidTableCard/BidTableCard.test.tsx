@@ -74,6 +74,7 @@ describe('BidTableCard component', () => {
 	});
 
 	it('should only render Cancel Bid option when owner ID is equal to account ID', () => {
+		// for purpose of using the same ID
 		const accountId = mockData.domain.owner;
 		const ownerId = mockData.domain.owner;
 		const options = getTableActions(String(accountId), ownerId);
