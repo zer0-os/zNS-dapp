@@ -89,6 +89,7 @@
 .Modal {
 	display: flex;
 	flex-direction: column;
+	align-items: center;
 	gap: 40px;
 
 	.Header {
@@ -113,16 +114,24 @@
 		display: flex;
 		flex-direction: column;
 		gap: 3.5px;
+		min-width: 300px;
 
 		> li {
 			display: flex;
-			justify-content: space-between;
-
+			gap: 1rem;
 			font-weight: 700;
 
-			> span:first-of-type {
-				color: var(--color-grey-lighter-2);
-				font-weight: 400;
+			> span {
+				flex: 1;
+
+				&:first-of-type {
+					color: var(--color-grey-lighter-2);
+					font-weight: 400;
+				}
+
+				&:last-of-type {
+					text-align: left;
+				}
 			}
 		}
 	}

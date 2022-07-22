@@ -8,6 +8,7 @@ import { secondsToDhms, formatDateTime } from 'lib/utils/datetime';
 import {
 	isFromSnapshotWithMultipleChoices,
 	formatProposalStatus,
+	formatTotalAmountOfTokenMetadata,
 } from '../../Proposals.helpers';
 import useTimer from 'lib/hooks/useTimer';
 import { usePageWidth } from 'lib/hooks/usePageWidth';
@@ -95,6 +96,20 @@ export const ProposalAttributes: React.FC<ProposalAttributesProps> = ({
 
 		if (isFromSnapshotWithMultipleChoices(proposal)) {
 			parsedAttributes = parsedAttributes.slice(1);
+		} else {
+			parsedAttributes.splice(2, 0, { label: 'Type', value: 'Funding' });
+			parsedAttributes.splice(3, 0, {
+				label: 'Amount',
+				value:
+					formatTotalAmountOfTokenMetadata(proposal.metadata)?.toString() ||
+					'-',
+			});
+			if (proposal.metadata?.recipient) {
+				parsedAttributes.splice(4, 0, {
+					label: 'Recipient',
+					value: <EtherscanLink address={proposal.metadata.recipient} />,
+				});
+			}
 		}
 
 		return parsedAttributes.filter(
@@ -141,7 +156,7 @@ export const ProposalAttributes: React.FC<ProposalAttributesProps> = ({
 				)}
 
 				{/* Show / Hide more button */}
-				{initialHiddenAttributesCount > 0 && (
+				{initialHiddenAttributesCount > 1 && (
 					<div className={styles.ButtonContainer}>
 						<button
 							className={`${styles.ToggleAttributes} ${

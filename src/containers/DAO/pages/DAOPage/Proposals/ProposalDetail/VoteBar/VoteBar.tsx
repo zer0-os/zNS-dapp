@@ -21,8 +21,8 @@ export const VoteBar: React.FC<VoteBarProps> = ({ votes = [] }) => {
 
 		const { v1, v2 } = votes.reduce(
 			(accur, vote) => {
-				if (vote.choice === 1) accur.v1 = accur.v1 + 1;
-				else if (vote.choice === 2) accur.v2 = accur.v2 + 1;
+				if (vote.choice === 1) accur.v1 = accur.v1 + vote.power;
+				else if (vote.choice === 2) accur.v2 = accur.v2 + vote.power;
 
 				return accur;
 			},

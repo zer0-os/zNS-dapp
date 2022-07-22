@@ -145,7 +145,7 @@ export const useZnsDomain = (
 				setLoading(false);
 			}
 		} catch (e) {}
-	}, [domainId]);
+	}, [domainId, chainId]);
 
 	useEffect(() => {
 		isMounted.current = true;

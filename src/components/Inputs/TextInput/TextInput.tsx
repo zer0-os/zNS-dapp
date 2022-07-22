@@ -12,7 +12,8 @@ import classNames from 'classnames';
 //- Local Imports
 import { isAlphanumeric, isNumber } from './validation';
 
-export type TextInputProps = {
+export interface TextInputProps
+	extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
 	alphanumeric?: boolean; // No symbols
 	autosize?: boolean;
 	className?: string;
@@ -29,7 +30,7 @@ export type TextInputProps = {
 	style?: React.CSSProperties;
 	text?: string;
 	type?: string;
-};
+}
 
 const cx = classNames.bind(styles);
 
@@ -128,7 +129,11 @@ const TextInput: React.FC<TextInputProps> = ({
 				/>
 			)}
 			{error && errorText && (
-				<span className={styles.ErrorMessage}>{errorText}</span>
+				<span
+					className={classNames(styles.ErrorMessage, 'input-error-message')}
+				>
+					{errorText}
+				</span>
 			)}
 		</>
 	);

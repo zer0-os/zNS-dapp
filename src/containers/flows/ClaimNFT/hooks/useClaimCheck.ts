@@ -59,8 +59,8 @@ const useClaimCheck = (
 
 	useEffect(() => {
 		if (tokenID !== '' && requestCheck) {
-			// REPLACE URL - LABELS.WILDER_WHEELS_ZNA
-			if (domainName?.includes('wilder.candy.wolfsale')) {
+			// TODO :: Replace hard code with wheels path
+			if (domainName?.includes('wilder.wheels.genesis')) {
 				setIsValidSubdomain(true);
 			}
 			checkDomain();

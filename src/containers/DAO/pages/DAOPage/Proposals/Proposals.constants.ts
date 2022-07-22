@@ -8,3 +8,5 @@ export enum PROPOSAL_TABLE_LOCATION_STATE {
 	ROW = 'row',
 	CARD = 'card',
 }
+
+export const DAO_CREATE_PROPOSAL = 'create';

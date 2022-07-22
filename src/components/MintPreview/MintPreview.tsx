@@ -89,8 +89,7 @@ const MintPreview = (props: MintPreviewProps) => {
 								<h3>{nft.title}</h3>
 
 								<Link className={styles.Link} to={parsedLink}>
-									{truncateDomain(nft.zNA, MAX_CHARACTER_VALUE)}
-
+									0://{truncateDomain(nft.zNA, MAX_CHARACTER_VALUE)}
 									{claimDomainName && '.?'}
 								</Link>
 							</div>

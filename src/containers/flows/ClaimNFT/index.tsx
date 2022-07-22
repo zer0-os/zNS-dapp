@@ -80,13 +80,6 @@ const ClaimNFTContainer = ({
 		if (event.target.nodeName.toLowerCase() === 'a') {
 			return;
 		}
-
-		// if (dropStage === Stage.Whitelist && !countdownDate) {
-		// 	window?.open(
-		// 		'https://zine.wilderworld.com/moto-genesis-nft-rewards/',
-		// 		'_blank',
-		// 	);
-		// }
 		if (dropStage === Stage.Upcoming || !canOpenWizard || failedToLoad) {
 			window?.open('https://discord.gg/mb9fcFey8a', '_blank')?.focus();
 		} else if (dropStage === Stage.Sold || dropStage === Stage.Ended) {

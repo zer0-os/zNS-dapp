@@ -79,5 +79,7 @@ export function useZSaleSdk() {
 		}
 	}, [chainId, library]);
 
-	return instanceObject;
+	return {
+		...instanceObject,
+	};
 }
