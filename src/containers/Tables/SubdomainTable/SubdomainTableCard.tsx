@@ -10,6 +10,7 @@ import {
 	DomainMetrics,
 } from '@zero-tech/zns-sdk/lib/types';
 import { ethers } from 'ethers';
+import { useZnsSdk } from 'lib/hooks/sdk';
 import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
 import useSubdomainData from './hooks/useSubdomainData';
 import {
