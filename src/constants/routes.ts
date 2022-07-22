@@ -19,6 +19,5 @@ export enum ROUTES {
 	YOUR_BIDS = '/bids',
 
 	// ----- NEWLY CLAIMED ROOT ----- //
-	//TODO :: Replace hard code with moto path
 	CLAIMED_NFT_ROOT_DOMAIN = '/market/motos',
 }

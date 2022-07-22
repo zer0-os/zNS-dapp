@@ -51,7 +51,7 @@ const Claiming = ({
 	const [quantity, setQuantity] = useState<string | undefined>();
 	const [inputError, setInputError] = useState<string | undefined>();
 	const [displayTotal, setDisplayTotal] = useState<number>();
-	const [isSubmitted, setSubmitted] = useState<boolean>();
+	const [isSubmitted, setIsSubmitted] = useState<boolean>();
 	const totalEligibleDomains = eligibleDomains?.length ?? 0;
 	const exceedsQuantityMintLimit = totalEligibleDomains > maxQuantityLimit;
 	const hasValue = Boolean(quantity);
@@ -78,7 +78,7 @@ const Claiming = ({
 	};
 
 	const onSubmit = (e: FormEvent<HTMLFormElement>) => {
-		setSubmitted(true);
+		setIsSubmitted(true);
 		setDisplayTotal(totalEligibleDomains);
 		setInputError('');
 		e.preventDefault();

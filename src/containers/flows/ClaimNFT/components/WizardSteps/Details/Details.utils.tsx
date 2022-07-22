@@ -7,7 +7,6 @@ import { BigNumber } from 'ethers';
 export const isValidTokenId = (text: string) => {
 	try {
 		const hexString = BigNumber.from(text).toHexString();
-		console.log('is valid?', /^0x[a-fA-F0-9]{64}$/.test(hexString));
 		return /^0x[a-fA-F0-9]{64}$/.test(hexString);
 	} catch (e) {
 		return false;

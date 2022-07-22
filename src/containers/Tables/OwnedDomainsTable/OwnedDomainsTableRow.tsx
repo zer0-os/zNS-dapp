@@ -14,7 +14,6 @@ import { DomainSettings } from 'containers/other/NFTView/elements';
 //- Library Imports
 import { useHistory } from 'react-router-dom';
 import { BigNumber } from 'ethers';
-import { Domain } from '@zero-tech/zns-sdk/lib/types';
 import useBidData from 'lib/hooks/useBidData';
 import { formatEther } from '@ethersproject/units';
 import classNames from 'classnames';
@@ -28,9 +27,12 @@ import moreIcon from 'assets/more-vertical.svg';
 
 //- Constants Imports
 import { ACTION_KEYS } from './OwnedDomainsTable.constants';
+import { ROUTES } from 'constants/routes';
 
 //- Utils Imports
 import { getActions } from './OwnedDomainsTable.utils';
+import { getNetworkZNA } from 'lib/utils';
+import { ConvertedTokenInfo, Domain } from '@zero-tech/zns-sdk';
 
 enum Modal {
 	ViewBids,
@@ -39,7 +41,7 @@ enum Modal {
 
 type OwnedDomainsTableRowProps = {
 	refetch: () => void;
-	data: Domain;
+	data: Domain & { paymentTokenInfo: ConvertedTokenInfo };
 	// this should be refactored when GenericTable has better typing
 	[x: string]: any;
 };
@@ -54,6 +56,7 @@ const OwnedDomainsTableRow = ({
 	const { bidData, isLoading: isLoadingBidData } = useBidData(domain.id);
 	const bids = bidData?.bids;
 	const highestBid = bidData?.highestBid;
+	const paymentTokenInfo = domain.paymentTokenInfo;
 
 	// Retrieve Metadata
 	const domainMetadata = useDomainMetadata(domain.metadataUri);
@@ -63,7 +66,7 @@ const OwnedDomainsTableRow = ({
 
 	// Navigates to domain
 	const onRowClick = () => {
-		goTo(`/market/${domain.name.split('wilder.')[1]}`);
+		goTo(ROUTES.MARKET + '/' + getNetworkZNA(domain.name));
 	};
 
 	const actions = getActions(bids?.length !== 0);
@@ -100,6 +103,7 @@ const OwnedDomainsTableRow = ({
 						isLoading={isLoadingBidData}
 						highestBid={highestBid?.amount}
 						isAcceptBidEnabled
+						paymentTokenInfo={paymentTokenInfo}
 					/>
 				</Overlay>
 			);
@@ -126,7 +130,7 @@ const OwnedDomainsTableRow = ({
 			<tr className={styles.Container}>
 				<td className={styles.Left} onClick={onRowClick}>
 					<Artwork
-						domain={domain.name.split('wilder.')[1]}
+						domain={'0://' + domain.name}
 						disableInteraction
 						metadataUrl={domain.metadataUri}
 						id={domain.id}
@@ -141,7 +145,9 @@ const OwnedDomainsTableRow = ({
 					) : highestBid ? (
 						Number(
 							formatEther(BigNumber.from(highestBid.amount)),
-						).toLocaleString()
+						).toLocaleString() +
+						' ' +
+						paymentTokenInfo?.symbol
 					) : (
 						'-'
 					)}

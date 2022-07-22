@@ -50,6 +50,7 @@ export const NFTViewModalProvider = ({
 					<MakeABid
 						domain={modalContent.contentProps.domain!}
 						onBid={modalContent.contentProps.onBid}
+						paymentTokenInfo={modalContent.contentProps.paymentTokenInfo}
 						onClose={closeModal}
 					/>
 				)}
@@ -58,6 +59,7 @@ export const NFTViewModalProvider = ({
 						domainId={modalContent.contentProps.domainId}
 						onCancel={closeModal}
 						onSuccess={modalContent.contentProps.onSuccess}
+						paymentTokenInfo={modalContent.contentProps.paymentTokenInfo}
 					/>
 				)}
 				{modalContent?.modalType === NFTViewModalType.BID_LIST && (
@@ -68,6 +70,7 @@ export const NFTViewModalProvider = ({
 						onAccept={modalContent.contentProps.onAccept}
 						highestBid={modalContent.contentProps.highestBid}
 						isLoading={modalContent.contentProps.isLoading}
+						paymentTokenInfo={modalContent.contentProps.paymentTokenInfo}
 					/>
 				)}
 				{modalContent?.modalType === NFTViewModalType.CLAIM_NFT && (

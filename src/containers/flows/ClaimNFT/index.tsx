@@ -165,7 +165,6 @@ const ClaimNFTContainer = ({
 				if (!isActive()) {
 					return;
 				}
-
 				if (currentDropStage === Stage.Upcoming) {
 					setCountdownDate(undefined);
 					setTimeout(() => {
@@ -179,7 +178,6 @@ const ClaimNFTContainer = ({
 				if (refetch > 0) {
 					setCountdownDate(undefined);
 				}
-
 				setDropStage(currentDropStage);
 				setClaimDropStage(currentDropStage);
 				setAssetTotal(saleData.amountForSale);

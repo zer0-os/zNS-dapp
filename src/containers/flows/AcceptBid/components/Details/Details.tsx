@@ -20,6 +20,7 @@ import styles from './Details.module.scss';
 //-Library Imports
 import { toFiat } from 'lib/currency';
 import { formatBidAmount } from 'lib/utils';
+import { ConvertedTokenInfo } from '@zero-tech/zns-sdk';
 
 type DetailsProps = {
 	stepContent: StepContent;
@@ -28,10 +29,10 @@ type DetailsProps = {
 	domainName: string;
 	title: string;
 	bidAmount: string;
-	wildPriceUsd?: number;
 	walletAddress?: string;
 	highestBid?: string;
 	error?: string;
+	paymentTokenInfo: ConvertedTokenInfo;
 	onClose: () => void;
 	onNext?: () => void;
 };
@@ -43,24 +44,31 @@ const Details = ({
 	domainName,
 	title,
 	bidAmount,
-	wildPriceUsd,
 	walletAddress,
 	highestBid,
 	error,
 	onClose,
 	onNext,
+	paymentTokenInfo,
 }: DetailsProps) => {
 	// Price formatting
 	const bidAmountUSD =
 		bidAmount &&
-		wildPriceUsd &&
-		Number(ethers.utils.formatEther(bidAmount)) * wildPriceUsd;
+		paymentTokenInfo.priceInUsd &&
+		Number(ethers.utils.formatEther(bidAmount)) *
+			Number(paymentTokenInfo.priceInUsd);
 
 	///////////////
 	// Functions //
 	///////////////
-	const formattedHighestBidAmount = formatBidAmount(highestBid);
-	const formattedBidAmountWILD = formatBidAmount(bidAmount);
+	const formattedHighestBidAmount = formatBidAmount(
+		highestBid,
+		paymentTokenInfo.symbol,
+	);
+	const formattedBidAmount = formatBidAmount(
+		bidAmount,
+		paymentTokenInfo.symbol,
+	);
 	const formattedBidAmountUSD = toFiat(Number(bidAmountUSD));
 	const onSubmit = stepContent === StepContent.Details ? onNext : onClose;
 	const onSubmitButtonText =
@@ -90,7 +98,7 @@ const Details = ({
 								stepContent === StepContent.Details
 									? Labels.SELECTED_BID_LABEL
 									: Labels.ACCEPTED_BID_LABEL,
-							value: formattedBidAmountWILD,
+							value: formattedBidAmount,
 						},
 					]}
 				/>
@@ -99,10 +107,7 @@ const Details = ({
 			{/* Details Step */}
 			{stepContent === StepContent.Details && (
 				<div className={styles.TextContainer}>
-					{getConfirmNFTPriceDetails(
-						formattedBidAmountWILD,
-						formattedBidAmountUSD,
-					)}
+					{getConfirmNFTPriceDetails(formattedBidAmount, formattedBidAmountUSD)}
 					{walletAddress &&
 						getConfirmNFTDomainDetails(domainName, walletAddress)}
 				</div>

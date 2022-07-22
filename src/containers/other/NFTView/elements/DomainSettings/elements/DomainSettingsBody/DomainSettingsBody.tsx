@@ -91,7 +91,7 @@ export const DomainSettingsBody: React.FC<DomainSettingsBodyProps> = ({
 					<TextInputWithTopPlaceHolder
 						topPlaceholder={'Subdomain Name'}
 						onChange={localActions.setDomain}
-						text={localState.domain}
+						text={domain?.name}
 						error={!!localState.errors[ERROR_KEYS.SUB_DOMAIN]}
 						errorText={localState.errors[ERROR_KEYS.SUB_DOMAIN]}
 						disabled

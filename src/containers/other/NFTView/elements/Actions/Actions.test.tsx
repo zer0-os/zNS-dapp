@@ -18,7 +18,13 @@ import { Bid } from '@zero-tech/zauction-sdk';
 import { TEST_ID } from './Actions.constants';
 
 //- Mocks Imports
-import { EXPECTED_LABELS, mockBidData, yourBidTemplate } from './Actions.mocks';
+import {
+	EXPECTED_LABELS,
+	mockBidData,
+	mockPaymentTokenInfo,
+	yourBidTemplate,
+} from './Actions.mocks';
+import { PaymentTokenInfo } from 'lib/types';
 
 /////////////////////////////
 // Mock external functions //
@@ -47,6 +53,7 @@ type Props = {
 	yourBid?: number;
 	isOwnedByUser: boolean;
 	bidData?: Bid[];
+	paymentTokenInfo: PaymentTokenInfo;
 };
 
 const renderComponent = ({ yourBid, isBiddable = true, ...props }: Props) => {
@@ -65,7 +72,6 @@ const renderComponent = ({ yourBid, isBiddable = true, ...props }: Props) => {
 			refetch={mockRefetch}
 			yourBid={mockYourBid}
 			isBiddable={isBiddable}
-			wildPriceUsd={2} // Going to use static value here
 			bidData={mockBidData}
 			onViewBids={mockOnViewBids}
 			{...props}
@@ -80,6 +86,7 @@ const renderComponent = ({ yourBid, isBiddable = true, ...props }: Props) => {
 test('should render container', async () => {
 	const { getByTestId } = renderComponent({
 		isOwnedByUser: true,
+		paymentTokenInfo: mockPaymentTokenInfo,
 	});
 	const container = getByTestId(TEST_ID.CONTAINER);
 	expect(container).toBeInTheDocument();
@@ -93,6 +100,7 @@ test('should format highest bid (no bids)', async () => {
 	const { getByText } = renderComponent({
 		highestBid: undefined,
 		isOwnedByUser: false,
+		paymentTokenInfo: mockPaymentTokenInfo,
 	});
 	expect(getByText('-')).toBeInTheDocument();
 	expect(getByText(EXPECTED_LABELS.NO_BIDS)).toBeInTheDocument();
@@ -102,6 +110,7 @@ test('should format highest bid (has bids)', async () => {
 	const { getByText } = renderComponent({
 		highestBid: 1000,
 		isOwnedByUser: false,
+		paymentTokenInfo: mockPaymentTokenInfo,
 	});
 	expect(getByText('1,000')).toBeInTheDocument();
 	expect(getByText('$2,000.00')).toBeInTheDocument();
@@ -111,6 +120,7 @@ test('should format your bid', async () => {
 	const { getByText } = renderComponent({
 		yourBid: 1000,
 		isOwnedByUser: false,
+		paymentTokenInfo: mockPaymentTokenInfo,
 	});
 	expect(getByText('1,000')).toBeInTheDocument();
 	expect(getByText('$2,000.00')).toBeInTheDocument();
@@ -120,6 +130,7 @@ test('should format buy now price (no buy now)', async () => {
 	const { getByText } = renderComponent({
 		isOwnedByUser: true,
 		highestBid: 100, // so we dont have two "-" labels
+		paymentTokenInfo: mockPaymentTokenInfo,
 	});
 	expect(getByText('-')).toBeInTheDocument();
 	expect(getByText('No buy now set')).toBeInTheDocument();
@@ -129,6 +140,7 @@ test('should format buy now price (has buy now)', async () => {
 	const { getByText } = renderComponent({
 		isOwnedByUser: false,
 		buyNowPrice: 1000,
+		paymentTokenInfo: mockPaymentTokenInfo,
 	});
 	expect(getByText('1,000')).toBeInTheDocument();
 	expect(getByText('$2,000.00')).toBeInTheDocument();
@@ -141,6 +153,7 @@ test('should format buy now price (has buy now)', async () => {
 test('should fire onMakeBid event', async () => {
 	const { getByText } = renderComponent({
 		isOwnedByUser: false,
+		paymentTokenInfo: mockPaymentTokenInfo,
 	});
 	const placeBid = getByText(EXPECTED_LABELS.PLACE_BID_BUTTON);
 	fireEvent.mouseUp(placeBid);
@@ -156,6 +169,7 @@ test('should render correct actions for: not owner, no bids, no buy now', async 
 	const { getByTestId, getByText } = renderComponent({
 		isBiddable: true,
 		isOwnedByUser: false,
+		paymentTokenInfo: {} as PaymentTokenInfo,
 	});
 	expect(getByTestId(TEST_ID.CONTAINER).childElementCount).toBe(1);
 	expect(getByTestId(TEST_ID.BID)).toBeInTheDocument();
@@ -166,6 +180,7 @@ test('should render correct actions for: not owner, bids, buy now, no user bid',
 	const { getByTestId, getByText } = renderComponent({
 		isOwnedByUser: false,
 		highestBid: 5000,
+		paymentTokenInfo: mockPaymentTokenInfo,
 	});
 
 	expect(getByTestId(TEST_ID.CONTAINER).childElementCount).toBe(1);
@@ -177,6 +192,7 @@ test('should render correct actions for: owner, no bids, no buy now', async () =
 	const { getByTestId, getByText } = renderComponent({
 		isOwnedByUser: true,
 		bidData: undefined,
+		paymentTokenInfo: {} as PaymentTokenInfo,
 	});
 
 	expect(getByTestId(TEST_ID.CONTAINER).childElementCount).toBe(2);
@@ -189,6 +205,7 @@ test('should render correct actions for: owner, bids, buy now', async () => {
 		isOwnedByUser: true,
 		highestBid: 500,
 		buyNowPrice: 500,
+		paymentTokenInfo: mockPaymentTokenInfo,
 	});
 
 	expect(getByTestId(TEST_ID.CONTAINER).childElementCount).toBe(2);
@@ -203,6 +220,7 @@ test('should render correct actions for: not owner, bids, outbid, no buy now', a
 		isOwnedByUser: false,
 		yourBid: 100,
 		highestBid: 500,
+		paymentTokenInfo: mockPaymentTokenInfo,
 	});
 
 	expect(getByTestId(TEST_ID.CONTAINER).childElementCount).toBe(2);
@@ -215,6 +233,7 @@ test('should render correct actions for: not owner, bids, no user bid, buy now',
 		isOwnedByUser: false,
 		highestBid: 500,
 		buyNowPrice: 500,
+		paymentTokenInfo: mockPaymentTokenInfo,
 	});
 
 	expect(getByTestId(TEST_ID.CONTAINER).childElementCount).toBe(2);
@@ -226,6 +245,7 @@ test('should render correct actions for: owner, bids, no buy now', async () => {
 	const { getByTestId, getByText } = renderComponent({
 		isOwnedByUser: true,
 		highestBid: 500,
+		paymentTokenInfo: mockPaymentTokenInfo,
 	});
 
 	expect(getByTestId(TEST_ID.CONTAINER).childElementCount).toBe(2);
@@ -240,6 +260,7 @@ test('should render correct actions for: owner, no bids, buy now', async () => {
 		isOwnedByUser: true,
 		buyNowPrice: 500,
 		bidData: undefined,
+		paymentTokenInfo: mockPaymentTokenInfo,
 	});
 
 	expect(getByTestId(TEST_ID.CONTAINER).childElementCount).toBe(2);
@@ -253,6 +274,7 @@ test('should render correct actions for: not owner, bids, leading, no buy now', 
 		isOwnedByUser: false,
 		yourBid: 600,
 		highestBid: 600,
+		paymentTokenInfo: mockPaymentTokenInfo,
 	});
 
 	expect(getByTestId(TEST_ID.CONTAINER).childElementCount).toBe(2);
@@ -266,6 +288,7 @@ test('should render correct actions for: not owner, bids, outbid, buy now', asyn
 		yourBid: 500,
 		highestBid: 600,
 		buyNowPrice: 1000,
+		paymentTokenInfo: mockPaymentTokenInfo,
 	});
 
 	expect(getByTestId(TEST_ID.CONTAINER).childElementCount).toBe(3);
@@ -280,6 +303,7 @@ test('should render correct actions for: not owner, bids, leading, buy now', asy
 		yourBid: 500,
 		highestBid: 600,
 		buyNowPrice: 1000,
+		paymentTokenInfo: mockPaymentTokenInfo,
 	});
 
 	expect(getByTestId(TEST_ID.CONTAINER).childElementCount).toBe(3);

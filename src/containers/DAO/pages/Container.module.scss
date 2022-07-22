@@ -37,36 +37,66 @@
 	}
 
 	.Links {
-		padding: 8px 16px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding: 8px 0;
 		margin-top: 16px;
 
-		@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
+		@media only screen and (min-width: #{dimensions.$breakpoint-mobile-xl}) {
+			flex-direction: row;
+			justify-content: space-between;
 			margin-top: 0;
 		}
 
-		> a {
-			color: #{colors.$grey-lighter-2};
-			font-size: #{typography.$size-large};
-			font-weight: #{typography.$font-weight-bold};
+		.LinksWrapper {
+			display: flex;
+			justify-content: space-around;
+			width: 100%;
+			padding: 0.5rem 0;
+
+			@media only screen and (min-width: #{dimensions.$breakpoint-mobile-xl}) {
+				display: block;
+				width: auto;
+			}
 
 			@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
 				font-size: #{typography.$size-medium};
 			}
 
-			transition: color #{animations.$time-short} ease-in-out;
+			> a {
+				color: #{colors.$grey-lighter-2};
+				font-weight: #{typography.$font-weight-bold};
 
-			&:not(:first-of-type) {
-				margin-left: 40px;
-			}
+				@media only screen and (min-width: #{dimensions.$breakpoint-mobile-l}) {
+					font-size: #{typography.$size-medium};
+				}
 
-			&.Active {
-				color: #{colors.$text-primary};
-				text-shadow: #{colors.$text-glow-primary} !important;
-			}
+				@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
+					font-size: #{typography.$size-large};
+				}
 
-			&:hover {
-				text-shadow: none;
+				transition: color #{animations.$time-short} ease-in-out;
+
+				&:not(:first-of-type) {
+					@media only screen and (min-width: #{dimensions.$breakpoint-mobile-xl}) {
+						margin-left: 2rem;
+					}
+				}
+
+				&.Active {
+					color: #{colors.$text-primary};
+					text-shadow: #{colors.$text-glow-primary} !important;
+				}
+
+				&:hover {
+					text-shadow: none;
+				}
 			}
+		}
+
+		> button {
+			margin-left: auto;
 		}
 	}
 

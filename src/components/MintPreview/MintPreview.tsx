@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 //- Library Imports
 import { Maybe, NftStatusCard } from 'lib/types';
-import { truncateDomain, zNAToLink } from 'lib/utils';
+import { getNetworkZNA, truncateDomain, zNAToLink } from 'lib/utils';
 import { useStaking } from 'lib/hooks/useStaking';
 import useNotification from 'lib/hooks/useNotification';
 
@@ -20,7 +20,7 @@ import { getPreviewPrompt, MAX_CHARACTER_VALUE } from './MintPreview.utils';
 //- Style Imports
 import styles from './MintPreview.module.scss';
 
-//- Contants Imports
+//- Constants Imports
 import { CLAIM_FLOW_NOTIFICATIONS } from 'constants/notifications';
 import {
 	TITLE,
@@ -29,6 +29,7 @@ import {
 	BUTTON_TEXT,
 } from './MintPreview.constants';
 import { ZNA } from 'constants/zna';
+import { ROUTES } from 'constants/routes';
 
 //- Assets Imports
 import questionMark from './assets/question-mark-icon.svg';
@@ -54,6 +55,7 @@ const MintPreview = (props: MintPreviewProps) => {
 		statusText?: string,
 	) => {
 		const link = zNAToLink(nft.zNA);
+		const parsedLink = ROUTES.MARKET + '/' + getNetworkZNA(link);
 
 		// Check for Claim domain name
 		const claimDomainName = nft.zNA === ZNA.CLAIM_NFT_DOMAIN_ROOT;
@@ -70,7 +72,7 @@ const MintPreview = (props: MintPreviewProps) => {
 					<div>
 						<div className={`${styles.Image} border-rounded`}>
 							{/* @todo fix hardcoded handling of name */}
-							<Link to={link}>
+							<Link to={parsedLink}>
 								{nft.imageUri.indexOf('cloudinary') > -1 ? (
 									<img
 										alt={ALT_TEXT.NFT_PREVIEW}
@@ -86,7 +88,7 @@ const MintPreview = (props: MintPreviewProps) => {
 							<div className={styles.InfoSection}>
 								<h3>{nft.title}</h3>
 
-								<Link className={styles.Link} to={link}>
+								<Link className={styles.Link} to={parsedLink}>
 									0://{truncateDomain(nft.zNA, MAX_CHARACTER_VALUE)}
 									{claimDomainName && '.?'}
 								</Link>

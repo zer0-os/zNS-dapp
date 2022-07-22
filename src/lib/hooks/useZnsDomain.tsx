@@ -3,13 +3,25 @@ import { DisplayParentDomain, Maybe, Metadata } from 'lib/types';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useZnsSdk } from 'lib/hooks/sdk';
 import { getMetadata } from 'lib/metadata';
-import { Domain } from '@zero-tech/zns-sdk/lib/types';
+import { Domain, ConvertedTokenInfo } from '@zero-tech/zns-sdk';
+import { isRootDomain } from 'lib/utils';
+import getPaymentTokenInfo from 'lib/paymentToken';
 
 export type UseZnsDomainReturn = {
 	loading: boolean;
 	domain?: DisplayParentDomain;
 	refetch: (variables?: any) => any;
 	domainMetadata: Maybe<Metadata>;
+	paymentToken: Maybe<string>;
+	paymentTokenInfo: ConvertedTokenInfo;
+};
+
+type FormatSubdomainType = {
+	owner: { id: string };
+	metadata: string;
+	minter: { id: string };
+	name: string;
+	id: string;
 };
 
 /**
@@ -18,21 +30,13 @@ export type UseZnsDomainReturn = {
  * @param subdomains -
  * @returns
  */
-const formatSubdomains = (
-	subdomains: Domain[],
-): {
-	owner: { id: string };
-	metadata: string;
-	minter: { id: string };
-	name: string;
-	id: string;
-}[] => {
+const formatSubdomains = (subdomains: Domain[]): FormatSubdomainType[] => {
 	return subdomains.map((sub) => ({
-		id: sub.id,
-		metadata: sub.metadataUri,
-		minter: { id: sub.minter },
-		name: sub.name,
-		owner: { id: sub.owner },
+		id: sub.id ?? '',
+		metadata: sub.metadataUri ?? '',
+		minter: { id: sub.minter ?? '' },
+		name: sub.name ?? '',
+		owner: { id: sub.owner ?? '' },
 	}));
 };
 
@@ -56,6 +60,12 @@ const formatDomain = (domain: Domain): DisplayParentDomain => {
 	return formattedDomain;
 };
 
+interface DomainData {
+	domain: DisplayParentDomain | undefined;
+	metadata: Metadata | undefined;
+	paymentTokenInfo: ConvertedTokenInfo;
+}
+
 export const useZnsDomain = (
 	domainId: string,
 	chainId: number,
@@ -66,18 +76,19 @@ export const useZnsDomain = (
 	const loadingDomainId = useRef<string | undefined>();
 
 	const [loading, setLoading] = useState(true);
-	const [domain, setDomain] = useState<DisplayParentDomain | undefined>();
-	const [domainMetadata, setDomainMetadata] = useState<Maybe<Metadata>>();
+	const [domainData, setDomainData] = useState<DomainData | undefined>();
 
 	const getDomain = async (id: string) => {
 		const domain = formatDomain(await sdk.getDomainById(id));
-		const metadata = await getMetadata(domain.metadata);
+		const metadata = isRootDomain(domain.id)
+			? undefined
+			: await getMetadata(domain.metadata);
 		return { domain, metadata };
 	};
 
 	const getSubdomains = async (id: string) => {
-		const subs = formatSubdomains(await sdk.getSubdomainsById(id));
-		return subs;
+		// Disable DataStore
+		return formatSubdomains(await sdk.getSubdomainsById(id, false));
 	};
 
 	/**
@@ -88,28 +99,51 @@ export const useZnsDomain = (
 			loadingDomainId.current = domainId;
 
 			// Reset state objects
-			setDomainMetadata(undefined);
-			setDomain(undefined);
+			setDomainData(undefined);
 			setLoading(true);
 
 			const d = await getDomain(domainId);
-			if (loadingDomainId.current !== domainId) {
-				setLoading(false);
-				return;
-			}
-			setDomainMetadata(d.metadata);
-			const s = await getSubdomains(domainId);
-			if (loadingDomainId.current !== domainId) {
-				setLoading(false);
-				return;
-			}
-			setDomain({
-				...d.domain,
-				...d.metadata,
-				subdomains: s,
-			} as DisplayParentDomain);
 
-			setLoading(false);
+			if (loadingDomainId.current !== domainId) {
+				setLoading(false);
+				return;
+			}
+
+			let subdomains;
+
+			try {
+				subdomains = await getSubdomains(domainId);
+			} catch (e: any) {
+				console.error('Subdomains do not exist on domain', e);
+			}
+
+			if (loadingDomainId.current !== domainId || isMounted.current === false) {
+				setLoading(false);
+				return;
+			}
+
+			let paymentToken;
+			const tokenId = isRootDomain(d.domain.id)
+				? undefined
+				: await sdk.zauction.getPaymentTokenForDomain(domainId);
+			if (tokenId) {
+				paymentToken = await getPaymentTokenInfo(sdk, tokenId);
+			}
+
+			if (isMounted.current) {
+				setDomainData({
+					domain: {
+						...d.domain,
+						...d.metadata,
+						subdomains: subdomains ?? [],
+					} as DisplayParentDomain,
+					metadata: d.metadata,
+					paymentTokenInfo: paymentToken
+						? { ...paymentToken, id: tokenId! }
+						: ({} as ConvertedTokenInfo),
+				});
+				setLoading(false);
+			}
 		} catch (e) {}
 	}, [domainId, chainId]);
 
@@ -118,13 +152,19 @@ export const useZnsDomain = (
 		if (!domainId || !sdk) {
 			return;
 		}
-
 		refetch();
-
 		return () => {
 			isMounted.current = false;
 		};
 	}, [domainId, sdk]);
 
-	return { loading, domain, refetch, domainMetadata };
+	return {
+		loading,
+		domain: domainData?.domain,
+		refetch,
+		domainMetadata: domainData?.metadata,
+		paymentToken: domainData?.paymentTokenInfo.id,
+		paymentTokenInfo:
+			domainData?.paymentTokenInfo ?? ({} as ConvertedTokenInfo),
+	};
 };

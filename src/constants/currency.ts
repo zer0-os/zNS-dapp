@@ -1,4 +1,4 @@
-export enum CURRENCY {
+export enum Currency {
 	// ----- WILD ----- //
 	WILD = 'WILD',
 	// ----- USD ----- //

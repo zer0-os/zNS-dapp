@@ -3,8 +3,8 @@ import React, { useCallback, useMemo } from 'react';
 import { History } from 'history';
 
 //- Library Imports
-import { DomainSearch } from 'lib/useDomainSearch';
-import { getRelativeDomainPath } from 'lib/utils/domains';
+import { DomainSearch } from 'lib/hooks/useDomainSearch';
+import { getNetworkZNA, getRelativeDomainPath } from 'lib/utils/domains';
 
 //- Constants Imports
 import { ROUTES } from 'constants/routes';
@@ -67,8 +67,8 @@ export const useSearchDomainsHandlers = ({
 	const handleDomainClick = useCallback(
 		(to: string) => () => {
 			const relativeDomain = getRelativeDomainPath(to);
-
-			history.push(`${ROUTES.MARKET}/${relativeDomain}`);
+			const networkRelativeDomain = getNetworkZNA(relativeDomain);
+			history.push(`${ROUTES.MARKET}/${networkRelativeDomain}`);
 		},
 		[history],
 	);

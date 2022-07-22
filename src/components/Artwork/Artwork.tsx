@@ -8,6 +8,8 @@ import { NFTMedia, Image } from 'components';
 
 //- Library Imports
 import { getMetadata } from 'lib/metadata';
+import { ROOT_DOMAIN } from '../../constants/domains';
+import { truncateDomain } from 'lib/utils/domains';
 
 //- Type Imports
 import { Metadata } from 'lib/types';
@@ -15,6 +17,8 @@ import { Metadata } from 'lib/types';
 //- Style Imports
 import styles from './Artwork.module.scss';
 import classNames from 'classnames/bind';
+
+const DOMAIN_MAX_LENGTH = 40;
 
 type ArtworkProps = {
 	circleIcon?: boolean;
@@ -29,7 +33,6 @@ type ArtworkProps = {
 	style?: React.CSSProperties;
 	subtext?: string;
 	shouldUseCloudinary?: boolean;
-	shouldHideRoot?: boolean;
 };
 
 const cx = classNames.bind(styles);
@@ -39,7 +42,6 @@ const Artwork: React.FC<ArtworkProps> = ({
 	domain,
 	disableAnimation,
 	disableInteraction,
-	id,
 	image,
 	metadataUrl,
 	name,
@@ -47,15 +49,11 @@ const Artwork: React.FC<ArtworkProps> = ({
 	style,
 	subtext,
 	shouldUseCloudinary,
-	shouldHideRoot,
 }) => {
 	const isMounted = useRef(false);
 	const loadTime = useRef<Date | undefined>();
 	const [metadata, setMetadata] = useState<Metadata | undefined>();
-	const [truncatedDomain, setTruncatedDomain] = useState<string | undefined>();
 	const [shouldAnimate, setShouldAnimate] = useState<boolean>(true);
-
-	const root = shouldHideRoot ? '' : 'wilder.';
 
 	useEffect(() => {
 		// Get metadata
@@ -70,27 +68,16 @@ const Artwork: React.FC<ArtworkProps> = ({
 					const loadedInMs = new Date().getTime() - loadTime.current.getTime();
 					setShouldAnimate(loadedInMs > 60);
 				}
-				if (isMounted.current === true) {
+				if (isMounted.current) {
 					setMetadata(m);
 				}
 			});
 		}
 
-		// Truncate
-		if (domain && (root + domain).length > 40) {
-			const split = domain.split('.');
-			if (isMounted.current === true) {
-				setTruncatedDomain(root + split[split.length - 1]);
-			}
-		} else {
-			if (isMounted.current === true) {
-				setTruncatedDomain(undefined);
-			}
-		}
-
 		return () => {
 			isMounted.current = false;
 		};
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [domain, metadataUrl]);
 
@@ -164,20 +151,20 @@ const Artwork: React.FC<ArtworkProps> = ({
 						<>
 							{disableInteraction && domain && (
 								<span className={styles.Domain}>
-									{truncatedDomain || root + domain}
+									{truncateDomain(domain, DOMAIN_MAX_LENGTH)}
 								</span>
 							)}
 							{subtext && !domain && (
 								<span className={styles.Domain}>{subtext}</span>
 							)}
-							{!disableInteraction && domain && (
+							{!disableInteraction && name && domain && (
 								<Link
 									className={styles.Domain}
-									to={domain.split(root)[1]}
+									to={domain.split(ROOT_DOMAIN)[1]}
 									target="_blank"
 									rel="noreferrer"
 								>
-									{truncatedDomain || domain}
+									{truncateDomain(domain, DOMAIN_MAX_LENGTH)}
 								</Link>
 							)}
 						</>

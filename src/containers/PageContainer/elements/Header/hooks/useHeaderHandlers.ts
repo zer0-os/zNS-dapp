@@ -70,7 +70,7 @@ export const useHeaderHandlers = ({
 		const { location, history } = props;
 		if (!location.pathname.includes(ROUTES.PROFILE)) {
 			history.push({
-				pathname: ROUTES.PROFILE,
+				pathname: ROUTES.PROFILE + ROUTES.OWNED_DOMAINS,
 				state: { previous: location.pathname },
 			});
 		}

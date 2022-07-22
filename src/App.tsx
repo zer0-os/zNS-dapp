@@ -40,7 +40,7 @@ function getLibrary(provider: any): Web3Provider {
 
 function App() {
 	console.log(
-		`%cWilder World Marketplace v${version}`,
+		`%c${process.env.REACT_APP_TITLE} - v${version}`,
 		'display: block; border: 3px solid #52cbff; border-radius: 7px; padding: 10px; margin: 8px;',
 	);
 

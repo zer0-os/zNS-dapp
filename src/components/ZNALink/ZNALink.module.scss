@@ -1,5 +1,6 @@
 @use 'styles/variables/colors';
 @use 'styles/variables/animations';
+@use 'styles/variables/dimensions';
 @use 'styles/variables/typography';
 
 .ZNALink {
@@ -10,6 +11,8 @@
 	position: relative;
 	transition: all #{animations.$time-short} ease-in-out;
 	z-index: 1;
+	cursor: pointer;
+	color: var(--color-text-primary);
 }
 
 .ZNALink > a:last-of-type {
@@ -22,7 +25,6 @@
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	-webkit-transform: translate(-50%);
 	transform: translate(-50%);
 	width: calc(100% - 16px);
 	box-shadow: 0 0 20px 13px rgba(colors.$white, 0.03);
@@ -38,15 +40,11 @@
 	opacity: 1;
 }
 
-.ZNALink > a:not(:last-child):hover {
-}
-
 .ZNALink > a:last-child::after {
 	content: ' ';
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	-webkit-transform: translate(-50%);
 	transform: translate(-50%);
 	width: calc(100% - 19px);
 	box-shadow: 0 0 16px 8px rgba(177, 78, 255, 0.6);
@@ -65,12 +63,31 @@
 	z-index: 2;
 }
 
-@media only screen and (max-width: 1200px) {
-	.ZNALink > a:not(:first-of-type):not(:last-of-type) {
+@media only screen and (max-width: #{dimensions.$breakpoint-mobile-m}) {
+	.ZNALink > a:not(:first-of-type):not(:nth-of-type(2)):not(:last-of-type) {
 		display: none !important;
-		background: red;
+	}
+	.ZNALink > a:not(:first-of-type) ~ a:last-of-type::before {
+		content: '';
 	}
 
+	.isRootWithSubdomain {
+		&.isNetworkSet {
+			a:not(:first-of-type) ~ a:last-of-type::before {
+				content: '..';
+			}
+		}
+
+		a:not(:first-of-type):not(:nth-of-type(2)) ~ a:last-of-type::before {
+			content: '..';
+		}
+	}
+
+	.isNetworkSet {
+		a:not(:first-of-type):not(:nth-of-type(1)):not(:last-of-type) {
+			display: none !important;
+		}
+	}
 	.Dots {
 		display: inline-block;
 	}

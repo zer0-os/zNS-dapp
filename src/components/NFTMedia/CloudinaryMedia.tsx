@@ -1,5 +1,5 @@
 // React Imports
-import React, { SyntheticEvent, useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 
 // Style Imports
 import styles from './NFTMedia.module.scss';
@@ -36,7 +36,7 @@ const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 			if (entry?.isIntersecting) {
 				var playPromise = videoRef.current.play();
 				if (playPromise !== undefined) {
-					playPromise.catch((error) => {
+					playPromise.catch(() => {
 						// Auto-play was prevented
 						// Show paused UI.
 					});
@@ -71,7 +71,7 @@ const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 		}
 	};
 
-	const loadVideo = (e: SyntheticEvent) => {
+	const loadVideo = () => {
 		if (props.onLoad) {
 			props.onLoad();
 		}
@@ -235,4 +235,4 @@ const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 	);
 };
 
-export default React.memo(CloudinaryMedia);
+export default CloudinaryMedia;

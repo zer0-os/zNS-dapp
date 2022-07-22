@@ -1,4 +1,5 @@
-import { DomainSearch } from 'lib/useDomainSearch';
+//- Library Imports
+import { DomainSearch } from 'lib/hooks/useDomainSearch';
 import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 
 type UseSearchDomainsLifecycleProps = {

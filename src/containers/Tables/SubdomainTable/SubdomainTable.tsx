@@ -4,18 +4,19 @@
  */
 
 // React Imports
-import React from 'react';
+import React, { memo } from 'react';
+
+import { useLocation } from 'react-router-dom';
 
 // Library Imports
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
-import BidProvider, { useBid } from './BidProvider';
 import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
+import { zNAFromPathname } from 'lib/utils';
 
 // Component Imports
 import SubdomainTableRow from './SubdomainTableRow';
 import SubdomainTableCard from './SubdomainTableCard';
-import { GenericTable, Overlay } from 'components';
-import { MakeABid } from 'containers';
+import { GenericTable } from 'components';
 
 // Hook for data specific to this table
 import useSubdomainTableData from './hooks/useSubdomainTableData';
@@ -32,25 +33,15 @@ const SubdomainTable = ({ style }: SubdomainTableProps) => {
 
 	// Get metadata and custom header
 	const domainMetadata = useDomainMetadata(domain?.metadata);
-	const domainHeader = domainMetadata?.customDomainHeader
-		? domainMetadata?.customDomainHeaderValue
-		: undefined;
 
 	const { isLoading, data } = useSubdomainTableData(
 		domain?.id,
 		domain?.subdomains,
 	);
 
-	/*
-	 * This pattern was previously used for bidirectional data
-	 * between row and table, but should not be used in the future.
-	 * Instead, data and callbacks should be sent directly to the row component
-	 */
-	const { domain: biddingOn, close, bidPlaced } = useBid();
-	const isRootDomain = domain && domain?.name.split('.').length <= 2;
-	const isGridViewByDefault = isRootDomain
-		? true
-		: domainMetadata?.gridViewByDefault;
+	const { pathname } = useLocation();
+	const zna = zNAFromPathname(pathname);
+	const isNetworkRootDomain = zna.length === 0 || zna.split('.').length === 1;
 
 	/*
 	 * Not being stored as a constant as one of the headers depends
@@ -63,7 +54,7 @@ const SubdomainTable = ({ style }: SubdomainTableProps) => {
 			className: '',
 		},
 		{
-			label: domainHeader || DEFAULT_TABLE_HEADER,
+			label: domainMetadata?.customDomainHeaderValue ?? DEFAULT_TABLE_HEADER,
 			accessor: '',
 			className: 'domain',
 		},
@@ -80,35 +71,22 @@ const SubdomainTable = ({ style }: SubdomainTableProps) => {
 	];
 
 	return (
-		<>
-			{biddingOn !== undefined && (
-				<Overlay onClose={close} open={biddingOn !== undefined}>
-					<MakeABid domain={biddingOn!} onBid={bidPlaced} onClose={close} />
-				</Overlay>
-			)}
-			<GenericTable
-				alignments={[0, 0, 1, 1, 1, 1, 1]}
-				data={data}
-				itemKey={'id'}
-				headers={headers}
-				rowComponent={SubdomainTableRow}
-				gridComponent={SubdomainTableCard}
-				infiniteScroll
-				isLoading={isLoading || isDomainLoading}
-				loadingText={'Loading Subdomains'}
-				isGridViewByDefault={isGridViewByDefault}
-				style={style}
-			/>
-		</>
+		<GenericTable
+			alignments={[0, 0, 1, 1, 1, 1, 1]}
+			data={data}
+			itemKey={'id'}
+			headers={headers}
+			rowComponent={(props: any) => <SubdomainTableRow {...props} />}
+			gridComponent={(props: any) => <SubdomainTableCard {...props} />}
+			infiniteScroll
+			isLoading={isLoading || isDomainLoading}
+			loadingText={'Loading Subdomains'}
+			isGridViewByDefault={
+				domainMetadata?.gridViewByDefault || isNetworkRootDomain
+			}
+			style={style}
+		/>
 	);
 };
 
-const WrappedSubdomainTable = (props: SubdomainTableProps) => {
-	return (
-		<BidProvider>
-			<SubdomainTable {...props} />
-		</BidProvider>
-	);
-};
-
-export default WrappedSubdomainTable;
+export default memo(SubdomainTable);

@@ -1,9 +1,10 @@
 //- React Imports
 import React, { useMemo } from 'react';
 import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
 //- Library Imports
-import { formatNumber, formatEthers } from 'lib/utils';
+import { formatNumber, formatEthers, isRootDomain } from 'lib/utils';
 
 //- Style Imports
 import styles from './ZNS.module.scss';
@@ -19,10 +20,8 @@ import { NFTView, TransferOwnership } from 'containers';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 import { DomainMetrics } from '@zero-tech/zns-sdk/lib/types';
 import { ethers } from 'ethers';
-import useCurrency from 'lib/hooks/useCurrency';
 import useMatchMedia from 'lib/hooks/useMatchMedia';
 import { useDidMount } from 'lib/hooks/useDidMount';
-import { useLocation } from 'react-router-dom';
 import { useNavbar } from 'lib/hooks/useNavbar';
 import { useZnsSdk } from 'lib/hooks/sdk';
 
@@ -47,10 +46,13 @@ const ZNS: React.FC<ZNSProps> = () => {
 	// Web3 Handling //
 	///////////////////
 	const sdk = useZnsSdk();
-	const { wildPriceUsd } = useCurrency();
 
 	//- Domain Data
-	const { domain: znsDomain, domainRaw: domain } = useCurrentDomain();
+	const {
+		domain: znsDomain,
+		domainRaw: domain,
+		paymentTokenInfo: paymentToken,
+	} = useCurrentDomain();
 
 	////////////////////////
 	// Browser Navigation //
@@ -176,14 +178,14 @@ const ZNS: React.FC<ZNSProps> = () => {
 				fieldName: 'Floor Price',
 				title: `${
 					tradeData?.lowestSale ? formatEthers(tradeData?.lowestSale) : 0
-				} WILD`,
+				} ${paymentToken?.symbol}`,
 				subTitle:
-					wildPriceUsd > 0
+					Number(paymentToken?.priceInUsd) > 0
 						? `$${
 								tradeData?.lowestSale
 									? formatNumber(
 											Number(ethers.utils.formatEther(tradeData?.lowestSale)) *
-												wildPriceUsd,
+												Number(paymentToken?.priceInUsd),
 									  )
 									: 0
 						  }`
@@ -192,10 +194,12 @@ const ZNS: React.FC<ZNSProps> = () => {
 			{
 				fieldName: 'Volume',
 				title: (tradeData?.volume as any)?.all
-					? `${formatEthers((tradeData?.volume as any)?.all)} WILD`
+					? `${formatEthers((tradeData?.volume as any)?.all)} ${
+							paymentToken?.symbol
+					  }`
 					: '',
 				subTitle:
-					wildPriceUsd > 0
+					Number(paymentToken?.priceInUsd) > 0
 						? `$${
 								(tradeData?.volume as any)?.all
 									? formatNumber(
@@ -203,7 +207,7 @@ const ZNS: React.FC<ZNSProps> = () => {
 												ethers.utils.formatEther(
 													(tradeData?.volume as any)?.all,
 												),
-											) * wildPriceUsd,
+											) * Number(paymentToken?.priceInUsd),
 									  )
 									: 0
 						  }`
@@ -255,7 +259,7 @@ const ZNS: React.FC<ZNSProps> = () => {
 			{modal === Modal.Transfer && (
 				<TransferOwnership
 					metadataUrl={znsDomain?.metadata ?? ''}
-					domainName={domain}
+					domainName={znsDomain?.name ?? ''}
 					domainId={znsDomain?.id ?? ''}
 					onTransfer={closeModal}
 					creatorId={znsDomain?.minter?.id || ''}
@@ -267,7 +271,8 @@ const ZNS: React.FC<ZNSProps> = () => {
 			{!isNftView && (
 				<div className="main">
 					{previewCard()}
-					{!(isMobile || isMobilePortrait) && nftStats()}
+					{!(isMobile || isMobilePortrait || isRootDomain(znsDomain?.id)) &&
+						nftStats()}
 					{showDomainTable && (
 						<div className={styles.TableContainer}>
 							<SubdomainTable />

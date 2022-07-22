@@ -1,6 +1,3 @@
-//- Constants Imports
-import { CURRENCY } from 'constants/currency';
-
 //- Lib Imports
 import { BigNumber, ethers } from 'ethers';
 import jsBigDecimal from 'js-big-decimal';
@@ -25,9 +22,12 @@ export const formatByDecimalPlace = (
 };
 
 // Format bid amount in WILD
-export const formatBidAmount = (bidAmount?: string) =>
+export const formatBidAmount = (
+	bidAmount?: string,
+	paymentTokenName?: string,
+) =>
 	bidAmount
-		? ethers.utils.formatEther(bidAmount).toString() + ` ${CURRENCY.WILD}`
+		? ethers.utils.formatEther(bidAmount).toString() + ` ${paymentTokenName}`
 		: '';
 
 /**

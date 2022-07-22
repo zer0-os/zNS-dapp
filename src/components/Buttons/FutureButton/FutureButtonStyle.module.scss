@@ -45,6 +45,21 @@
 	}
 }
 
+.Container.Secondary {
+	--bg: rgba(82, 87, 255, 0.25);
+	--box-shadow: rgba(82, 87, 255, 0.25);
+	--box-shadow-heavy: rgba(82, 203, 255, 0.25);
+	--box-shadow-light: rgba(82, 203, 255, 0.25);
+	--border-color: #52cbff;
+	--border-color-hover: #fff;
+	--color: #fff;
+
+	&:not(.Glow) {
+		--border-color: #{colors.$grey};
+		--color: #{colors.$grey};
+	}
+}
+
 .Spinner {
 	height: 16px !important;
 	width: 16px !important;

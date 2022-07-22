@@ -4,7 +4,7 @@ import {
 	DomainBidEvent,
 	DomainSaleEvent,
 	DomainBuyNowSaleEvent,
-} from '@zero-tech/zns-sdk/lib/types';
+} from '@zero-tech/zns-sdk';
 
 export type DomainEvents =
 	| DomainTransferEvent

@@ -1,15 +1,23 @@
+import { ConvertedTokenInfo } from '@zero-tech/zns-sdk';
 import { Wizard } from 'components';
 import { ethers } from 'ethers';
 import { BidData } from '../CancelBid.types';
+import styles from './Details.module.scss';
 
 type DetailsProps = {
 	bidData: BidData;
+	paymentTokenInfo: ConvertedTokenInfo;
 	onClose: () => void;
 	onNext: () => void;
 };
 
-const Details = ({ bidData, onClose, onNext }: DetailsProps) => (
-	<>
+const Details = ({
+	bidData,
+	onClose,
+	onNext,
+	paymentTokenInfo,
+}: DetailsProps) => (
+	<div className={styles.NFTDetailsContainer}>
 		<Wizard.NFTDetails
 			assetUrl={bidData.assetUrl}
 			creator={bidData.creator}
@@ -19,11 +27,16 @@ const Details = ({ bidData, onClose, onNext }: DetailsProps) => (
 				{
 					name: 'Highest Bid',
 					value:
-						ethers.utils.formatEther(bidData.highestBid).toString() + ' WILD',
+						ethers.utils.formatEther(bidData.highestBid).toString() +
+						' ' +
+						paymentTokenInfo.symbol,
 				},
 				{
 					name: 'Your Bid',
-					value: ethers.utils.formatEther(bidData.yourBid).toString() + ' WILD',
+					value:
+						ethers.utils.formatEther(bidData.yourBid).toString() +
+						' ' +
+						paymentTokenInfo.symbol,
 				},
 			]}
 		/>
@@ -32,7 +45,7 @@ const Details = ({ bidData, onClose, onNext }: DetailsProps) => (
 			onClickPrimaryButton={onNext}
 			onClickSecondaryButton={onClose}
 		/>
-	</>
+	</div>
 );
 
 export default Details;
