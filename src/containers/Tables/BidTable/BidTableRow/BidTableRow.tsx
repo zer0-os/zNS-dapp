@@ -52,10 +52,10 @@ const BidTableRow = (props: any) => {
 	const onSelectOption = (option: Option) => {
 		switch (option.title) {
 			case ActionKeys.REBID:
-				openMakeBid?.(bid);
+				openMakeBid(bid);
 				return;
 			case ActionKeys.CANCEL_BID:
-				openCancelBid?.(bid);
+				openCancelBid(bid);
 				return;
 		}
 	};
