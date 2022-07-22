@@ -2,7 +2,7 @@ import moment from 'moment';
 import { AssetType } from '@zero-tech/zdao-sdk';
 import { ethers } from 'ethers';
 import type { Asset } from 'lib/types/dao';
-import type { Option } from 'components/Dropdowns/OptionDropdown';
+import type { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
 import { formatDateTime } from 'lib/utils/datetime';
 import type { VotingDetailItem } from './CreateProposal.types';
 import {

@@ -1,111 +1,43 @@
 //- React Imports
-import { useMemo, useState } from 'react';
+import { memo } from 'react';
 
 //- Component Imports
+import { GenericTable } from 'components';
 import BidTableRow from './BidTableRow/BidTableRow';
-import { GenericTable, Overlay } from 'components';
 import BidTableCard from './BidTableCard/BidTableCard';
 
-//- Container Imports
-import { CancelBid, MakeABid } from 'containers';
-
-//- Types Imports
-import { BidTableData } from './BidTable.types';
+//- Hooks Import
+import useBidTableData from './hooks/useBidTableData';
 
 //- Constants Imports
-import { Messages, Modal, Headers } from './BidTable.constants';
+import { Messages, Headers } from './BidTable.constants';
 
-type BidTableProps = {
-	bidData?: BidTableData[];
-	isLoading: boolean;
-	refetch: () => void;
-};
-
-const BidTable = ({ bidData, isLoading, refetch }: BidTableProps) => {
-	/**
-	 * NOTE: Modals are currently in this file - they were previously
-	 * in the row, but refetch was killing any modal.
-	 */
-	const [modal, setModal] = useState<Modal | undefined>();
-	const [selectedBid, setSelectedBid] = useState<BidTableData | undefined>();
-
-	const openMakeBid = (bid: BidTableData) => {
-		setSelectedBid(bid);
-		setModal(Modal.Bid);
-	};
-
-	const openCancelBid = (bid: BidTableData) => {
-		setSelectedBid(bid);
-		setModal(Modal.Cancel);
-	};
-
-	const closeModal = () => {
-		setModal(undefined);
-		setSelectedBid(undefined);
-	};
-
-	const ModalElement = useMemo(() => {
-		if (!selectedBid) {
-			return;
-		}
-		switch (modal) {
-			case Modal.Bid:
-				return (
-					<MakeABid
-						domain={selectedBid.domain}
-						paymentTokenInfo={selectedBid.paymentTokenInfo}
-						onBid={refetch}
-						onClose={closeModal}
-					/>
-				);
-			case Modal.Cancel:
-				return (
-					<Overlay centered open onClose={closeModal}>
-						<CancelBid
-							bidNonce={selectedBid.bidNonce}
-							domainId={selectedBid.domainId}
-							onSuccess={refetch}
-							onClose={closeModal}
-							paymentTokenInfo={selectedBid.paymentTokenInfo}
-						/>
-					</Overlay>
-				);
-		}
-	}, [selectedBid, modal, refetch]);
+const BidTable = () => {
+	const { isLoading, bidData, refetch } = useBidTableData();
 
 	return (
 		<>
-			{ModalElement}
 			<GenericTable
 				alignments={[0, 1, 1, 1, 1, 0, 0]}
 				data={bidData}
 				headers={Headers}
 				infiniteScroll
 				isLoading={isLoading}
-				itemKey="id"
+				itemKey={'id'}
 				loadingText={Messages.LOADING}
 				emptyText={Messages.EMPTY}
 				isSingleGridColumn
 				notSearchable
 				rowComponent={(props: any) => (
-					<BidTableRow
-						{...props}
-						onRefetch={refetch}
-						openMakeBid={openMakeBid}
-						openCancelBid={openCancelBid}
-					/>
+					<BidTableRow {...props} refetch={refetch} />
 				)}
 				gridComponent={(props: any) => (
-					<BidTableCard
-						{...props}
-						onRefetch={refetch}
-						openMakeBid={openMakeBid}
-						openCancelBid={openCancelBid}
-					/>
+					<BidTableCard {...props} refetch={refetch} />
 				)}
+				refetch={refetch}
 			/>
 		</>
 	);
 };
 
-export default BidTable;
+export default memo(BidTable);

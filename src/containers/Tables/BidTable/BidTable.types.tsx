@@ -26,7 +26,7 @@ export const ActionKeys = {
 	CANCEL_BID: OptionTitle.CANCEL_BID,
 };
 
-export const Actions = [
+export const bidTableActions = [
 	{
 		icon: <DollarSign />,
 		title: ActionKeys.REBID,

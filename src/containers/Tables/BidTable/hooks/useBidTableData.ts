@@ -1,31 +1,37 @@
 //- React Imports
 import { useEffect, useRef, useState } from 'react';
 
-//- Components Imports
-import BidTable from './BidTable';
-
 //- Library Imports
+import { useZnsSdk } from 'lib/hooks/sdk';
+import { useBidProvider } from 'lib/hooks/useBidProvider';
+import getPaymentTokenInfo from 'lib/paymentToken';
+
+//- Web3 Imports
 import { useWeb3React } from '@web3-react/core';
 import { BigNumber, ethers } from 'ethers';
 import { Bid } from '@zero-tech/zauction-sdk';
-import { useZnsSdk } from 'lib/hooks/sdk';
-import getPaymentTokenInfo from 'lib/paymentToken';
-import { useBidProvider } from 'lib/hooks/useBidProvider';
 
 //- Types Imports
-import { BidTableData } from './BidTable.types';
+import { BidTableData } from '../BidTable.types';
 
 //- Constants Imports
-import { Errors } from './BidTable.constants';
+import { Errors } from '../BidTable.constants';
 
-const BidTableContainer = () => {
+export type UseBidTableDataReturn = {
+	isLoading: boolean;
+	bidData?: BidTableData[];
+	refetch: () => void;
+};
+
+const useBidTableData = (): UseBidTableDataReturn => {
 	const isMounted = useRef<boolean>();
+
 	const { getBidsForAccount } = useBidProvider();
 	const { instance: sdk } = useZnsSdk();
 	const { account } = useWeb3React();
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
-	const [bidData, setBidData] = useState<BidTableData[] | undefined>();
+	const [bidData, setBidData] = useState<BidTableData[] | undefined>([]);
 
 	const getData = async () => {
 		if (!account) {
@@ -129,8 +135,7 @@ const BidTableContainer = () => {
 		setBidData(undefined);
 		getData().catch((e) => {
 			if (e.message) {
-				// @todo handle errors in here
-				console.log(e.message);
+				console.error(e.message);
 			}
 			if (isMounted.current === true) {
 				setIsLoading(false);
@@ -141,14 +146,9 @@ const BidTableContainer = () => {
 	useEffect(() => {
 		isMounted.current = true;
 
-		if (!account) {
-			return;
-		}
-
 		getData().catch((e) => {
 			if (e.message) {
-				// @todo handle errors in here
-				console.log(e.message);
+				console.error(e.message);
 			}
 			if (isMounted.current === true) {
 				setIsLoading(false);
@@ -161,7 +161,11 @@ const BidTableContainer = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	return <BidTable bidData={bidData} isLoading={isLoading} refetch={refetch} />;
+	return {
+		isLoading,
+		bidData,
+		refetch,
+	};
 };
 
-export default BidTableContainer;
+export default useBidTableData;

@@ -2,6 +2,7 @@ import { ConvertedTokenInfo } from '@zero-tech/zns-sdk';
 import { Wizard } from 'components';
 import { ethers } from 'ethers';
 import { BidData } from '../CancelBid.types';
+import styles from './Details.module.scss';
 
 type DetailsProps = {
 	bidData: BidData;
@@ -16,7 +17,7 @@ const Details = ({
 	onNext,
 	paymentTokenInfo,
 }: DetailsProps) => (
-	<>
+	<div className={styles.NFTDetailsContainer}>
 		<Wizard.NFTDetails
 			assetUrl={bidData.assetUrl}
 			creator={bidData.creator}
@@ -44,7 +45,7 @@ const Details = ({
 			onClickPrimaryButton={onNext}
 			onClickSecondaryButton={onClose}
 		/>
-	</>
+	</div>
 );
 
 export default Details;
