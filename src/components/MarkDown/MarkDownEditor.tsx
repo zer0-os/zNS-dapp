@@ -1,7 +1,6 @@
 import React from 'react';
 import classnames from 'classnames/bind';
 import MDEditor, { ICommand } from '@uiw/react-md-editor';
-import { usePropsState } from 'lib/hooks/usePropsState';
 import {
 	MARKDOWN_EDITOR_MODES,
 	MARKDOWN_EDITOR_TOOLBAR_TITLES,
