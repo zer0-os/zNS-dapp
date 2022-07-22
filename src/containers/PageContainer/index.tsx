@@ -90,6 +90,7 @@ const PageContainer: React.FC = ({ children }) => {
 			closeModal();
 		}
 	}, [active]);
+
 	useUpdateEffect(refetch, [minted, stakingFulFilled]);
 
 	return (

@@ -1,11 +1,8 @@
 {
-    "typescript.tsdk": "node_modules/typescript/lib",
-    "editor.formatOnSave": true,
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "[xml]": {
-        "editor.defaultFormatter": "DotJoshJohnson.xml"
-    },
-    "[scss]": {
-        "editor.defaultFormatter": "vscode.css-language-features"
-    }
+	"typescript.tsdk": "node_modules/typescript/lib",
+	"editor.formatOnSave": true,
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"[xml]": {
+		"editor.defaultFormatter": "DotJoshJohnson.xml"
+	}
 }

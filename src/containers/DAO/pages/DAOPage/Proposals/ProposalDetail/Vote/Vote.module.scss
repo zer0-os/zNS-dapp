@@ -70,15 +70,14 @@
 	.Container {
 		bottom: 60px;
 	}
-
 	.Choices {
 		flex-direction: column;
 		gap: 16px;
 
-		>li {
+		> li {
 			width: 100%;
 
-			>button {
+			> button {
 				width: 100%;
 			}
 		}
@@ -97,7 +96,7 @@
 		margin-bottom: 0;
 	}
 
-	>* {
+	> * {
 		margin: 0;
 	}
 
@@ -117,12 +116,12 @@
 		gap: 3.5px;
 		min-width: 300px;
 
-		>li {
+		> li {
 			display: flex;
 			gap: 1rem;
 			font-weight: 700;
 
-			>span {
+			> span {
 				flex: 1;
 
 				&:first-of-type {

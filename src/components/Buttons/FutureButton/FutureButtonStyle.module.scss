@@ -7,9 +7,11 @@
  * Default color scheme
  */
 .Container {
-	--bg: linear-gradient(90deg,
-			rgba(82, 87, 255, 0.25) 0%,
-			rgba(82, 203, 255, 0.25) 100%);
+	--bg: linear-gradient(
+		90deg,
+		rgba(82, 87, 255, 0.25) 0%,
+		rgba(82, 203, 255, 0.25) 100%
+	);
 	--box-shadow: rgba(0, 209, 255, 0.2);
 	--box-shadow-heavy: rgba(0, 209, 255, 0.5);
 	--box-shadow-light: rgba(0, 209, 255, 0.2);
@@ -48,7 +50,7 @@
 	--box-shadow: rgba(82, 87, 255, 0.25);
 	--box-shadow-heavy: rgba(82, 203, 255, 0.25);
 	--box-shadow-light: rgba(82, 203, 255, 0.25);
-	--border-color: #52CBFF;
+	--border-color: #52cbff;
 	--border-color-hover: #fff;
 	--color: #fff;
 
@@ -96,7 +98,7 @@
 
 		z-index: 2;
 		transition: color #{animations.$time-short} ease-in-out,
-		text-shadow #{animations.$time-short} ease-in-out;
+			text-shadow #{animations.$time-short} ease-in-out;
 	}
 
 	.Wash {

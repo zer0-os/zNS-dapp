@@ -23,7 +23,6 @@ const useIsClaimable = () => {
 	const checkClaimable = async (text: string) => {
 		resetState();
 		setStatus(Status.LOADING);
-		console.log('checking claimable', text);
 		try {
 			let token, domain, isClaimable;
 
