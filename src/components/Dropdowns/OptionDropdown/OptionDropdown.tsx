@@ -24,7 +24,7 @@ type OptionDropdownProps = {
 	disableSelection?: boolean;
 };
 
-export const OptionDropdown: React.FC<OptionDropdownProps> = ({
+const OptionDropdown: React.FC<OptionDropdownProps> = ({
 	options,
 	selected,
 	onSelect,
