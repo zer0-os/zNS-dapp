@@ -103,27 +103,32 @@ const SubdomainTableCard = (props: any) => {
 			>
 				<div className={styles.Container}>
 					<div className={styles.Bid}>
-						{!tradeData && <Spinner />}
-						{tradeData && (
+						{isLoadingSubdomain && <Spinner />}
+						{!isLoadingSubdomain && (
 							<>
 								<label>{LABELS.TOP_BID}</label>
-								<span className={styles.Crypto}>
-									{tradeData.highestBid
-										? formatEthers(tradeData.highestBid)
-										: 0}{' '}
-									{paymentTokenInfo?.symbol}
-								</span>
-								{Number(paymentTokenInfo?.priceInUsd) > 0 && (
-									<span className={styles.Fiat}>
-										$
-										{tradeData.highestBid
-											? formatNumber(
-													Number(
-														ethers.utils.formatEther(tradeData?.highestBid),
-													) * Number(paymentTokenInfo?.priceInUsd),
-											  )
-											: 0}{' '}
-									</span>
+								{!tradeData && <span className={styles.Crypto}>-</span>}
+								{tradeData && (
+									<>
+										<span className={styles.Crypto}>
+											{tradeData.highestBid
+												? formatEthers(tradeData.highestBid)
+												: 0}{' '}
+											{paymentTokenInfo?.symbol}
+										</span>
+										{Number(paymentTokenInfo?.priceInUsd) > 0 && (
+											<span className={styles.Fiat}>
+												$
+												{tradeData.highestBid
+													? formatNumber(
+															Number(
+																ethers.utils.formatEther(tradeData?.highestBid),
+															) * Number(paymentTokenInfo?.priceInUsd),
+													  )
+													: 0}{' '}
+											</span>
+										)}
+									</>
 								)}
 							</>
 						)}
