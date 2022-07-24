@@ -16,6 +16,10 @@ export const getActions = (isViewBids: boolean): Option[] => {
 			title: ACTION_KEYS.VIEW_BIDS,
 		},
 		{
+			icon: <Tag />,
+			title: ACTION_KEYS.SET_BUY_NOW,
+		},
+		{
 			icon: <Send />,
 			title: ACTION_KEYS.TRANSFER_OWNERSHIP,
 		},
@@ -37,6 +41,10 @@ export const ACTIONS = [
 	{
 		icon: <DollarSign />,
 		title: ACTION_KEYS.VIEW_BIDS,
+	},
+	{
+		icon: <Tag />,
+		title: ACTION_KEYS.SET_BUY_NOW,
 	},
 	{
 		icon: <Send />,

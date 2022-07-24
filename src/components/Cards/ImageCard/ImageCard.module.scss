@@ -7,20 +7,17 @@ $placeholder-background: #000;
 
 .Container {
 	--image-card-padding: 100%;
-
 	position: relative !important;
-
 	background: #{colors.$background-primary};
 	border: 1px solid #{colors.$mine-shaft};
 	border-radius: calc(#{borders.$radius-primary} / 2) !important;
-
 	cursor: pointer;
 	overflow: visible;
 
 	.Body {
 		position: relative;
 		overflow: hidden;
-		// max-height: 170px;
+
 		.Placeholder {
 			position: relative;
 			padding-top: var(--image-card-padding);

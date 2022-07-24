@@ -91,6 +91,11 @@
 
 	@media only screen and (min-width: #{dimensions.$breakpoint-tablet-m}) {
 		grid-gap: 20px 16px;
+	}
+}
+
+.ScaleOnHover {
+	@media only screen and (min-width: #{dimensions.$breakpoint-tablet-m}) {
 		> div:hover {
 			transform: scale(1.02);
 		}

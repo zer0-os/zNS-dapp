@@ -24,6 +24,7 @@ const GenericTable = (props: any) => {
 	///////////////////////
 
 	const isGridViewByDefault = props.isGridViewByDefault;
+	const scaleOnHover = props.disableScaleOnHover === undefined;
 
 	const [searchQuery, setSearchQuery] = useState<string>();
 
@@ -163,7 +164,7 @@ const GenericTable = (props: any) => {
 	const renderGridView = useCallback(() => {
 		return (
 			<div
-				className={`${styles.Grid} ${
+				className={`${styles.Grid} ${scaleOnHover && styles.ScaleOnHover} ${
 					props.isSingleGridColumn && styles.GridWithSingleColumn
 				}`}
 			>

@@ -31,21 +31,23 @@ describe('getActions', () => {
 	});
 
 	describe('when there are existing bids', () => {
-		it('should return Settings & View Bids options', () => {
+		it('should return View Bids, Set Buy Now, Transfer Ownership and Settings actions', () => {
 			const actions = getActions(Boolean(mockBids?.bids.length));
-			expect(actions).toHaveLength(3);
+			expect(actions).toHaveLength(4);
 			expect(actions[0].title).toEqual(ACTION_KEYS.VIEW_BIDS);
-			expect(actions[1].title).toEqual(ACTION_KEYS.TRANSFER_OWNERSHIP);
-			expect(actions[2].title).toEqual(ACTION_KEYS.SETTINGS);
+			expect(actions[1].title).toEqual(ACTION_KEYS.SET_BUY_NOW);
+			expect(actions[2].title).toEqual(ACTION_KEYS.TRANSFER_OWNERSHIP);
+			expect(actions[3].title).toEqual(ACTION_KEYS.SETTINGS);
 		});
 	});
 
 	describe('when there are no existing bids', () => {
-		it('should only return Settings option', () => {
+		it('should return Set Buy Now, Transfer Ownership and Settings actions', () => {
 			const actions = getActions(Boolean(mockNullBids?.bids.length));
-			expect(actions).toHaveLength(2);
-			expect(actions[0].title).toEqual(ACTION_KEYS.TRANSFER_OWNERSHIP);
-			expect(actions[1].title).toEqual(ACTION_KEYS.SETTINGS);
+			expect(actions).toHaveLength(3);
+			expect(actions[0].title).toEqual(ACTION_KEYS.SET_BUY_NOW);
+			expect(actions[1].title).toEqual(ACTION_KEYS.TRANSFER_OWNERSHIP);
+			expect(actions[2].title).toEqual(ACTION_KEYS.SETTINGS);
 		});
 	});
 });

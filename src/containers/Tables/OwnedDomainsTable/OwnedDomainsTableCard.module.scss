@@ -1,5 +1,7 @@
 @use 'styles/variables/typography';
 @use 'styles/variables/colors';
+@use 'styles/variables/borders';
+@use 'styles/variables/animations';
 
 .Container {
 	display: flex;
@@ -32,4 +34,14 @@
 	font-size: #{typography.$size-tiny};
 	color: #{colors.$grey-lighter-2};
 	margin-top: 2px;
+}
+
+.ImageCardWrapper {
+	border-radius: calc(#{borders.$radius-primary} / 2) !important;
+	transition: box-shadow #{animations.$time-medium} ease-in-out;
+
+	&:hover {
+		text-decoration: underline;
+		box-shadow: 0px 0px 10px 3px rgba(colors.$white, 0.5);
+	}
 }

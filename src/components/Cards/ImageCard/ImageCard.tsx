@@ -70,6 +70,29 @@ const ImageCard = ({
 						<h5 className={styles.Header}>{header ?? ''}</h5>
 						<div className={styles.Subheader}>{subHeader ?? ''}</div>
 					</div>
+					{onSelectOption && actions && (
+						<div
+							className={styles.VerticalContainer}
+							onClick={(e) => {
+								e.stopPropagation();
+								e.preventDefault();
+							}}
+						>
+							<OptionDropdown
+								className={styles.MoreDropdown}
+								onSelect={onSelectOption}
+								options={actions}
+							>
+								<Tooltip placement="bottom-center" text="More options">
+									<button className={styles.Button}>
+										<div className={styles.VerticalContainer}>
+											<img alt="more actions" src={moreIcon} />
+										</div>
+									</button>
+								</Tooltip>
+							</OptionDropdown>
+						</div>
+					)}
 				</div>
 				{children}
 			</div>

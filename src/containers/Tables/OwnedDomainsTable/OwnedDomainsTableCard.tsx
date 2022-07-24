@@ -167,30 +167,32 @@ const SubdomainTableCard = ({
 		<>
 			{ModalElement}
 
-			<ImageCard
-				subHeader={`0://${domain.name}`}
-				imageUri={domainMetadata?.image_full ?? domainMetadata?.image}
-				header={domainMetadata?.title}
-				onClick={onClick}
-				onSelectOption={onSelectOption}
-				actions={actions}
-				shouldUseCloudinary={true}
-			>
-				<div className={styles.Container}>
-					<div className={styles.Bid}>
-						{isLoadingBidData && <Spinner />}
-						{!isLoadingBidData && (
-							<>
-								<label>{LABELS.TOP_BID}</label>
-								<span className={styles.Crypto}>{bidAmountWild}</span>
-								{wildPriceUsd > 0 && (
-									<span className={styles.Fiat}>{bidAmountUsd}</span>
-								)}
-							</>
-						)}
+			<div className={styles.ImageCardWrapper}>
+				<ImageCard
+					subHeader={`0://${domain.name}`}
+					imageUri={domainMetadata?.image_full ?? domainMetadata?.image}
+					header={domainMetadata?.title}
+					onClick={onClick}
+					onSelectOption={onSelectOption}
+					actions={actions}
+					shouldUseCloudinary={true}
+				>
+					<div className={styles.Container}>
+						<div className={styles.Bid}>
+							{isLoadingBidData && <Spinner />}
+							{!isLoadingBidData && (
+								<>
+									<label>{LABELS.TOP_BID}</label>
+									<span className={styles.Crypto}>{bidAmountWild}</span>
+									{wildPriceUsd > 0 && (
+										<span className={styles.Fiat}>{bidAmountUsd}</span>
+									)}
+								</>
+							)}
+						</div>
 					</div>
-				</div>
-			</ImageCard>
+				</ImageCard>
+			</div>
 		</>
 	);
 };

@@ -46,6 +46,7 @@ const OwnedDomainsTable = () => {
 			loadingText={MESSAGES.LOADING}
 			emptyText={'You do not own any domains.'}
 			isGridViewByDefault
+			disableScaleOnHover
 		/>
 	);
 };
