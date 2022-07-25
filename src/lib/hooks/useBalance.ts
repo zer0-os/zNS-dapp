@@ -34,7 +34,6 @@ const useBalance = (tokenId?: string) => {
 					account!,
 					tokenId!,
 				);
-				console.log(`balance for ${account} is ${balance.toString()}`);
 				if (isMounted) {
 					setBalance(balance);
 				}
