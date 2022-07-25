@@ -26,6 +26,7 @@ import { useProposals } from 'lib/dao/providers/ProposalsProvider';
 
 // Lib
 import { toFiat } from 'lib/currency';
+import useBalance from 'lib/hooks/useBalance';
 import { ROUTES } from 'constants/routes';
 import millify from 'millify';
 
@@ -59,6 +60,7 @@ const DAOPage: React.FC = () => {
 		useTransactions(dao);
 	const { assets, totalUsd, isLoading: isLoadingAssets } = useAssets(dao);
 	const { fetch: fetchProposals } = useProposals();
+	const { balance } = useBalance(dao?.votingToken.token);
 
 	const daoData = dao;
 
@@ -99,7 +101,14 @@ const DAOPage: React.FC = () => {
 				<Loading />
 			) : dao ? (
 				<>
-					<div id="dao-page-nav-tabs">
+					<div
+						className={cx({
+							// @TODO: improve the following logic
+							Hidden:
+								pathname.split(zna)[1].startsWith('/proposals/create') ||
+								pathname.split(zna)[1].startsWith('/proposals/0x'),
+						})}
+					>
 						<Link className={styles.Back} to={ROUTES.ZDAO}>
 							<ArrowLeft /> All DAOs
 						</Link>
@@ -156,7 +165,7 @@ const DAOPage: React.FC = () => {
 							</div>
 
 							{/* New Proposal Button */}
-							{pathname === to(ROUTES.ZDAO_PROPOSALS) && (
+							{pathname === to(ROUTES.ZDAO_PROPOSALS) && balance?.gt(0) && (
 								<FutureButton glow onClick={handleNewProposalButtonClick}>
 									New Proposal
 								</FutureButton>
