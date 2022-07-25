@@ -1,32 +1,25 @@
-import { useState, useMemo, useCallback, useEffect } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 import type { zDAO } from '@zero-tech/zdao-sdk';
 import { getTokenOptionsFromAssets } from '../CreateProposal.helpers';
-import { DAO_CREATE_PROPOSAL } from '../../../Proposals/Proposals.constants';
+import { DAO_CREATE_PROPOSAL } from '../../Proposals.constants';
 import useAssets from '../../../hooks/useAssets';
+import useBalance from 'lib/hooks/useBalance';
 
 export const useCreateProposal = (dao?: zDAO) => {
 	const [triggerCancel, setTriggerCancel] = useState<boolean>(false);
 	const [showWalletConnectModal, setShowWalletConnectModal] =
 		useState<boolean>(false);
 
-	// - Life Cycle
-	useEffect(() => {
-		const nav = document.getElementById('dao-page-nav-tabs');
-
-		nav?.setAttribute('style', 'display:none');
-
-		return () => {
-			nav?.setAttribute('style', 'display:block');
-		};
-	}, []);
-
 	// - Hooks
 	const history = useHistory();
 	const { active } = useWeb3React<Web3Provider>();
 	const { assets, isLoading: isAssetLoading } = useAssets(dao);
+	const { balance, isLoading: isLoadingBalance } = useBalance(
+		dao?.votingToken.token,
+	);
 
 	// - Data
 	const isLoading = active ? isAssetLoading : false;
@@ -60,7 +53,7 @@ export const useCreateProposal = (dao?: zDAO) => {
 	);
 
 	return {
-		isLoading,
+		isLoading: isLoading || isLoadingBalance,
 		notes: {
 			show:
 				!active || (active && !isLoading && tokenDropdownOptions.length === 0),
@@ -75,9 +68,11 @@ export const useCreateProposal = (dao?: zDAO) => {
 		},
 		triggerCancel,
 		showWalletConnectModal,
-		showForm: active && !isLoading && tokenDropdownOptions.length > 0,
+		showForm:
+			active && !isLoading && tokenDropdownOptions.length > 0 && balance?.gt(0),
 		tokenDropdownOptions,
 		handleGoToAllProposals,
 		handleHideConnectWallet,
+		isHoldingVotingToken: balance?.gt(0),
 	};
 };
