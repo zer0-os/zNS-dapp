@@ -1,12 +1,11 @@
 @use 'styles/variables/dimensions';
 
 .Container {
-	margin: 24px 0 !important;
+	//margin: 24px 0 !important;
 
 	.NavLink {
 		display: flex;
 		align-items: center;
-		margin: 8px 0;
 		color: var(--color-text-primary);
 		font-size: 14px;
 		font-weight: bold;
@@ -25,7 +24,7 @@
 
 	.Content {
 		.Title {
-			margin-top: 24px;
+			margin-top: 36px;
 			font-size: 36px;
 			font-weight: 700;
 			line-height: 44px;
@@ -404,4 +403,11 @@
 			margin-top: 24px;
 		}
 	}
+
+}
+
+.TokenError {
+	font-weight: bold;
+	text-align: center;
+	margin-top: 40px;
 }

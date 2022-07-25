@@ -15,12 +15,12 @@ const useDao = (zna: string): UseDaoReturn => {
 
 	useEffect(() => {
 		let isMounted = true;
+		setDao(undefined);
+		setIsLoading(true);
 		if (!sdk || !zna || zna.length === 0) {
 			setIsLoading(false);
 			return;
 		}
-		setDao(undefined);
-		setIsLoading(true);
 		try {
 			sdk.getZDAOByZNA(zna).then((d) => {
 				if (isMounted) {

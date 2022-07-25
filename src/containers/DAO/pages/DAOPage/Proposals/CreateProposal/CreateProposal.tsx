@@ -1,8 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 // - Library
 import type { zDAO } from '@zero-tech/zdao-sdk';
+import { zNAFromPathname } from 'lib/utils';
+import { ROUTES } from 'constants/routes';
 
 // - Component
 import { ArrowLeft } from 'react-feather';
@@ -30,15 +32,19 @@ export const CreateProposal: React.FC<CreateProposalProps> = ({ dao }) => {
 		tokenDropdownOptions,
 		handleGoToAllProposals,
 		handleHideConnectWallet,
+		isHoldingVotingToken,
 	} = useCreateProposal(dao);
+
+	const { pathname } = useLocation();
+	const zna = zNAFromPathname(pathname);
 
 	return (
 		<>
 			<div className={styles.Container}>
 				<Link
 					className={styles.NavLink}
-					to={'#'}
-					onClick={handleGoToAllProposals}
+					to={showForm ? '#' : `${ROUTES.ZDAO}/${zna}${ROUTES.ZDAO_PROPOSALS}`}
+					onClick={showForm ? handleGoToAllProposals : undefined}
 				>
 					<ArrowLeft /> All Proposals
 				</Link>
@@ -68,6 +74,17 @@ export const CreateProposal: React.FC<CreateProposalProps> = ({ dao }) => {
 							tokenDropdownOptions={tokenDropdownOptions}
 						/>
 					)}
+
+					{!isLoading &&
+						!isHoldingVotingToken &&
+						dao &&
+						!notes.ConnectWallet.show && (
+							<p className={styles.TokenError}>
+								To create a proposal, you need to be holding the {dao?.title}{' '}
+								voting token
+								{dao.votingToken.symbol && ` (${dao.votingToken.symbol})`}.
+							</p>
+						)}
 				</div>
 			</div>
 		</>

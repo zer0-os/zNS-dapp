@@ -10,8 +10,6 @@ import {
 } from '../Proposals.helpers';
 
 // - Hooks
-import { useDidMount } from 'lib/hooks/useDidMount';
-import { useWillUnmount } from 'lib/hooks/useWillUnmount';
 import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 import { usePrevious } from 'lib/hooks/usePrevious';
 import { useProposals } from 'lib/dao/providers/ProposalsProvider';
@@ -21,12 +19,12 @@ import useProposal from '../../hooks/useProposal';
 import { ArrowLeft } from 'react-feather';
 import { LoadingIndicator, MarkDownViewer } from 'components';
 import { VoteBar } from './VoteBar';
+import Vote from './Vote/Vote';
 import { ProposalAttributes } from './ProposalAttributes';
 import { VoteHistories } from './VoteHistories';
 
 // - Styles
 import styles from './ProposalDetail.module.scss';
-import Vote from './Vote/Vote';
 
 type ProposalDetailProps = {
 	dao?: zDAO;
@@ -34,20 +32,6 @@ type ProposalDetailProps = {
 
 export const ProposalDetail: React.FC<ProposalDetailProps> = ({ dao }) => {
 	const [triggerRefresh, setTriggerRefresh] = useState<boolean>(false);
-
-	useDidMount(() => {
-		const nav = document.getElementById('dao-page-nav-tabs');
-		if (nav) {
-			nav.style.display = 'none';
-		}
-	});
-
-	useWillUnmount(() => {
-		const nav = document.getElementById('dao-page-nav-tabs');
-		if (nav) {
-			nav.style.display = 'block';
-		}
-	});
 
 	const history = useHistory();
 	const { proposalId } = useParams<{ proposalId: ProposalId }>();
