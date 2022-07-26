@@ -27,26 +27,23 @@ const useAssets = (dao?: zDAO): UseAssetsReturn => {
 
 	useEffect(() => {
 		let isMounted = true;
-		setIsLoading(true);
 		if (!dao) {
 			return;
 		}
-		setTotalUsd(undefined);
-		setAssets(undefined);
-		setIsLoading(true);
 		try {
 			if (cache[dao[cacheKey]]) {
 				const cached = cache[dao[cacheKey]];
 				/* Wrapped this in a setTimeout to force it
 					 to run after state is reset above - there
 					 are probably better solutions!	*/
-				setTimeout(() => {
-					setTotalUsd(cached.totalUsd);
-					setAssets(cached.assets);
-					setIsLoading(false);
-				}, 0);
+				setTotalUsd(cached.totalUsd);
+				setAssets(cached.assets);
+				setIsLoading(false);
 				return;
 			}
+			setTotalUsd(undefined);
+			setAssets(undefined);
+			setIsLoading(true);
 			dao
 				?.listAssets()
 				.then((d) => {

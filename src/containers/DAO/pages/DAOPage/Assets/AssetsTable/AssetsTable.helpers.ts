@@ -33,6 +33,8 @@ export const convertAsset = (asset: Asset): AssetTableDataItem => {
 		amountInUSD:
 			a.amountInUSD !== undefined ? '$' + toFiat(a.amountInUSD) : '-',
 		uuid: randomUUID(),
+		metadataUrl: a.metadataUri,
+		metadata: a.metadata,
 	};
 };
 
