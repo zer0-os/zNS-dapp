@@ -349,12 +349,7 @@ export const CreateProposalForm: React.FC<CreateProposalFormProps> = ({
 							</p>
 							<Wizard.Buttons
 								primaryButtonText={ProposalFormConfirmModalText.Success.confirm}
-								secondaryButtonText={
-									ProposalFormConfirmModalText.Success.cancel
-								}
 								onClickPrimaryButton={formConfirm.Success.onConfirm}
-								onClickSecondaryButton={formConfirm.Success.onCancel}
-								secondaryButtonVariant="secondary"
 							/>
 						</Wizard>
 					)}

@@ -192,13 +192,15 @@ const GenericTable = (props: any) => {
 	return (
 		<div className={styles.Container} style={props.style}>
 			<div className={styles.Content}>
-				{shouldShowSearchBar && (
+				{(shouldShowViewToggle || shouldShowSearchBar) && (
 					<div className={styles.Controls}>
-						<SearchBar
-							placeholder={'Search by ' + (props.searchBy ?? 'domain name')}
-							onChange={onSearchBarUpdate}
-							style={{ width: '100%' }}
-						/>
+						{shouldShowSearchBar && (
+							<SearchBar
+								placeholder={'Search by ' + (props.searchBy ?? 'domain name')}
+								onChange={onSearchBarUpdate}
+								style={{ width: '100%' }}
+							/>
+						)}
 						{shouldShowViewToggle && !isSmallScreen && (
 							<div className={styles.Buttons}>
 								<IconButton

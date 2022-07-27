@@ -50,6 +50,7 @@ const AssetsTable: React.FC<AssetsTableProps> = ({ assets, isLoading }) => {
 			searchKey={['name', 'subtext']}
 			searchBy={'asset name'}
 			emptyText={'This DAO has no assets.'}
+			notSearchable={true}
 		/>
 	);
 };

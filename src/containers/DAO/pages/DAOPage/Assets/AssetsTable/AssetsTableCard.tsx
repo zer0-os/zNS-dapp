@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 // Components
 import { Detail } from 'components';
@@ -6,6 +6,7 @@ import ImageCard from 'components/Cards/ImageCard/ImageCard';
 
 // Lib
 import { isZnsToken } from './AssetsTable.helpers';
+import { getMetadata } from 'lib/metadata';
 
 // Styles + assets
 import styles from './AssetsTableCard.module.scss';
@@ -27,12 +28,34 @@ const AssetsTableCard: React.FC<AssetsTableCardProps> = ({
 	onRowClick,
 	className,
 }) => {
-	const { image, name, subtext, amountInUSD } = data;
+	const { image, name, subtext, amountInUSD, metadata, metadataUrl } = data;
+
+	const [fetchedMetadata, setFetchedMetadata] = useState<any | undefined>();
+
+	/**
+	 * Get metadata for collectibles whose metadata failed to load
+	 * properly (from Gnosis Safe API)
+	 */
+	useEffect(() => {
+		let isSubscribed = true;
+		setFetchedMetadata(undefined);
+		if (metadataUrl && Object.keys(metadata).length === 0) {
+			getMetadata(metadataUrl).then((d) => {
+				if (isSubscribed) {
+					setFetchedMetadata(d);
+				}
+			});
+			return;
+		}
+		return () => {
+			isSubscribed = false;
+		};
+	}, [metadataUrl, metadata]);
 
 	return (
 		<ImageCard
-			imageUri={image}
-			header={name}
+			imageUri={fetchedMetadata?.image ?? image}
+			header={fetchedMetadata?.title ?? name}
 			subHeader={subtext}
 			onClick={onRowClick}
 			className={styles.ImageCard}
