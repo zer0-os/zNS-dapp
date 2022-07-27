@@ -40,24 +40,15 @@ export const DAOS: { [network in NETWORK_TYPES]: CreateZDAOParams[] } = {
 			votingToken: '0xD53C3bddf27b32ad204e859EB677f709c80E6840',
 		},
 		{
-			id: 'joshupgig.eth',
-			ens: 'joshupgig.eth',
-			zNA: 'zero.dao',
-			title: 'Zero Test DAO',
+			id: 'zdao721test.eth',
+			ens: 'zdao721test.eth',
+			zNA: 'wilder.moto',
+			title: 'ERC721 Enumerable DAO',
 			creator: '0x22C38E74B8C0D1AAB147550BcFfcC8AC544E0D8C',
 			network: 4, // for Rinkeby
+			duration: 86400,
 			safeAddress: '0x7a935d07d097146f143A45aA79FD8624353abD5D',
-			votingToken: '0xD53C3bddf27b32ad204e859EB677f709c80E6840',
-		},
-		{
-			id: 'dappchain.eth',
-			ens: 'dappchain.eth',
-			zNA: 'wilder.kicks',
-			title: 'Wilder Kicks',
-			creator: '0x22C38E74B8C0D1AAB147550BcFfcC8AC544E0D8C',
-			network: 4, // for Rinkeby
-			safeAddress: '0x7a935d07d097146f143A45aA79FD8624353abD5D',
-			votingToken: '0x676cEf263a2954DB6829383aa9d683c9cBc6B67c',
+			votingToken: '0xa4F6C921f914ff7972D7C55c15f015419326e0Ca', // guild nft (ggd)
 		},
 	],
 } as any;

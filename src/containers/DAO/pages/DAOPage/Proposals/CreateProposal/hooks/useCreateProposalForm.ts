@@ -186,7 +186,6 @@ export const useCreateProposalForm = ({
 				duration: DEFAULT_VOTE_DURATION_SECONDS,
 				snapshot,
 				transfer: {
-					abi: '',
 					sender: formValues.sender!,
 					recipient: formValues.recipient!,
 					amount: parseUnits(formValues.amount!).toString(),
