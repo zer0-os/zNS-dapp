@@ -34,12 +34,3 @@
 	color: #{colors.$grey-lighter-2};
 	margin-top: 2px;
 }
-
-.ImageCardWrapper {
-	border-radius: calc(#{borders.$radius-primary} / 2) !important;
-	transition: box-shadow #{animations.$time-medium} ease-in-out;
-
-	&:hover img {
-		transform: scale(1.1);
-	}
-}

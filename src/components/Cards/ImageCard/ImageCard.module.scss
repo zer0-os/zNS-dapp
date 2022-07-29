@@ -2,6 +2,7 @@
 @use 'styles/variables/typography';
 @use 'styles/variables/colors';
 @use 'styles/variables/borders';
+@use 'styles/variables/animations';
 
 $placeholder-background: #000;
 
@@ -66,6 +67,14 @@ $placeholder-background: #000;
 		// Hide default spinner in image
 		div[class*='Spinner'] {
 			display: none;
+		}
+	}
+
+	.ScaleImage {
+		transition: transform #{animations.$time-medium} ease-in-out;
+
+		&:hover {
+			transform: scale(1.2);
 		}
 	}
 

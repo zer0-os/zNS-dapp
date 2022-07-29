@@ -18,6 +18,7 @@ type ImageCardProps = {
 	subHeader?: string;
 	className?: string;
 	shouldUseCloudinary?: boolean;
+	scaleImageOnHover?: boolean;
 };
 
 const ImageCard = ({
@@ -31,6 +32,7 @@ const ImageCard = ({
 	subHeader,
 	className,
 	shouldUseCloudinary,
+	scaleImageOnHover = false,
 }: ImageCardProps) => {
 	const aspectRatioClass = cx({
 		Portrait: aspectRatio === AspectRatio.PORTRAIT,
@@ -48,7 +50,11 @@ const ImageCard = ({
 						<Spinner />
 					</div>
 				</div>
-				<div className={styles.Image}>
+				<div
+					className={`${styles.Image} ${
+						scaleImageOnHover && styles.ScaleImage
+					}`}
+				>
 					{shouldUseCloudinary ? (
 						<NFTMedia
 							disableLightbox
