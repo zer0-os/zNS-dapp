@@ -17,6 +17,7 @@ $placeholder-background: #000;
 	.Body {
 		position: relative;
 		overflow: hidden;
+		border-radius: calc(#{borders.$radius-primary} / 2);
 
 		.Placeholder {
 			position: relative;

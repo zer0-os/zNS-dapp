@@ -10,10 +10,10 @@ import { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
 //- Library Imports
 import { ethers } from 'ethers';
 import { Domain } from 'lib/types';
-
-//- Constants Imports
 import { getNetworkZNA } from 'lib/utils';
 import { useHistory } from 'react-router-dom';
+
+//- Constants Imports
 import { ROUTES } from 'constants/routes';
 
 export const ACTION_KEYS = {

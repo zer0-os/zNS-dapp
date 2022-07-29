@@ -33,6 +33,10 @@
 	font-size: #{typography.$size-small};
 	color: #{colors.$grey-lighter-2};
 
+	&:hover {
+		cursor: pointer;
+	}
+
 	&:hover .ArrowContainer {
 		margin-left: 3px;
 	}
@@ -48,49 +52,49 @@
 		height: 100%;
 		width: 12px;
 		transition: margin-left #{animations.$time-medium} ease-in-out;
-	}
 
-	.ArrowContainer::after {
-		content: ' ';
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		height: 0px;
-		width: 0px;
-		background: #{colors.$black};
-		transform: translate(-60%, -50%);
-		transition: box-shadow #{animations.$time-short} ease-in-out;
-	}
+		&::after {
+			content: ' ';
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			height: 0px;
+			width: 0px;
+			background: #{colors.$black};
+			transform: translate(-60%, -50%);
+			transition: box-shadow #{animations.$time-short} ease-in-out;
+		}
 
-	.Arrow {
-		height: 1px;
-		width: 8px;
-		position: absolute;
-		left: 0;
-		top: 50%;
-		background: #{colors.$grey-lighter-2};
-	}
+		.Arrow {
+			height: 1px;
+			width: 8px;
+			position: absolute;
+			left: 0;
+			top: 50%;
+			background: #{colors.$grey-lighter-2};
 
-	.Arrow:hover {
-		background: #{colors.$blue};
-	}
+			&:hover {
+				background: #{colors.$blue};
+			}
 
-	.Arrow::after,
-	.Arrow::before {
-		content: ' ';
-		position: absolute;
-		right: -1px;
-		height: 1px;
-		width: 6px;
-		background: inherit;
-	}
+			&::before,
+			&::after {
+				content: ' ';
+				position: absolute;
+				right: -1px;
+				height: 1px;
+				width: 6px;
+				background: inherit;
+			}
 
-	.Arrow::after {
-		transform: translateY(-200%) rotate(45deg);
-	}
+			&::after {
+				transform: translateY(-200%) rotate(45deg);
+			}
 
-	.Arrow::before {
-		transform: translateY(200%) rotate(-45deg);
+			&::before {
+				transform: translateY(200%) rotate(-45deg);
+			}
+		}
 	}
 }
 
