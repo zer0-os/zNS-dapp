@@ -1,5 +1,6 @@
 @use 'styles/variables/animations';
 @use 'styles/variables/colors';
+@use 'styles/variables/borders';
 
 .Container {
 	cursor: pointer;
@@ -27,7 +28,7 @@
 	.Button {
 		margin-left: auto;
 		background: none;
-		border-radius: 100%;
+		border-radius: calc(#{borders.$radius-primary} / 2);
 		padding: 0;
 		width: 24px;
 		height: 24px;

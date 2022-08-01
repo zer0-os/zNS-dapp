@@ -1,6 +1,7 @@
 @use 'styles/variables/colors';
 @use 'styles/variables/animations';
 @use 'styles/variables/typography';
+@use 'styles/variables/borders';
 
 $gap: 40px;
 
@@ -48,9 +49,9 @@ $gap: 40px;
 				display: flex;
 				flex-direction: column;
 				justify-content: center;
-				width: 48px;
-				height: 48px;
-				border-radius: 100%;
+				width: 32px;
+				height: 32px;
+				border-radius: calc(#{borders.$radius-primary} / 2);
 
 				&:hover {
 					background-color: #{colors.$purple-10};

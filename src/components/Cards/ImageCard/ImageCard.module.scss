@@ -121,7 +121,7 @@ $placeholder-background: #000;
 		.Button {
 			margin-left: auto;
 			background: none;
-			border-radius: 100%;
+			border-radius: calc(#{borders.$radius-primary} / 2);
 			padding: 0;
 
 			img {

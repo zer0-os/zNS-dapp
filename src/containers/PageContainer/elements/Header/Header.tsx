@@ -88,7 +88,7 @@ export const Header: React.FC<HeaderProps> = ({
 						{formattedData.showHistoryButtons && <HistoryButtons />}
 
 						{/* Title Text */}
-						{formattedData.showTitle && (
+						{formattedData.showTitle && !isProfileRoute && (
 							<h1 className="header__navigation-title">{title}</h1>
 						)}
 						{!formattedData.showTitle && (
