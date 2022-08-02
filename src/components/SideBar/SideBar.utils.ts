@@ -3,18 +3,14 @@ import { DOMAIN_LOGOS, ROOT_DOMAIN } from 'constants/domains';
 import { ROUTES } from 'constants/routes';
 
 export const getNetworkLogo = (zna: string, app: string) => {
-	if (ROOT_DOMAIN !== 'wilder') {
-		if (zna.startsWith('wilder')) {
-			return DOMAIN_LOGOS.WILDER_WORLD;
-		} else {
-			return DOMAIN_LOGOS.ZERO;
-		}
+	if (ROOT_DOMAIN === 'wilder') {
+		return DOMAIN_LOGOS.WILDER_WORLD;
+	}
+
+	if (zna.startsWith('wilder')) {
+		return DOMAIN_LOGOS.WILDER_WORLD;
 	} else {
-		if (app === ROUTES.MARKET) {
-			return DOMAIN_LOGOS.WILDER_WORLD;
-		} else {
-			return DOMAIN_LOGOS.ZERO;
-		}
+		return DOMAIN_LOGOS.ZERO;
 	}
 };
 
