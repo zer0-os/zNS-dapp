@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 
 // - Library
 import moment from 'moment';
-import { isEmpty } from 'lodash';
+import _, { isEmpty } from 'lodash';
 import type { zDAO, Proposal } from '@zero-tech/zdao-sdk';
 import { secondsToDhms, formatDateTime } from 'lib/utils/datetime';
 import {
@@ -69,7 +69,7 @@ export const ProposalAttributes: React.FC<ProposalAttributesProps> = ({
 				value: secondsToDhms(timeRemaining / 1000) || '-',
 			},
 			{
-				label: 'Voting Started',
+				label: proposal.start > new Date() ? 'Voting Starts' : 'Voting Started',
 				value: formatDateTime(proposal.start, 'M/D/YYYY h:mm A Z') || '-',
 			},
 			{
@@ -78,7 +78,7 @@ export const ProposalAttributes: React.FC<ProposalAttributesProps> = ({
 			},
 			{
 				label: 'Voting System',
-				value: 'Weighted Single Choice Voting',
+				value: _.startCase(_.camelCase(proposal.type.split('-').join(' '))),
 			},
 			{
 				label: 'Execution Criteria',
