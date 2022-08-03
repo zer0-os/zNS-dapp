@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import type { Choice, Proposal } from '@zero-tech/zdao-sdk';
 import {
@@ -6,6 +6,7 @@ import {
 	Tooltip,
 	QuestionButton,
 	TextButton,
+	Countdown,
 } from 'components';
 import { ConnectWalletButton } from 'containers';
 import { useCurrentDao } from 'lib/dao/providers/CurrentDaoProvider';
@@ -50,6 +51,9 @@ export const VoteAction: React.FC<VoteActionProps> = ({
 	onClickDeny,
 }) => {
 	const { dao } = useCurrentDao();
+	const [isVoteOpen, setIsVoteOpen] = useState<boolean>(
+		new Date().getTime() >= proposal.start.getTime(),
+	);
 
 	if (!account) {
 		return (
@@ -67,6 +71,18 @@ export const VoteAction: React.FC<VoteActionProps> = ({
 
 	if (voteStatus === VoteStatus.PENDING) {
 		return <LoadingIndicator spinnerPosition="left" text="" />;
+	}
+
+	if (!isVoteOpen) {
+		return (
+			<span className={styles.FooterText}>
+				Voting opens in{' '}
+				<Countdown
+					to={proposal.start.getTime()}
+					onFinish={() => setIsVoteOpen(true)}
+				/>
+			</span>
+		);
 	}
 
 	if (!uservotingPower) {
