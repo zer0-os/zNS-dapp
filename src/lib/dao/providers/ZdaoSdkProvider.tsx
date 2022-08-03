@@ -78,17 +78,6 @@ export const ZdaoSdkProvider: React.FC<DaoSdkProviderProps> = ({
 
 		const sdk = createSDKInstance(config);
 
-		/**
-		 * 20/06/2022
-		 * Rinkeby is not released yet
-		 */
-		if (network === NETWORK_TYPES.RINKEBY) {
-			sdk.listZNAs = sdk.listZNAsFromParams;
-			sdk.doesZDAOExist = sdk.doesZDAOExistFromParams;
-			sdk.getZDAOByZNA = sdk.getZDAOByZNAFromParams;
-			await Promise.all(DAOS[network].map((d) => sdk.createZDAOFromParams(d)));
-		}
-
 		setInstance(sdk);
 	}, [library, active, network, selectedChain]);
 
