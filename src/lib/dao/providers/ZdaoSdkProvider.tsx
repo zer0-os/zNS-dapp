@@ -9,7 +9,6 @@ import { RPC_URLS } from 'lib/connectors';
 import { ethers } from 'ethers';
 import { WALLETS } from 'constants/wallets';
 import { LOCAL_STORAGE_KEYS } from 'constants/localStorage';
-import { DAOS } from 'constants/daos';
 import {
 	Config,
 	createSDKInstance,

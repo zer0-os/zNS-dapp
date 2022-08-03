@@ -1,6 +1,5 @@
 //- Constants Imports
 import { DOMAIN_LOGOS, ROOT_DOMAIN } from 'constants/domains';
-import { ROUTES } from 'constants/routes';
 
 export const getNetworkLogo = (zna: string, app: string) => {
 	if (ROOT_DOMAIN === 'wilder') {
