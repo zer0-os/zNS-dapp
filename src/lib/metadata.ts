@@ -18,18 +18,12 @@ export async function getMetadata(
 			return memoryCache[metadataUrl];
 		}
 
-		let requestUrl = metadataUrl;
 		const hash = getHashFromIPFSUrl(metadataUrl);
-
-		requestUrl = DEFAULT_IPFS_GATEWAY + hash;
+		const requestUrl = DEFAULT_IPFS_GATEWAY + hash;
 
 		const response = await fetch(requestUrl);
 		const data = await response.json();
 		const metadata = parseDomainMetadata(data);
-
-		if (!metadata.title || !metadata.description || !metadata.image) {
-			throw Error();
-		}
 
 		memoryCache[metadataUrl] = metadata;
 
