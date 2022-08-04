@@ -310,7 +310,11 @@ const NFTView: React.FC<NFTViewProps> = ({
 				onClaim={openClaim}
 			/>
 
-			<History isLoading={isHistoryLoading} history={history} />
+			<History
+				isLoading={isHistoryLoading}
+				history={history}
+				paymentTokenInfo={paymentTokenInfo}
+			/>
 		</div>
 	);
 };

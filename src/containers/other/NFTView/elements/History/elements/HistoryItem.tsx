@@ -13,36 +13,13 @@ import { ethers } from 'ethers';
 import { truncateWalletAddress } from 'lib/utils';
 import { DomainEvents } from '../../../NFTView.types';
 import styles from '../../../NFTView.module.scss';
-import { Maybe } from 'lib/types';
-import useAsyncEffect from 'use-async-effect';
-import { useZnsSdk } from 'lib/hooks/sdk';
-import { useState } from 'react';
-import getPaymentTokenInfo from 'lib/paymentToken';
 
 type HistoryItemProps = {
 	item: DomainEvents;
+	paymentTokenInfo?: ConvertedTokenInfo;
 };
 
-const HistoryItem = ({ item }: HistoryItemProps) => {
-	const { instance: sdk } = useZnsSdk();
-	const [paymentTokenInfo, setPaymentTokenInfo] =
-		useState<Maybe<ConvertedTokenInfo>>();
-	useAsyncEffect(async () => {
-		const data = item as
-			| DomainBidEvent
-			| DomainSaleEvent
-			| DomainBuyNowSaleEvent;
-		if (
-			(item.type === DomainEventType.bid ||
-				item.type === DomainEventType.sale ||
-				item.type === DomainEventType.buyNow) &&
-			data.paymentToken
-		) {
-			const token = await getPaymentTokenInfo(sdk, data.paymentToken);
-			setPaymentTokenInfo(token);
-		}
-	}, [sdk]);
-
+const HistoryItem = ({ item, paymentTokenInfo }: HistoryItemProps) => {
 	switch (item.type) {
 		case DomainEventType.bid:
 			item = item as DomainBidEvent;
