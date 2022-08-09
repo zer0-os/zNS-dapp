@@ -112,10 +112,10 @@ export const toHistoryItem = (
 						<a
 							target="_blank"
 							rel="noreferrer"
-							href={`${etherscanUri}address/${transaction.to}`}
+							href={`${etherscanUri}address/${transaction.from}`}
 							className="alt-link"
 						>
-							{truncateWalletAddress(transaction.to)}
+							{truncateWalletAddress(transaction.from)}
 						</a>
 					</b>
 				</span>
