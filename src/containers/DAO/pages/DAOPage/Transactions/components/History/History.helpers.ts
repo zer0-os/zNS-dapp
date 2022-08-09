@@ -4,7 +4,14 @@ import {
 } from './History.constants';
 import { Groups } from './History.types';
 
-const isToday = (date: Date) => date.getDay() === new Date().getDay();
+const isToday = (date: Date) => {
+	const newDate = new Date();
+	return (
+		date.getFullYear() === newDate.getFullYear() &&
+		date.getMonth() === newDate.getMonth() &&
+		date.getDay() === newDate.getDay()
+	);
+};
 
 const isLastWeek = (date: Date) =>
 	!isToday(date) &&
