@@ -85,7 +85,7 @@ export const toHistoryItem = (
 			break;
 	}
 
-	const toOrFrom = transaction.type === TransactionType.SENT ? 'to' : 'from';
+	const isSent = transaction.type === TransactionType.SENT;
 
 	return {
 		event: (
@@ -97,25 +97,30 @@ export const toHistoryItem = (
 							src={image}
 							style={{ height: '100%', width: '100%', borderRadius: '50%' }}
 						/>
-						{toOrFrom === 'from' ? (
-							<ArrowDownLeft className={styles.Arrow} color="#52CBFF" />
-						) : (
+						{isSent ? (
 							<ArrowUpRight className={styles.Arrow} color="#52CBFF" />
+						) : (
+							<ArrowDownLeft className={styles.Arrow} color="#52CBFF" />
 						)}
 					</div>
 				) : (
 					<img alt="asset icon" src={DEFAULT_ICON} className={styles.Icon} />
 				)}
 				<span>
-					{startCase(toLower(transaction.type))} <b>{assetString}</b> {toOrFrom}{' '}
+					{startCase(toLower(transaction.type))} <b>{assetString}</b>{' '}
+					{isSent ? 'to' : 'from'}{' '}
 					<b>
 						<a
 							target="_blank"
 							rel="noreferrer"
-							href={`${etherscanUri}address/${transaction.to}`}
+							href={`${etherscanUri}address/${
+								isSent ? transaction.to : transaction.from
+							}`}
 							className="alt-link"
 						>
-							{truncateWalletAddress(transaction.to)}
+							{truncateWalletAddress(
+								isSent ? transaction.to : transaction.from,
+							)}
 						</a>
 					</b>
 				</span>
