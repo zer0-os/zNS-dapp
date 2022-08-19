@@ -11,6 +11,7 @@ import { useProposals } from 'lib/dao/providers/ProposalsProvider';
 // Lib
 import moment from 'moment';
 import { isEqual } from 'lodash';
+import { ProposalState } from '@zero-tech/zdao-sdk';
 import { truncateString } from 'lib/utils/string';
 import {
 	formatProposalStatus,
@@ -83,7 +84,7 @@ const ProposalsTableRow: React.FC<ProposalsTableRowProps> = ({
 	 * Callbacks
 	 */
 	const refetchProposalData = useCallback(async () => {
-		if (proposal.state !== 'closed') {
+		if (proposal.state !== ProposalState.CLOSED) {
 			setIsLoading(true);
 			try {
 				const updatedProposal = await proposal.updateScoresAndVotes();

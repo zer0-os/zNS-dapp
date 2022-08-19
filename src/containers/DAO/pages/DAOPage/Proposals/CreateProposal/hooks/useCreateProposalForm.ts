@@ -59,7 +59,7 @@ export const useCreateProposalForm = ({
 	}>(defaultDiscardConfirm);
 	const [showPublishConfirm, setShowPublishConfirm] = useState<boolean>(false);
 	const [showSuccessConfirm, setShowSuccessConfirm] = useState<boolean>(false);
-	const [createdProposal, setCreatedProposal] = useState<Proposal>();
+	const [createdProposalId, setCreatedProposalId] = useState<Proposal['id']>();
 
 	// Form Values
 	const defaultDaoProposalFormValues = {
@@ -179,7 +179,7 @@ export const useCreateProposalForm = ({
 		setFormSubmitErrorMessage(undefined);
 
 		try {
-			const newProposal = await dao.createProposal(library, account, {
+			const newProposalId = await dao.createProposal(library, account, {
 				title: formValues.title!,
 				body: formValues.body!,
 				choices: DEFAULT_VOTE_CHOICES,
@@ -196,7 +196,7 @@ export const useCreateProposalForm = ({
 
 			refetchProposals();
 
-			setCreatedProposal(newProposal);
+			setCreatedProposalId(newProposalId);
 			setShowSuccessConfirm(true);
 			setShowPublishConfirm(false);
 		} catch (e) {
@@ -218,17 +218,17 @@ export const useCreateProposalForm = ({
 		formValues,
 		refetchProposals,
 		setIsFormSubmitting,
-		setCreatedProposal,
+		setCreatedProposalId,
 		setShowSuccessConfirm,
 		setShowPublishConfirm,
 		setFormSubmitErrorMessage,
 	]);
 
 	const handleTweet = () => {
-		if (createdProposal) {
+		if (createdProposalId) {
 			const pathname = history.location.pathname.replace(
 				`/${DAO_CREATE_PROPOSAL}`,
-				`/${createdProposal.id}`,
+				`/${createdProposalId}`,
 			);
 			const newProposalUrl = encodeURIComponent(`${config.baseURL}${pathname}`);
 
@@ -244,10 +244,10 @@ export const useCreateProposalForm = ({
 	};
 
 	const handleViewCreatedProposal = () => {
-		if (createdProposal) {
+		if (createdProposalId) {
 			const pathname = history.location.pathname.replace(
 				`/${DAO_CREATE_PROPOSAL}`,
-				`/${createdProposal.id}`,
+				`/${createdProposalId}`,
 			);
 
 			history.push(pathname);
@@ -263,7 +263,7 @@ export const useCreateProposalForm = ({
 			return (
 				isEqual(formValues, defaultDaoProposalFormValues) ||
 				pathname === discardConfirm.pathname ||
-				Boolean(createdProposal)
+				Boolean(createdProposalId)
 			);
 		},
 		blockCallback: (pathname: string) => {
