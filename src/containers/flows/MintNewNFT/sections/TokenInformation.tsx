@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 //- React Imports
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 //- Local Imports
 import { TokenInformationType } from '../types';
@@ -9,7 +9,7 @@ import { TokenInformationType } from '../types';
 import styles from '../MintNewNFT.module.scss';
 
 //- Component Imports
-import { TextInput, FutureButton } from 'components';
+import { TextInput, FutureButton, MediaInput } from 'components';
 
 type TokenInformationProps = {
 	existingSubdomains: string[];
@@ -69,27 +69,14 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 		return errs[errs.length - 1]?.text || '';
 	};
 
-	//- Image Upload Handling
-	// TODO: Split image uploads into a new component
-	const inputFile = useRef<HTMLInputElement>(null);
-	const openUploadDialog = () =>
-		inputFile.current ? inputFile.current.click() : null;
-	const onImageChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
-		if (event.target.files && event.target.files[0]) {
-			const type = event.target.files[0].type;
-			// Raw data for image preview
-			const url = URL.createObjectURL(event.target.files[0]);
-			if (type.indexOf('image') > -1) setMediaType('image');
-			else if (type.indexOf('video') > -1) setMediaType('video');
-			else return;
-			setPreviewImage(url);
-
-			// Uint8Array data for sending to IPFS
-			const bufferReader = new FileReader();
-			bufferReader.readAsArrayBuffer(event.target.files[0]);
-			bufferReader.onloadend = () =>
-				setImage(Buffer.from(bufferReader.result as ArrayBuffer));
-		}
+	const handleMediaChange = (
+		mediaType: string,
+		previewImage: string,
+		image: Buffer,
+	): void => {
+		setMediaType(mediaType);
+		setPreviewImage(previewImage);
+		setImage(image);
 	};
 
 	const pressContinue = () => {
@@ -155,34 +142,12 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 		<div className={styles.Section}>
 			<form>
 				<div className={styles.FlexWrapper}>
-					<div
-						onClick={openUploadDialog}
-						className={`${styles.NFT} border-rounded ${
-							previewImage && styles.Uploaded
-						}`}
-						style={{
-							borderColor: hasError('image') ? '#d379ff' : '',
-						}}
-					>
-						{!previewImage && (
-							<span className="glow-text-white">Choose Media</span>
-						)}
-						{previewImage && mediaType === 'image' && (
-							<img alt="NFT Preview" src={previewImage as string} />
-						)}
-						{previewImage && mediaType === 'video' && (
-							<video autoPlay controls loop src={previewImage as string} />
-						)}
-					</div>
-					<input
-						style={{ display: 'none' }}
-						accept="image/*,video/*,video/quicktime"
-						multiple={false}
-						name={'media'}
-						type="file"
-						onChange={onImageChanged}
-						ref={inputFile}
-					></input>
+					<MediaInput
+						previewImage={previewImage}
+						mediaType={mediaType}
+						hasError={hasError('image')}
+						onChange={handleMediaChange}
+					/>
 					<div className={styles.Inputs}>
 						<TextInput
 							placeholder={'Title'}
@@ -200,12 +165,6 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 							alphanumeric
 							maxLength={25}
 						/>
-						{/* <ToggleButton
-							toggled={locked}
-							onClick={() => setLocked(!locked)}
-							style={{ marginTop: 'auto', alignSelf: 'center' }}
-							labels={['Unlocked', 'Locked']}
-						/> */}
 					</div>
 				</div>
 				<TextInput

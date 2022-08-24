@@ -49,6 +49,7 @@ export * from './EtherscanLink';
 export { default as EtherInput } from './Inputs/EtherInput/EtherInput';
 export { default as TextInput } from './Inputs/TextInput/TextInput';
 export { default as TextInputWithTopPlaceHolder } from './Inputs/TextInput/TextInputWithTopPlaceHolder';
+export { default as MediaInput } from './Inputs/MediaInput/MediaInput';
 
 // - Markdown
 export { default as MarkDownEditor } from './MarkDown/MarkDownEditor';

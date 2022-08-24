@@ -1,0 +1,56 @@
+@use 'styles/variables/animations';
+@use 'styles/variables/colors';
+
+$width: 640px;
+$gutter: 16px;
+
+.Preview {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	height: 224px;
+	width: 224px;
+	min-width: 224px;
+
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+
+	border: 1px solid #88d7ff;
+	overflow: hidden;
+
+	cursor: pointer;
+	transition: transform #{animations.$time-medium} ease-in-out,
+		border-color #{animations.$time-medium} ease-in-out;
+
+	@media only screen and (max-width: #{$width + $gutter + $gutter}) {
+		width: auto;
+		max-width: 224px;
+	}
+
+	& > img {
+		height: 100%;
+	}
+
+	& > img,
+	& > video {
+		max-height: 100%;
+		max-width: 100%;
+		object-fit: contain;
+		transition: transform #{animations.$time-medium} ease-in-out;
+	}
+
+	.Uploaded {
+		background: rgba(colors.$black, 0.3);
+		border: none;
+		overflow: visible;
+		border-radius: 0;
+		margin: 0 auto;
+
+		&:hover > img,
+		&:hover > video {
+			transform: scale(1.05);
+		}
+	}
+}
