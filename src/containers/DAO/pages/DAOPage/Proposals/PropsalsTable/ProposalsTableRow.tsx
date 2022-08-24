@@ -147,7 +147,7 @@ const ProposalsTableRow: React.FC<ProposalsTableRowProps> = ({
 
 			{/* Total votes count of proposal */}
 			<td className={styles.Votes}>
-				<p>{isLoading ? data.votes : proposal.votes}</p>
+				<p>{proposal.scores.reduce((a, b) => a + b, 0)}</p>
 			</td>
 		</tr>
 	);
