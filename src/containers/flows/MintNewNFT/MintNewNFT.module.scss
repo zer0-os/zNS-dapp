@@ -104,16 +104,13 @@ $gutter: 16px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-
 	height: 224px;
 	width: 224px;
 	min-width: 224px;
-
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
 	overflow: hidden;
-
 	cursor: pointer;
 	transition: transform #{animations.$time-medium} ease-in-out,
 		border-color #{animations.$time-medium} ease-in-out;
@@ -123,27 +120,29 @@ $gutter: 16px;
 		max-width: 224px;
 	}
 
-	& > img {
+	> img {
 		height: 100%;
 	}
 
-	& > img,
-	& > video {
+	> img,
+	> video {
 		max-height: 100%;
 		max-width: 100%;
 		object-fit: contain;
 		transition: transform #{animations.$time-medium} ease-in-out;
 	}
+}
 
-	.Uploaded {
-		background: rgba(colors.$black, 0.3);
-		border: none;
-		overflow: visible;
-		border-radius: 0;
-		margin: 0 auto;
+.Uploaded {
+	background: rgba(colors.$black, 0.3);
+	border: none;
+	overflow: visible;
+	border-radius: 0;
+	margin: 0 auto;
 
-		&:hover > img,
-		&:hover > video {
+	&:hover {
+		> img,
+		> video {
 			transform: scale(1.05);
 		}
 	}
