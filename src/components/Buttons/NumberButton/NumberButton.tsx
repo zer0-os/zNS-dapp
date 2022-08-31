@@ -6,7 +6,7 @@ import styles from './NumberButton.module.scss';
 
 type NumberButtonProps = {
 	number: number;
-	onClick: () => void;
+	onClick?: () => void;
 	rotating?: boolean;
 	style?: React.CSSProperties;
 };
@@ -18,13 +18,15 @@ const NumberButton: React.FC<NumberButtonProps> = ({
 	style,
 }) => {
 	return (
-		<button
-			style={style}
-			onClick={onClick}
-			className={`${styles.NumberButton} ${rotating ? styles.Rotating : ''}`}
-		>
-			{number}
-		</button>
+		<div className={styles.ButtonContainer}>
+			<button
+				style={style}
+				onClick={onClick}
+				className={`${styles.NumberButton} ${rotating ? styles.Rotating : ''}`}
+			>
+				{number}
+			</button>
+		</div>
 	);
 };
 

@@ -1,9 +1,13 @@
+@use 'styles/variables/animations';
+@use 'styles/variables/colors';
+@use 'styles/variables/typography';
+
 .Container {
 	/*
 	 * Set up colour values
 	 */
-	--toggle-button-color-on: var(--color-accent-1);
-	--toggle-button-color-off: var(--color-grey-lighter-2);
+	--toggle-button-color-on: #{colors.$blue};
+	--toggle-button-color-off: #{colors.$grey-lighter-2};
 	--toggle-button-color: var(--toggle-button-color-off); // set default color
 
 	.Toggle.On {
@@ -32,7 +36,7 @@
 		border-radius: 12px;
 		border: 1px solid var(--toggle-button-color);
 
-		transition: border var(--animation-time-medium) ease;
+		transition: border #{animations.$time-medium} ease;
 
 		overflow: hidden;
 		cursor: pointer;
@@ -51,17 +55,17 @@
 
 			background-color: var(--toggle-button-color);
 
-			transition: left var(--animation-time-medium) ease-in-out,
-				background-color var(--animation-time-medium) ease;
+			transition: left #{animations.$time-medium} ease-in-out,
+				background-color #{animations.$time-medium} ease;
 
 			> span {
 				position: absolute;
 				font-size: 8px;
 				top: 50%;
-				font-weight: 700;
+				font-weight: #{typography.$font-weight-bold};
 				text-transform: uppercase;
 				color: var(--toggle-button-color);
-				transition: color var(--animation-time-medium) ease;
+				transition: color #{animations.$time-medium} ease;
 
 				&:first-of-type {
 					left: 0;
@@ -76,8 +80,7 @@
 		}
 
 		&.On {
-			background: var(--color-ocean-gradient-1);
-
+			background: #{colors.$ocean-10};
 			> div {
 				left: calc(100% - (var(--toggle-button-dimension) / 2) + 3px);
 			}

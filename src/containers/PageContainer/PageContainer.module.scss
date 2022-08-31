@@ -1,63 +1,98 @@
-.Dots {
-	--dot-size: 5px;
-	--dot-gap: 2.8px;
+@use 'styles/variables/dimensions';
 
-	position: relative;
-	height: 32px;
-	width: 16px;
-	cursor: pointer;
-}
+.PageContainer {
+	// Mobile Breakpoints
+	width: 100%;
+	margin: 0 auto;
+	padding: 8px 8px 120px 8px;
+	box-sizing: border-box;
 
-.Dots > div {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	height: var(--dot-size);
-	width: var(--dot-size);
-	border-radius: 50%;
-	background: var(--color-accent-1);
-}
+	// Tablet Breakpoints
+	@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
+		margin: 0;
+		padding: 0;
+	}
 
-.Dots > div:first-child {
-	transform: translate(-50%, calc(-50% - calc(100% + var(--dot-gap))));
-}
+	.Main {
+		// Mobile Breakpoints
+		margin-top: 8px;
 
-.Dots > div:last-child {
-	transform: translate(-50%, calc(-50% + calc(100% + var(--dot-gap))));
-}
+		// Rogue Breakpoint - Stats Widget Intro
+		@media only screen and (min-width: #{dimensions.$breakpoint-mobile-xl}) {
+			margin-top: 16px;
+		}
 
-.Wilder {
-	position: fixed;
-	top: 29px;
-	height: 54px;
-	width: 54px;
+		// Desktop Breakpoints
+		@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
+			margin-top: 24px;
+		}
 
-	z-index: 4;
+		@media only screen and (min-width: #{dimensions.$breakpoint-desktop-l}) {
+			margin-top: 56px;
+		}
+	}
 
-	display: flex;
-	justify-content: center;
-	align-items: center;
+	.InnerContainer {
+		width: 100%;
+	}
 
-	background: linear-gradient(180deg, #1c4358 0%, #2a0047 100%);
-	border-radius: 50%;
+	.FlexRowWrapper {
+		display: flex;
+		flex-direction: row;
+		width: 100%;
 
-	transform: translateX(calc(-100% - 19px));
+		// Desktop Breakpoints
+		@media only screen and (min-width: #{dimensions.$breakpoint-desktop-m}) {
+			justify-content: center;
+		}
 
-	cursor: pointer;
+		.Actions {
+			// Mobile + Tablet Breakpoints
+			display: none;
 
-	transition: transform var(--animation-time-medium) ease-in-out;
-}
+			// Desktop Breakpoints
+			@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
+				display: flex;
+				position: sticky;
+				top: 0;
+				align-items: flex-start;
+				justify-content: flex-end;
+				right: 0;
+				height: 100vh;
+				width: 240px;
+				padding: 28px;
+				gap: 16px;
+				z-index: 9999;
+			}
 
-.Wilder img {
-	max-width: calc(65% - 1px);
-	height: auto;
-	margin-left: 1px;
+			@media only screen and (min-width: #{dimensions.$breakpoint-desktop-m}) {
+				justify-content: center;
+			}
+		}
+	}
 
-	user-drag: none;
-	-webkit-user-drag: none;
-	user-select: none;
-	-moz-user-select: none;
-	-webkit-user-select: none;
-	-ms-user-select: none;
+	.FlexColumnWrapper {
+		// Mobile Breakpoints
+		width: 100%;
+		margin: 0 0 16px 0px;
+
+		// Tablet Breakpoints
+		@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
+			max-width: #{dimensions.$width-max};
+			margin: 8px 16px 16px 16px;
+		}
+
+		@media only screen and (min-width: #{dimensions.$breakpoint-tablet-m}) {
+			margin: 8px auto 16px auto;
+		}
+
+		// Desktop Breakpoints
+		@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
+			margin: 24px auto;
+		}
+
+		@media only screen and (min-width: #{dimensions.$breakpoint-desktop-m}) {
+			margin: 24px;
+		}
+	}
 }

@@ -1,12 +1,13 @@
 import styles from './StakeModule.module.scss';
 
 import { TextInput, FutureButton, Spinner, TextButton } from 'components';
-import { displayEther } from 'lib/currency';
 
 import classNames from 'classnames/bind';
 import { useEffect, useState } from 'react';
 import { ethers } from 'ethers';
 import { MaybeUndefined } from 'lib/types';
+import { formatBigNumber } from 'lib/utils';
+import { formatEther } from '@ethersproject/units';
 
 const cx = classNames.bind(styles);
 
@@ -17,22 +18,18 @@ type StakeModuleProps = {
 	onStake: (amount: string) => void;
 	tokenName: string;
 	isLoading?: boolean;
-	pendingRewards?: ethers.BigNumber;
 	unstake?: boolean;
 };
 
-const StakeModule = (props: StakeModuleProps) => {
-	const {
-		amount,
-		className,
-		balance,
-		onStake,
-		tokenName,
-		isLoading,
-		pendingRewards,
-		unstake,
-	} = props;
-
+const StakeModule = ({
+	amount,
+	className,
+	balance,
+	onStake,
+	tokenName,
+	isLoading,
+	unstake,
+}: StakeModuleProps) => {
 	const [amountString, setAmountString] =
 		useState<MaybeUndefined<string>>(amount);
 	const [amountIsValid, setAmountIsValid] = useState<boolean>(false);
@@ -78,8 +75,9 @@ const StakeModule = (props: StakeModuleProps) => {
 
 	return (
 		<div className={cx(styles.Container, className)}>
+			<hr className={styles.Divider} />
 			<div className={styles.Actions}>
-				<div className={styles.Input}>
+				<div className={styles.InputContainer}>
 					<TextInput
 						text={amountString}
 						numeric
@@ -87,6 +85,7 @@ const StakeModule = (props: StakeModuleProps) => {
 						onChange={onInput}
 						disabled={isLoading}
 						maxLength={24}
+						className={styles.Input}
 					/>
 					<TextButton
 						className={styles.Max}
@@ -101,13 +100,12 @@ const StakeModule = (props: StakeModuleProps) => {
 					glow={amountIsValid}
 					onClick={onStakeButton}
 				>
-					{unstake ? 'Unstake' : 'Stake'}{' '}
-					{amountString && ethers.utils.commify(amountString) + ' ' + tokenName}
+					{unstake ? 'Unstake' : 'Stake'}
 				</FutureButton>
 			</div>
 			<hr />
 			<div className={styles.Balances}>
-				<div className={cx(styles.Balance, 'flex-split flex-vertical-align')}>
+				<div className={styles.Balance}>
 					<span>
 						{unstake
 							? `Amount Staked in This Deposit (${tokenName})`
@@ -115,18 +113,10 @@ const StakeModule = (props: StakeModuleProps) => {
 					</span>
 					<div className={styles.Amounts}>
 						<b className={styles.Tokens}>
-							{balance ? displayEther(balance) + ' ' + tokenName : <Spinner />}
+							{balance ? formatBigNumber(formatEther(balance)) : <Spinner />}
 						</b>
 					</div>
 				</div>
-				{pendingRewards && (
-					<div className={cx(styles.Balance, 'flex-split flex-vertical-align')}>
-						<span>Your Pool Rewards Claimable (WILD)</span>
-						<div className={styles.Amounts}>
-							<b className={styles.Tokens}>{displayEther(pendingRewards)}</b>
-						</div>
-					</div>
-				)}
 			</div>
 		</div>
 	);

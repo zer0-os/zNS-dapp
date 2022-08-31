@@ -1,37 +1,53 @@
+@use 'styles/variables/typography';
+@use 'styles/variables/colors';
+
 .TransferPreview {
-	background: radial-gradient(
-			56.93% 56.93% at 50% 50%,
-			rgba(206, 183, 255, 0) 0%,
-			rgba(103, 79, 255, 0.2) 100%
-		),
-		linear-gradient(0deg, #000000, #000000);
-	padding: 27.5px 40px;
-	width: 552px;
+	// Mobile Breakpoints
+	width: 555px;
+	padding: 20px 40px 20px 40px;
+	max-height: 70vh;
+	overflow: auto;
+	background: #{colors.$purple-10};
+	border: 1px solid #{colors.$bossanova};
+	// Tablet Breakpoints
+	@media only screen and (min-width: 1000px) {
+		width: 640px;
+		// Needs tidying up
+		padding: 27.5px 40px 10px 45px;
+	}
 }
 
 .TransferPreview h4 {
-	font-size: 24px;
-	font-weight: 700;
+	font-size: #{typography.$size-large};
+	font-weight: #{typography.$font-weight-bold};
 	margin-bottom: 19px;
 	text-align: center;
 }
 
 .TransferPreview li > div {
 	display: flex;
-	margin-top: 34px;
-	margin-bottom: 34px;
+	margin-bottom: 32px;
 }
 
 .TransferPreview li hr {
-	margin-bottom: 42px;
+	// Mobile Breakpoints
+	margin-bottom: 32px;
+
+	// Tablet Breakpoints
+	@media only screen and (min-width: 1262px) {
+		margin-bottom: 42px;
+	}
+}
+
+.Divider {
+	border: 1px solid #{colors.$purple-15};
 }
 
 .Image {
 	cursor: pointer;
 	height: 200px;
-	overflow: hidden;
-	transition: transform var(--animation-time-medium) ease-in-out;
 	width: 200px;
+	overflow: hidden;
 }
 
 .Image:hover {
@@ -40,40 +56,69 @@
 
 .Image img {
 	height: 100%;
-	object-fit: contain;
 	width: 100%;
+	object-fit: contain;
 }
 
 .Info {
+	position: relative;
 	display: flex;
 	flex-direction: column;
 	margin-left: 32px;
+	width: 328px;
 	max-width: 240px;
-	position: relative;
-	width: 240px;
 	word-wrap: break-word;
-}
 
-.Info h5 {
-	font-size: 24px;
-	margin-bottom: 12px;
+	.Link {
+		font-size: #{typography.$size-default};
+		color: #{colors.$grey};
+	}
+
+	h3 {
+		font-size: #{typography.$size-large};
+		margin-bottom: 12px;
+	}
+
+	a {
+		margin-bottom: 12px;
+		line-height: 24px;
+	}
+
+	p {
+		margin: 0;
+		padding: 0;
+		line-height: 24px;
+	}
 }
 
 .Info .Address {
-	font-size: 14px;
-	color: var(--color-primary-lighter-3);
-	font-weight: 700;
+	font-size: #{typography.$size-default};
+	line-height: 24px;
+	color: #{colors.$text-primary};
 }
 
-.Info div:last-of-type {
-	line-height: 19px;
-	margin-top: auto;
+.Container {
+	display: flex;
+	flex-direction: row;
+	margin-top: 18px;
+	line-height: 24px;
+
+	div {
+		white-space: nowrap;
+	}
+
+	.TextContainer {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.Success {
+		color: #{colors.$success-green};
+	}
 }
 
-.Info p {
-	padding-bottom: 18px;
-}
-
-.Info a {
-	margin-bottom: 12px;
+.IconContainer {
+	display: flex;
+	align-items: flex-start;
+	margin: 2px 6px 0 0;
 }

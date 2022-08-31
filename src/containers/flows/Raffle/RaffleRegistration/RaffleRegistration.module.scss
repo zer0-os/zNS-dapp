@@ -1,0 +1,163 @@
+@use 'styles/variables/typography';
+@use 'styles/variables/colors';
+
+.Container {
+	width: 588px;
+	padding: 25.5px 40px 40px 40px;
+
+	background: #{colors.$background-primary};
+
+	p {
+		text-align: center;
+		line-height: 24px;
+		padding: 0;
+	}
+
+	.Header {
+		text-align: center;
+
+		margin-bottom: 40px;
+
+		h1 {
+			font-weight: #{typography.$font-weight-bold};
+		}
+
+		span {
+			display: inline-block;
+			margin-top: 8px;
+		}
+		hr {
+			margin-top: 25.5px;
+			border: 0;
+			border-bottom: 1px solid #{colors.$purple-lighter};
+		}
+	}
+
+	.Button {
+		margin: 40px auto 0 auto;
+	}
+
+	.Error {
+		display: block;
+		margin-top: 16px;
+		width: 100%;
+
+		color: #{colors.$red-300};
+		text-align: center;
+
+		.balanceCriteria {
+			padding-right: 5px;
+			font-weight: bold;
+		}
+	}
+
+	.Loading {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		margin-top: 40px;
+
+		span {
+			font-weight: #{typography.$font-weight-regular};
+			margin-bottom: 24px;
+			text-align: center;
+		}
+	}
+
+	.Success {
+		padding-top: 30px;
+		text-align: center;
+		color: #{colors.$success-green};
+	}
+
+	.Email {
+		margin-top: 40px;
+
+		p {
+			padding-bottom: 0;
+		}
+
+		.Input {
+			margin-top: 16px;
+		}
+	}
+
+	.Socials {
+		margin-top: 40px;
+
+		span {
+			display: block;
+			font-weight: #{typography.$font-weight-bold};
+			text-align: center;
+		}
+		a {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+
+			&:not(:first-of-type) {
+				margin-left: 16px;
+			}
+		}
+
+		div {
+			display: flex;
+			justify-content: center;
+			margin-top: 16px;
+		}
+
+		img {
+			height: 64px;
+			width: 64px;
+		}
+	}
+
+	.Balances {
+		display: flex;
+		margin-top: 40px;
+		text-align: center;
+		justify-content: space-around;
+		font-weight: #{typography.$font-weight-regular};
+		font-size: #{typography.$size-tiny};
+
+		.eachBalances {
+			display: flex;
+			flex-direction: column;
+		}
+
+		.amount {
+			font-weight: #{typography.$font-weight-bold};
+			padding: 10px 0;
+			font-size: #{typography.$size-medium};
+		}
+
+		.ErrorColor {
+			color: #{colors.$red-300};
+		}
+	}
+
+	.marginTop40 {
+		margin-top: 40px;
+	}
+
+	.CombinedFirstAndLastFields {
+		display: flex;
+
+		.firstName {
+			padding-right: 20px;
+		}
+	}
+
+	.emailError {
+		display: block;
+		color: #{colors.$red-300};
+		padding-left: 25px;
+		font-size: #{typography.$size-tiny};
+	}
+
+	.PersonalInfo {
+		.Email {
+			margin-top: 25px;
+		}
+	}
+}

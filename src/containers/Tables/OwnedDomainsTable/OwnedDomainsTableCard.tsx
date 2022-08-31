@@ -1,0 +1,105 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+
+//- React Imports
+import React from 'react';
+
+//- Components Imports
+import { Spinner } from 'components';
+
+//- Library Imports
+import { useHistory } from 'react-router-dom';
+import { BigNumber } from 'ethers';
+import { ConvertedTokenInfo, Domain } from '@zero-tech/zns-sdk';
+import useBidData from 'lib/hooks/useBidData';
+import { formatEther } from '@ethersproject/units';
+import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
+import { ethers } from 'ethers';
+import { formatNumber, getNetworkZNA } from 'lib/utils';
+
+//- Styles Imports
+import styles from './OwnedDomainsTableCard.module.scss';
+
+//- Constants Imports
+import { LABELS } from './OwnedDomainsTable.constants';
+import { ROUTES } from 'constants/routes';
+
+//- Utils Imports
+import ImageCard from 'components/Cards/ImageCard/ImageCard';
+
+type OwnedDomainsTableRowProps = {
+	refetch: () => void;
+	data: Domain & { paymentTokenInfo: ConvertedTokenInfo };
+	// this should be refactored when GenericTable has better typing
+	[x: string]: any;
+	domainsPaymentTokenInfo: any[];
+};
+
+const SubdomainTableCard = ({
+	refetch,
+	data: domain,
+}: OwnedDomainsTableRowProps) => {
+	const { push: goTo } = useHistory(); // for navigating on row click
+
+	// Split out all the relevant data from hook
+	const { bidData, isLoading: isLoadingBidData } = useBidData(domain.id);
+
+	const highestBid = bidData?.highestBid;
+
+	const paymentTokenInfo = domain.paymentTokenInfo || {};
+
+	// Retrieve Metadata
+	const domainMetadata = useDomainMetadata(domain.metadataUri);
+
+	// Bid amount wild
+	const bidAmountWild = highestBid
+		? `${Number(
+				formatEther(BigNumber.from(highestBid.amount)),
+		  ).toLocaleString()} ${paymentTokenInfo?.symbol}`
+		: '-';
+
+	// Bid amount usd
+	const bidAmountUsd =
+		highestBid &&
+		`$${formatNumber(
+			Number(ethers.utils.formatEther(highestBid.amount)) *
+				Number(paymentTokenInfo.priceInUsd),
+		)}`;
+
+	// Navigates to domain
+	const onClick = (event: any) => {
+		goTo(ROUTES.MARKET + '/' + getNetworkZNA(domain.name));
+	};
+
+	////////////
+	// Render //
+	////////////
+
+	return (
+		<>
+			<ImageCard
+				subHeader={`0://${domain.name}`}
+				imageUri={domainMetadata?.image_full ?? domainMetadata?.image}
+				header={domainMetadata?.title}
+				onClick={onClick}
+				shouldUseCloudinary={true}
+			>
+				<div className={styles.Container}>
+					<div className={styles.Bid}>
+						{isLoadingBidData && <Spinner />}
+						{!isLoadingBidData && (
+							<>
+								<label>{LABELS.TOP_BID}</label>
+								<span className={styles.Crypto}>{bidAmountWild}</span>
+								{Number(paymentTokenInfo?.priceInUsd) > 0 && (
+									<span className={styles.Fiat}>{bidAmountUsd}</span>
+								)}
+							</>
+						)}
+					</div>
+				</div>
+			</ImageCard>
+		</>
+	);
+};
+
+export default React.memo(SubdomainTableCard);

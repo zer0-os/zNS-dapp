@@ -1,12 +1,18 @@
+@use 'styles/variables/dimensions';
+
 .Stats {
 	display: flex;
 	margin-top: 24px;
+	gap: 16px;
+
+	@media only screen and (max-width: #{dimensions.$breakpoint-mobile-l}) {
+		flex-direction: column;
+	}
 
 	> * {
 		flex: 1;
 
-		&:not(:last-child) {
-			margin-right: 16px;
-		}
+		height: unset;
+		align-content: stretch;
 	}
 }

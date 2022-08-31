@@ -126,7 +126,7 @@ const StakePool = (props: StakePoolProps) => {
 					{HISTORY_ITEMS.map((item) => (
 						<li>
 							<div>
-								<b>{truncateAddress(item.address)} </b>
+								<b>{truncateWalletAddress(item.address)} </b>
 								{historyTypeToString(item.type)}
 								{item.amount !== undefined && item.amount > 0 && (
 									<b>

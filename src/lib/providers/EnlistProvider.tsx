@@ -51,7 +51,7 @@ const EnlistProvider: React.FC<EnlistProviderType> = ({ children }) => {
 					reason: params.reason,
 					domain_name: `0://${enlisting!.name}`,
 				});
-			} catch (e) {
+			} catch (e: any) {
 				console.error(`Failed to enlist: ${e.text}`);
 			}
 		};

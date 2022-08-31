@@ -1,3 +1,5 @@
+@use 'styles/variables/colors';
+
 .Container {
 	> *:not(:first-child) {
 		margin-top: 40px;
@@ -12,5 +14,13 @@
 	.Balance {
 		margin-top: 32px;
 		text-align: center;
+
+		> span:first-child {
+			color: #{colors.$grey-lighter-2};
+		}
+
+		.Value {
+			color: unset;
+		}
 	}
 }

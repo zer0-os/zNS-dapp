@@ -1,34 +1,29 @@
-import React from 'react';
-
+import { useState } from 'react';
 import { Maybe, Metadata } from 'lib/types';
 import { getMetadata } from 'lib/metadata';
+import { useZnsSdk } from 'lib/hooks/sdk';
+import useAsyncEffect from 'use-async-effect';
 
-export function useDomainMetadata(metadataUri: Maybe<string>) {
-	const [metadata, setMetadata] = React.useState<Maybe<Metadata>>(null);
+export function useDomainMetadata(metadataUri: Maybe<string>): Maybe<Metadata> {
+	const [metadata, setMetadata] = useState<Maybe<Metadata>>(undefined);
+	const { instance: sdk } = useZnsSdk();
 
-	React.useEffect(() => {
+	useAsyncEffect(async () => {
 		let isSubscribed = true;
+		setMetadata(undefined);
 
 		if (!metadataUri) {
 			return;
 		}
-
-		setMetadata(null);
-
-		const fetchMetadata = async () => {
-			const metadata = await getMetadata(metadataUri);
-
-			if (isSubscribed) {
-				setMetadata(metadata);
-			}
-		};
-
-		fetchMetadata();
+		const m: Metadata | undefined = await getMetadata(metadataUri);
+		if (isSubscribed) {
+			setMetadata(m);
+		}
 
 		return () => {
 			isSubscribed = false;
 		};
-	}, [metadataUri]);
+	}, [metadataUri, sdk.utility]);
 
 	return metadata;
 }

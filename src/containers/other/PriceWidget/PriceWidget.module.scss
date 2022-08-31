@@ -1,0 +1,168 @@
+@use 'styles/variables/typography';
+@use 'styles/variables/colors';
+@use 'styles/variables/borders';
+
+.PriceContainer {
+	height: 100%;
+	width: 100%;
+	cursor: pointer;
+
+	&:hover .Details {
+		background-color: #{colors.$purple-10};
+	}
+
+	.Details {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		background: none;
+		height: 100%;
+		padding: 16px;
+		border: 1px solid #{colors.$purple-15};
+		border-radius: #{borders.$radius-primary};
+		z-index: 0;
+		transition: all 0.2s ease-in-out 0s;
+	}
+}
+
+.DropdownContent {
+	width: 360px;
+	cursor: default;
+	padding: 32px;
+	border-radius: #{borders.$radius-primary};
+	background: #{colors.$purple-10};
+	border: 1px solid #{colors.$bossanova};
+}
+
+.CurrentPriceContainer {
+	display: flex;
+	flex-direction: row;
+	align-items: baseline;
+}
+
+.TickerName {
+	font-size: 10px;
+	font-weight: #{typography.$font-weight-regular};
+	line-height: 12.1px;
+	color: #{colors.$grey-lighter-2};
+}
+
+.CurrentPriceSml {
+	font-size: #{typography.$size-tiny};
+	font-weight: #{typography.$font-weight-bold};
+	line-height: 14.5px;
+	padding: 2px 6px 0 0;
+	color: #{colors.$text-primary};
+	text-shadow: #{colors.$text-glow-primary};
+}
+
+.CurrentPriceLrg {
+	font-size: #{typography.$size-default};
+	font-weight: #{typography.$font-weight-bold};
+	line-height: 24px;
+	padding: 0 6px 0 0;
+	color: #{colors.$text-primary};
+	text-shadow: #{colors.$text-glow-primary};
+}
+
+.PercentageChange {
+	font-size: #{typography.$size-tiny};
+	font-weight: #{typography.$font-weight-regular};
+	line-height: 14.5px;
+}
+
+.PercentageChangePositive {
+	color: #{colors.$success-green};
+}
+
+.PercentageChangeNegative {
+	color: #{colors.$red-300};
+}
+
+.WalletConnected {
+	right: calc(0% - 130px);
+}
+
+.ExternalUrl {
+	display: flex;
+	align-items: flex-end;
+
+	a {
+		font-size: #{typography.$size-tiny};
+		line-height: 15px;
+		text-shadow: none;
+		background-color: transparent;
+		padding-right: 6px;
+		color: #{colors.$grey-lighter-4};
+	}
+
+	&:hover {
+		transform: scale(1.01);
+	}
+}
+
+.Section {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	gap: 16px;
+}
+
+.SectionBaseline {
+	align-items: baseline;
+}
+
+.SectionCenter {
+	align-items: center;
+}
+
+.DividerCopy {
+	font-weight: #{typography.$font-weight-bold};
+	font-size: #{typography.$size-tiny};
+	line-height: 14px;
+	margin-top: 24px;
+	color: #{colors.$grey-lighter-3};
+}
+
+.Divider {
+	// width: 70%;
+	flex-grow: 1;
+	margin-top: 10px;
+	border-top: 1px solid #{colors.$purple-15};
+}
+
+.UrlRowContainer {
+	display: flex;
+	justify-content: center;
+	width: 100%;
+
+	a {
+		max-width: 270px;
+		width: 100%;
+		font-size: #{typography.$size-small};
+		line-height: 17px;
+		text-shadow: unset;
+		color: #{colors.$blue};
+		padding-top: 10px;
+	}
+}
+
+.IconWrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	border-radius: calc(#{borders.$radius-primary} / 2);
+	img {
+		width: 40px;
+		height: 40px;
+	}
+
+	p {
+		padding: 2px 0 6px 0;
+	}
+
+	&:hover {
+		background: #{colors.$azure-25};
+	}
+}

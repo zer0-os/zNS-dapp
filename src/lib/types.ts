@@ -1,5 +1,7 @@
 // Types
 
+//- Library Imports
+import { ConvertedTokenInfo, StakingRequests } from '@zero-tech/zns-sdk';
 import { ethers } from 'ethers';
 
 export type Maybe<T> = T | undefined | null;
@@ -9,25 +11,40 @@ export interface Account {
 	id: string;
 }
 
+export interface DomainMin {
+	id: string;
+	name: string;
+}
+
 export interface Domain {
 	id: string;
 	name: string;
-	parent: string;
+	parent: DomainMin;
 	owner: Account;
 	minter: Account;
 	metadata: string;
+	contract?: string; // TODO: Making it optional so that tests and other scenarios work
+	isLocked: boolean;
+	lockedBy: Account;
+	isRoot?: boolean;
+	paymentTokenInfo?: ConvertedTokenInfo;
 }
 
 // We have two different types of Metadata
 // because we changed Schema. This needs to be
 // handled in a better way
 interface Meta {
-	description: string;
+	[key: string]: any | undefined;
 	image: string; // One of: Image, Video, 3d Model
+	animation_url?: string;
+	stakingRequests?: StakingRequests;
+	isBiddable?: boolean;
+	gridViewByDefault?: boolean;
+	customDomainHeader?: boolean;
 	previewImage?: string; // One of: Image, Video
+	customDomainHeaderValue?: string;
 	image_full?: string;
 	attributes?: Attribute[];
-	animation_url?: string;
 }
 
 export interface Attribute {
@@ -42,6 +59,15 @@ export interface Metadata extends Meta {
 export interface UploadMetadata extends Meta {
 	name: string;
 }
+
+export type AdditionalMetadata = Pick<
+	Metadata,
+	| 'stakingRequests'
+	| 'isBiddable'
+	| 'gridViewByDefault'
+	| 'customDomainHeader'
+	| 'customDomainHeaderValue'
+>;
 
 export interface ParentDomain extends Domain {
 	subdomains: SubDomain[];
@@ -94,6 +120,7 @@ export interface NftParams {
 	previewImage?: Buffer;
 	dynamic: boolean;
 	locked: boolean;
+	additionalMetadata?: AdditionalMetadata;
 }
 
 // Interface for an NFT Status Card
@@ -132,14 +159,22 @@ export interface DisplayDomainRequestAndContents
 export const DefaultDomain: Domain = {
 	id: '',
 	name: '',
-	parent: '',
+	parent: {
+		id: '',
+		name: '',
+	},
 	owner: {
 		id: '',
 	},
 	minter: {
 		id: '',
 	},
+	contract: '',
 	metadata: '',
+	isLocked: false,
+	lockedBy: {
+		id: '',
+	},
 };
 
 // @zachary change these types
@@ -152,7 +187,7 @@ export type Bid = {
 	tokenId: string;
 
 	signature: ethers.utils.BytesLike;
-	auctionId: string;
+	bidNonce: string;
 	nftAddress: string;
 	minBid: string;
 	startBlock: string;
@@ -207,4 +242,16 @@ export interface TransferSubmitParams {
 	image: string;
 	creatorId: string;
 	walletAddress: string;
+	onClose: () => void;
+}
+
+export interface StakingRequest {
+	requestor: string;
+	stakeAmount: string;
+	stakeCurrency: string;
+	nft: NftParams;
+}
+
+export interface PaymentToken {
+	id: string;
 }

@@ -3,23 +3,21 @@
 }
 
 .Content {
-	/* display: none; */
 	position: absolute;
-	padding-top: 12px;
-	right: -86px;
+	padding-top: 20px;
+	left: -383px;
 	z-index: 10;
-
 	opacity: 0;
 }
 
 .Open {
-	animation: open var(--animation-time-short) forwards;
+	animation: open 0.1s forwards;
 	animation-timing-function: ease-in-out;
 	opacity: 1;
 }
 
 .Closed {
-	animation: close var(--animation-time-short) forwards;
+	animation: close 0.1s forwards;
 	animation-timing-function: ease-in-out;
 	display: none;
 }

@@ -1,93 +1,48 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Artwork, FutureButton, Spinner } from 'components';
-import React, { useEffect, useRef, useState } from 'react';
+import { Artwork, FutureButton, Overlay, Spinner } from 'components';
+import React, { useState } from 'react';
 
 import { useWeb3React } from '@web3-react/core';
-import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
+import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
 
-import { BidButton, BuyNowButton } from 'containers';
+import { BidButton, BuyNowButton, MakeABid } from 'containers';
 
-import { useBidProvider } from 'lib/hooks/useBidProvider';
-import useCurrency from 'lib/hooks/useCurrency';
-import { Bid } from 'lib/types';
 import { useHistory } from 'react-router-dom';
-import { useBid } from './BidProvider';
 import { ethers } from 'ethers';
-import { DomainMetrics } from '@zero-tech/zns-sdk/lib/types';
-import { formatNumber, formatEthers } from 'lib/utils';
-import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
+import { ConvertedTokenInfo, DomainMetrics } from '@zero-tech/zns-sdk';
+import { formatEthers, formatNumber, getNetworkZNA } from 'lib/utils';
+
+import { ROUTES } from 'constants/routes';
 
 import styles from './SubdomainTableRow.module.scss';
+import useSubdomainData from './hooks/useSubdomainData';
+import { Modal } from './SubdomainTableCard.constants';
 
 const SubdomainTableRow = (props: any) => {
-	const isMounted = useRef<boolean>();
-
-	const walletContext = useWeb3React<Web3Provider>();
-	const { account, library } = walletContext;
+	const { account } = useWeb3React();
 	const { push: goTo } = useHistory();
-
-	const { instance: sdk } = useZnsSdk();
-	const { makeABid, updated } = useBid();
-	const { getBidsForDomain } = useBidProvider();
-
-	const { wildPriceUsd } = useCurrency();
 
 	const domain = props.data;
 	const tradeData: DomainMetrics = domain?.metrics;
 
-	const [bids, setBids] = useState<Bid[] | undefined>();
-	const [buyNowPrice, setBuyNowPrice] = useState<number | undefined>();
+	const paymentTokenInfo: ConvertedTokenInfo = props.data.paymentTokenInfo;
 
-	const [hasUpdated, setHasUpdated] = useState<boolean>(false);
-	const [isPriceDataLoading, setIsPriceDataLoading] = useState<boolean>(true);
+	const domainMetadata = useDomainMetadata(domain?.metadata);
+
+	const [modal, setModal] = useState<Modal | undefined>();
+
+	const isRootDomain = domain.name.split('.').length <= 2;
+	const isBiddable =
+		isRootDomain || Boolean(domainMetadata?.isBiddable ?? true);
 
 	const isOwnedByUser =
 		account?.toLowerCase() === domain?.owner?.id.toLowerCase();
 
-	useEffect(() => {
-		if (updated && updated.id === domain.id) {
-			setHasUpdated(!hasUpdated);
-		}
-	}, [updated]);
-
-	useEffect(() => {
-		isMounted.current = true;
-		fetchData();
-		return () => {
-			isMounted.current = false;
-		};
-	}, [domain, hasUpdated, account]);
-
-	const fetchData = async () => {
-		setIsPriceDataLoading(true);
-		setBids(undefined);
-		setBuyNowPrice(undefined);
-
-		if (library) {
-			const zAuction = await sdk.getZAuctionInstanceForDomain(domain.id);
-			const buyNow = await zAuction.getBuyNowPrice(
-				domain.id,
-				library.getSigner(),
-			);
-			if (isMounted.current === false) {
-				return;
-			}
-			if (buyNow) {
-				setBuyNowPrice(Number(ethers.utils.formatEther(buyNow.price)));
-			}
-		}
-
-		try {
-			const b = await getBidsForDomain(domain);
-			if (isMounted.current === true) {
-				setBids(b);
-				setIsPriceDataLoading(false);
-			}
-		} catch (err) {
-			setIsPriceDataLoading(false);
-			console.log('Failed to load domain data', err);
-		}
-	};
+	const {
+		isLoading: isLoadingSubdomain,
+		buyNowPrice,
+		refetch,
+	} = useSubdomainData(domain.id);
 
 	const highestBid = () => {
 		if (!tradeData) {
@@ -96,15 +51,16 @@ const SubdomainTableRow = (props: any) => {
 			return (
 				<>
 					<span className={styles.Bid}>
-						{tradeData.highestBid ? formatEthers(tradeData.highestBid) : 0}
+						{tradeData.volume.all ? formatEthers(tradeData.volume.all) : 0}{' '}
+						{paymentTokenInfo?.symbol}
 					</span>
-					{wildPriceUsd > 0 && (
+					{Number(paymentTokenInfo?.priceInUsd) > 0 && (
 						<span className={styles.Bid}>
 							$
-							{tradeData.highestBid
+							{tradeData.volume.all
 								? formatNumber(
-										Number(ethers.utils.formatEther(tradeData?.highestBid)) *
-											wildPriceUsd,
+										Number(ethers.utils.formatEther(tradeData.volume.all)) *
+											Number(paymentTokenInfo?.priceInUsd),
 								  )
 								: 0}{' '}
 						</span>
@@ -114,6 +70,7 @@ const SubdomainTableRow = (props: any) => {
 		}
 	};
 
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const formatColumn = (columnName: keyof DomainMetrics) => {
 		const value =
 			columnName === 'volume'
@@ -130,11 +87,12 @@ const SubdomainTableRow = (props: any) => {
 							: '-'}
 					</span>
 				)}
-				{wildPriceUsd > 0 && Number(value) > 0 && (
+				{Number(paymentTokenInfo?.priceInUsd) > 0 && Number(value) > 0 && (
 					<span className={styles.Bid}>
 						{'$' +
 							formatNumber(
-								wildPriceUsd * Number(ethers.utils.formatEther(value)),
+								Number(paymentTokenInfo?.priceInUsd) *
+									Number(ethers.utils.formatEther(value)),
 							)}
 					</span>
 				)}
@@ -144,35 +102,12 @@ const SubdomainTableRow = (props: any) => {
 
 	const bidColumns = () => {
 		// TODO: Avoid directly defining the columns and associated render method.
-		if (!isPriceDataLoading) {
-			return (
-				<>
-					<td className={styles.Right}>{highestBid()}</td>
-					<td className={styles.Right}>
-						{!bids && '-'}
-						{bids && formatNumber(bids.length)}
-					</td>
-					<td className={`${styles.Right} ${styles.lastSaleCol}`}>
-						{formatColumn('lastSale')}
-					</td>
-					<td className={`${styles.Right} ${styles.volumeCol}`}>
-						{formatColumn('volume')}
-					</td>
-				</>
-			);
+		if (!isLoadingSubdomain) {
+			return <td className={styles.Right}>{highestBid()}</td>;
 		} else {
 			return (
 				<>
 					<td className={styles.Right}>
-						<Spinner />
-					</td>
-					<td className={styles.Right}>
-						<Spinner />
-					</td>
-					<td className={`${styles.Right} ${styles.lastSaleCol}`}>
-						<Spinner />
-					</td>
-					<td className={`${styles.Right} ${styles.volumeCol}`}>
 						<Spinner />
 					</td>
 				</>
@@ -181,53 +116,71 @@ const SubdomainTableRow = (props: any) => {
 	};
 
 	const onBidButtonClick = () => {
-		makeABid(domain);
+		if (account !== undefined && !isOwnedByUser && isBiddable) {
+			setModal(Modal.MAKE_A_BID);
+		}
 	};
 
 	const onRowClick = (event: any) => {
 		const clickedButton = event.target.className.indexOf('FutureButton') >= 0;
 		if (!clickedButton) {
-			goTo(`/market/${domain.name.split('wilder.')[1]}`);
+			goTo(ROUTES.MARKET + '/' + getNetworkZNA(domain.name));
 		}
 	};
-
 	return (
-		<tr className={styles.Row} onClick={onRowClick}>
-			<td>{props.rowNumber + 1}</td>
-			<td>
-				<Artwork
-					domain={domain.name.split('wilder.')[1]}
-					disableInteraction
-					metadataUrl={domain.metadata}
-					id={domain.id}
-					style={{ maxWidth: 200 }}
-				/>
-			</td>
-			{bidColumns()}
-			<td>
-				{isPriceDataLoading ? (
-					<FutureButton style={{ marginLeft: 'auto', width: 160 }} glow loading>
-						Loading
-					</FutureButton>
-				) : buyNowPrice ? (
-					<BuyNowButton
-						onSuccess={fetchData}
-						buttonText="Buy Now"
-						domainId={domain.id}
-						disabled={isOwnedByUser}
-						style={{ marginLeft: 'auto', width: 160 }}
+		<>
+			{modal === Modal.MAKE_A_BID && (
+				<Overlay onClose={() => setModal(undefined)} open>
+					<MakeABid
+						domain={domain}
+						onBid={refetch}
+						onClose={() => setModal(undefined)}
+						paymentTokenInfo={paymentTokenInfo}
 					/>
-				) : (
-					<BidButton
-						glow={account !== undefined && !isOwnedByUser}
-						onClick={onBidButtonClick}
-						style={{ marginLeft: 'auto', width: 160 }}
-					>
-						Make A Bid
-					</BidButton>
-				)}
-			</td>
-		</tr>
+				</Overlay>
+			)}
+			<tr className={styles.Row} onClick={onRowClick}>
+				<td>{props.rowNumber + 1}</td>
+				<td>
+					<Artwork
+						domain={'0://' + domain.name}
+						disableInteraction
+						metadataUrl={domain.metadata}
+						id={domain.id}
+						style={{ maxWidth: 220 }}
+					/>
+				</td>
+				{bidColumns()}
+				<td>
+					{isLoadingSubdomain ? (
+						<FutureButton
+							style={{ marginLeft: 'auto', width: 93 }}
+							glow
+							loading
+						>
+							Loading
+						</FutureButton>
+					) : buyNowPrice ? (
+						<BuyNowButton
+							onSuccess={refetch}
+							buttonText="Buy"
+							domainId={domain.id}
+							disabled={isOwnedByUser || !account}
+							style={{ marginLeft: 'auto' }}
+							paymentTokenInfo={paymentTokenInfo}
+						/>
+					) : (
+						<BidButton
+							glow={account !== undefined && !isOwnedByUser && isBiddable}
+							onClick={onBidButtonClick}
+							style={{ marginLeft: 'auto' }}
+						>
+							Bid
+						</BidButton>
+					)}
+				</td>
+			</tr>
+		</>
 	);
 };
 

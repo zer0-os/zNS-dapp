@@ -1,0 +1,124 @@
+@use 'styles/variables/colors';
+@use 'styles/variables/animations';
+@use 'styles/variables/typography';
+
+$gap: 40px;
+
+.Container {
+	> *:not(:first-child) {
+		margin-top: $gap;
+	}
+
+	.Connect {
+		display: flex;
+		justify-content: center;
+		flex-direction: column;
+		align-items: center;
+		margin-top: calc($gap * 2);
+
+		p {
+			text-align: center;
+		}
+	}
+
+	.Header {
+		display: flex;
+		justify-content: space-between;
+
+		gap: 24px;
+
+		.Back {
+			display: flex;
+			align-items: center;
+			background: none;
+			color: #{colors.$white};
+			font-size: #{typography.$size-large};
+			font-weight: #{typography.$font-weight-bold};
+
+			span {
+				display: block;
+				margin-left: 16px;
+			}
+		}
+
+		@media only screen and (max-width: 500px) {
+			flex-direction: column;
+		}
+
+		.Account {
+			display: flex;
+			align-items: center;
+			padding: 8px 16px;
+			border: 1px solid #{colors.$purple-15};
+
+			gap: 10px;
+
+			cursor: pointer;
+
+			background: #{colors.$background-primary};
+			color: #{colors.$text-primary};
+			text-align: left;
+
+			transition: background-color #{animations.$time-short} ease;
+
+			&:active {
+				background-color: rgb(26, 16, 34, 0.4) !important;
+			}
+
+			&:hover {
+				background-color: #{colors.$purple-10};
+
+				.Details > span:not(:first-child) {
+					text-shadow: #{colors.$text-glow-primary};
+				}
+			}
+
+			.Details {
+				display: flex;
+				flex-direction: column;
+				gap: 3px;
+
+				> span {
+					display: block;
+
+					&:first-child {
+						font-size: #{typography.$size-tiny};
+						color: #{colors.$grey-lighter-2};
+					}
+				}
+			}
+		}
+	}
+
+	.Address {
+		width: 100%;
+		max-width: 515px;
+	}
+
+	.Nav {
+		display: flex;
+
+		border-bottom: 1px solid #120d16; // purple-5
+
+		a {
+			padding: 0 12px 8px 12px;
+			color: #{colors.$grey-lighter-3};
+			text-align: center;
+
+			&.Selected {
+				border-bottom: 1px solid #{colors.$bossanova};
+				font-weight: #{typography.$font-weight-bold};
+				color: #{colors.$text-primary};
+			}
+
+			&::before {
+				display: block;
+				content: attr(data-title);
+				overflow: hidden;
+				height: 0;
+				visibility: hidden;
+				font-weight: #{typography.$font-weight-bold};
+			}
+		}
+	}
+}

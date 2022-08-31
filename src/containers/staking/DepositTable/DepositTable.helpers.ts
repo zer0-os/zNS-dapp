@@ -10,7 +10,7 @@ export const TABLE_HEADERS = [
 		className: '',
 	},
 	{
-		label: 'Date Staked',
+		label: 'Date Claimed',
 		accessor: '',
 		className: '',
 	},

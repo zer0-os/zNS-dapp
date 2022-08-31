@@ -1,0 +1,12 @@
+@use 'styles/variables/dimensions';
+
+.ConnectButton {
+	padding-left: 8px;
+	padding-right: 8px;
+
+	&:first-child {
+		@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
+			margin-top: 4px;
+		}
+	}
+}

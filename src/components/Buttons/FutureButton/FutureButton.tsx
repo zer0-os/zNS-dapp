@@ -4,16 +4,17 @@ import React, { useState } from 'react';
 import styles from './FutureButtonStyle.module.scss';
 // Style Imports
 import classNames from 'classnames/bind';
+import { Spinner } from 'components';
 
 type FutureButtonProps = {
 	className?: string;
 	onClick?: (event?: any) => void;
 	style?: React.CSSProperties;
-	toggleable?: boolean;
 	children: React.ReactNode;
 	glow?: boolean;
 	loading?: boolean;
 	alt?: boolean;
+	secondary?: boolean;
 	disabled?: boolean;
 };
 
@@ -30,15 +31,14 @@ const FutureButton: React.FC<FutureButtonProps> = ({
 	className,
 	onClick,
 	style,
-	toggleable,
 	children,
 	glow,
 	loading,
 	alt,
-	disabled,
+	secondary,
+	disabled = false,
 }) => {
 	const [hasHovered, setHovered] = useState(false);
-	const [isSelected, setSelected] = useState(false);
 
 	const handleHover = () => {
 		if (!glow) return;
@@ -46,24 +46,20 @@ const FutureButton: React.FC<FutureButtonProps> = ({
 	};
 
 	const handleClick = (event: any) => {
-		if (loading) return;
+		if (loading || disabled) return;
 		if (onClick) onClick(event);
-		if (toggleable) setSelected(!isSelected);
 	};
 
-	const buttonClasses = cx(className, {
-		futureButton: true,
-		futureButtonInactive: !glow,
-		glow: glow,
-		selected: isSelected,
+	const buttonClasses = cx(className, styles.Container, {
+		Glow: glow,
 		Loading: loading,
 		Alt: alt,
+		Secondary: secondary,
 		Disabled: disabled,
 	});
 
-	const washClasses = cx({
-		wash: true,
-		hovered: hasHovered && !isSelected,
+	const washClasses = cx(styles.Wash, {
+		Hovered: hasHovered,
 	});
 
 	return (
@@ -78,7 +74,7 @@ const FutureButton: React.FC<FutureButtonProps> = ({
 			<div className={styles.Content}>
 				{!loading && children}
 				{loading && (
-					<div className={styles.Spinner} data-testid={TEST_ID.LOADER}></div>
+					<Spinner className={styles.Spinner} data-testid={TEST_ID.LOADER} />
 				)}
 			</div>
 			<div className={washClasses} data-testid={TEST_ID.WASH}></div>

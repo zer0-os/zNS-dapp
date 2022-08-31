@@ -1,0 +1,41 @@
+@use 'styles/variables/animations';
+@use 'styles/variables/colors';
+@use 'styles/variables/borders';
+
+.info-button {
+	height: 40px;
+	width: 40px;
+
+	transition: all #{animations.$time-short} linear;
+
+	&__container {
+		.info-button {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			padding: 0;
+			background: none;
+		}
+
+		&:hover {
+			.info-button {
+				border-radius: calc(#{borders.$radius-primary} / 2);
+				background: #{colors.$purple-10};
+
+				svg {
+					circle {
+						fill: white;
+					}
+				}
+
+				&::after {
+					box-shadow: none !important;
+				}
+			}
+
+			.info-panel__container {
+				display: block;
+			}
+		}
+	}
+}

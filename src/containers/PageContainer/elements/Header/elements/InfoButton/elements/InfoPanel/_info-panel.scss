@@ -1,0 +1,110 @@
+@use 'styles/variables/typography';
+@use 'styles/variables/borders';
+@use 'styles/variables/colors';
+@use 'styles/variables/dimensions';
+
+.info-panel {
+	&__content {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		width: 340px;
+		padding: 32px;
+		border-radius: #{borders.$radius-primary};
+		background: #{colors.$purple-10};
+		cursor: default;
+		border: 1px solid #{colors.$bossanova};
+	}
+
+	&__content-section {
+		width: 100%;
+
+		&.connect-wallet {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			margin: 0 0 1rem;
+
+			&--is-wallet-connected {
+				display: none;
+			}
+		}
+
+		&-title {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			gap: 1rem;
+
+			h3 {
+				font-size: 0.75rem;
+				font-weight: #{typography.$font-weight-bold};
+				text-transform: uppercase;
+			}
+
+			.divider {
+				flex: 1;
+				border-top: 1px solid #{colors.$purple-15};
+			}
+		}
+
+		&-body {
+			display: flex;
+			justify-content: space-around;
+			align-items: center;
+			flex-wrap: wrap;
+			padding: 1rem 0 0;
+
+			&-item {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				height: 60px;
+
+				&.max-4 {
+					width: 25%;
+				}
+
+				> a {
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					width: 48px;
+					height: 48px;
+					padding: 8px;
+					border-radius: 50%;
+
+					&:hover {
+						background: #{colors.$azure-25};
+					}
+				}
+			}
+		}
+
+		&-footer {
+			display: flex;
+			justify-content: space-around;
+			align-items: center;
+			flex-wrap: wrap;
+			padding: 1.25rem 0 0;
+			border-top: 1px solid #{colors.$purple-15};
+
+			&-item {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				flex: 1;
+
+				> a {
+					font-size: #{typography.$size-small};
+				}
+			}
+		}
+	}
+}
+
+@media only screen and (min-width: #{dimensions.$breakpoint-mobile-s}) {
+	.info-panel_nav {
+		display: none;
+	}
+}

@@ -1,60 +1,107 @@
+@use 'styles/variables/typography';
+@use 'styles/variables/colors';
+@use 'styles/variables/animations';
+
+$width: 400px;
+$gutter: 16px;
+
 .Container {
 	display: flex;
 	flex-direction: column;
 
-	width: 400px;
-	min-width: 400px;
-	max-width: 400px;
+	width: $width;
+	min-width: $width;
+	max-width: $width;
 	max-height: 80vh;
 
-	background: var(--color-background);
+	background: #{colors.$background-primary};
 
 	overflow: hidden;
+
+	@media only screen and (max-width: #{$width + $gutter + $gutter}) {
+		width: calc(100vw - $gutter - $gutter);
+		min-width: unset;
+	}
+}
+
+.Pending {
+	text-align: center;
+	margin-top: 32px;
+}
+
+.Accepting {
+	opacity: 0.5;
+
+	* {
+		pointer-events: none;
+	}
 }
 
 .Header {
-	padding: 24px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 24px 40px 2px 40px;
 	padding-bottom: 0;
 }
 
 .Container h4 {
-	font-size: 24px;
-	font-weight: bold;
+	font-size: #{typography.$size-large};
+	font-weight: #{typography.$font-weight-bold};
 	text-align: center;
 }
 
 .Container hr {
-	margin-top: 24px;
+	margin: 27px 0 0 0;
 	width: 100%;
 }
 
 .Container ul {
 	height: 100%;
 	max-height: 100%;
-	padding-top: 24px;
 	padding-bottom: 24px;
 
 	overflow-y: auto;
 	overflow-x: visible;
+
+	&::-webkit-scrollbar-corner {
+		background: #{colors.$black};
+		height: 0;
+		width: 0;
+	}
+
+	&::-webkit-scrollbar-track {
+		background-color: none;
+	}
+
+	&::-webkit-scrollbar {
+		width: 6px;
+		background-color: none;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		border-radius: 10px;
+		background-color: rgba(177, 78, 255, 0.2);
+	}
 }
 
 .Bid {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	padding: 12px 24px;
+	padding: 12px 40px;
 	overflow: visible;
 	justify-content: space-between;
 }
 
 .Bid button {
 	margin-left: auto;
-	transition: transform var(--animation-time-short) ease-in-out,
-		opacity var(--animation-time-short) ease-in-out;
+	transition: transform #{animations.$time-short} ease-in-out,
+		opacity #{animations.$time-short} ease-in-out;
 }
 
 .Bid:hover {
-	background: var(--color-background-alt-50);
+	background: #{colors.$purple-10};
 }
 
 .Bid:hover button {
@@ -62,7 +109,7 @@
 }
 
 .Bid label {
-	font-size: var(--font-size-smaller);
+	font-size: #{typography.$size-small};
 }
 
 .Bid > div {
@@ -72,10 +119,10 @@
 
 .Bid > div > span:first-of-type {
 	margin-top: 6px;
-	font-weight: bold;
+	font-weight: #{typography.$font-weight-bold};
 }
 
 .Bid > div > span:not(:first-of-type) {
 	margin-top: 6px;
-	font-size: 12px;
+	font-size: #{typography.$size-tiny};
 }

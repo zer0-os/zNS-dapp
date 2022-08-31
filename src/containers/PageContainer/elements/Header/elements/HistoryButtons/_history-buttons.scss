@@ -1,0 +1,13 @@
+.history-buttons {
+	&__container {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin: 0 8px;
+	}
+
+	&__button {
+		width: 32px;
+		height: 32px;
+	}
+}

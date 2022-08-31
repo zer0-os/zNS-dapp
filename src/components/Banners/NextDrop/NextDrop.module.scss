@@ -1,3 +1,6 @@
+@use 'styles/variables/colors';
+@use 'styles/variables/typography';
+
 .nextDrop {
 	display: flex;
 	align-items: center;
@@ -22,23 +25,23 @@
 }
 
 .nextDrop h5 {
-	font-size: 24px;
-	font-weight: 700;
+	font-size: #{typography.$size-large};
+	font-weight: #{typography.$font-weight-bold};
 
-	color: var(--color-accent-1);
+	color: #{colors.$blue};
 }
 
 .nextDrop h5 > span {
-	color: var(--color-baby-blue);
+	color: #{colors.$baby-blue};
 }
 
 .nextDrop p {
 	margin-top: 12px;
 	padding-bottom: 0;
 
-	font-weight: 700;
+	font-weight: #{typography.$font-weight-bold};
 }
 
 .nextDrop p > span {
-	color: var(--color-accent-1);
+	color: #{colors.$blue};
 }

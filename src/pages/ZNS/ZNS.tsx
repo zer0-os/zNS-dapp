@@ -1,31 +1,29 @@
 //- React Imports
 import React, { useMemo } from 'react';
-import { useState, useEffect, useRef } from 'react';
-import { Spring, animated } from 'react-spring';
+import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
 //- Library Imports
-import { formatNumber, formatEthers } from 'lib/utils';
+import { formatNumber, formatEthers, isRootDomain } from 'lib/utils';
 
 //- Style Imports
 import styles from './ZNS.module.scss';
 
 //- Components & Containers
-import { Banner, StatsWidget } from 'components';
-
-import { SubdomainTable, CurrentDomainPreview, WheelsRaffle } from 'containers';
+import { StatsWidget } from 'components';
+import { NFTViewModalProvider } from 'containers/other/NFTView/providers/NFTViewModalProvider/NFTViewModalProvider';
+import { SubdomainTable, CurrentDomainPreview, Raffle } from 'containers';
+import { Stage } from 'containers/flows/MintDropNFT/types';
 
 //- Library Imports
 import { NFTView, TransferOwnership } from 'containers';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
-import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
 import { DomainMetrics } from '@zero-tech/zns-sdk/lib/types';
 import { ethers } from 'ethers';
-import useCurrency from 'lib/hooks/useCurrency';
 import useMatchMedia from 'lib/hooks/useMatchMedia';
-import useScrollDetection from 'lib/hooks/useScrollDetection';
 import { useDidMount } from 'lib/hooks/useDidMount';
-import { useLocation } from 'react-router-dom';
-import { useNavBarContents } from 'lib/providers/NavBarProvider';
+import { useNavbar } from 'lib/hooks/useNavbar';
+import { useZnsSdk } from 'lib/hooks/sdk';
 
 type ZNSProps = {
 	version?: number;
@@ -48,20 +46,22 @@ const ZNS: React.FC<ZNSProps> = () => {
 	// Web3 Handling //
 	///////////////////
 	const sdk = useZnsSdk();
-	const { wildPriceUsd } = useCurrency();
 
 	//- Domain Data
-	const { domain: znsDomain, domainRaw: domain } = useCurrentDomain();
+	const {
+		domain: znsDomain,
+		domainRaw: domain,
+		paymentTokenInfo: paymentToken,
+	} = useCurrentDomain();
 
 	////////////////////////
 	// Browser Navigation //
 	////////////////////////
 
-	const previewCardRef = useRef<HTMLDivElement>(null);
-
 	const isMobile = useMatchMedia('phone');
-	const isTabletPortrait = useMatchMedia('(max-width: 768px)');
-	const isMobilePortrait = useMatchMedia('(max-width: 520px)');
+	const isMobilePortrait = useMatchMedia('(max-width: 569px)');
+
+	const enableBanner = false;
 
 	const location = useLocation();
 	const nftView = useMemo(
@@ -73,23 +73,23 @@ const ZNS: React.FC<ZNSProps> = () => {
 	const [hasLoaded, setHasLoaded] = useState(false);
 	const [showDomainTable, setShowDomainTable] = useState(true);
 	const [isNftView, setIsNftView] = useState(nftView === true);
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const [isScrollDetectionDown, setScrollDetectionDown] = useState(false);
 
 	//- Overlay State
 	const [modal, setModal] = useState<Modal | undefined>();
 	const [tradeData, setTradeData] = useState<DomainMetrics | undefined>();
 	const [statsLoaded, setStatsLoaded] = useState(false);
 
-	///////////////
-	// Hooks //
-	///////////////
-	useScrollDetection(setScrollDetectionDown);
+	//- Claim Drop Stage state
+	const [claimDropStage, setClaimDropStage] = useState<Stage>();
 
-	const { setTitle } = useNavBarContents();
+	///////////
+	// Hooks //
+	///////////
+
+	const { setNavbarTitle } = useNavbar();
 
 	useDidMount(() => {
-		setTitle(undefined);
+		setNavbarTitle(undefined);
 	});
 
 	///////////////
@@ -163,11 +163,9 @@ const ZNS: React.FC<ZNSProps> = () => {
 	/////////////////////
 
 	const nftStats = () => {
-		let width = '24.2%';
+		let width = '32%';
 		if (isMobilePortrait) {
 			width = '100%';
-		} else if (isTabletPortrait) {
-			width = '32%';
 		}
 
 		const data = [
@@ -177,22 +175,17 @@ const ZNS: React.FC<ZNSProps> = () => {
 				isHidden: isMobilePortrait,
 			},
 			{
-				fieldName: 'Total Owners',
-				title: tradeData?.holders ? formatNumber(tradeData.holders) : 0,
-				isHidden: isMobile || isTabletPortrait,
-			},
-			{
 				fieldName: 'Floor Price',
 				title: `${
 					tradeData?.lowestSale ? formatEthers(tradeData?.lowestSale) : 0
-				} WILD`,
+				} ${paymentToken?.symbol}`,
 				subTitle:
-					wildPriceUsd > 0
+					Number(paymentToken?.priceInUsd) > 0
 						? `$${
 								tradeData?.lowestSale
 									? formatNumber(
 											Number(ethers.utils.formatEther(tradeData?.lowestSale)) *
-												wildPriceUsd,
+												Number(paymentToken?.priceInUsd),
 									  )
 									: 0
 						  }`
@@ -201,10 +194,12 @@ const ZNS: React.FC<ZNSProps> = () => {
 			{
 				fieldName: 'Volume',
 				title: (tradeData?.volume as any)?.all
-					? `${formatEthers((tradeData?.volume as any)?.all)} WILD`
+					? `${formatEthers((tradeData?.volume as any)?.all)} ${
+							paymentToken?.symbol
+					  }`
 					: '',
 				subTitle:
-					wildPriceUsd > 0
+					Number(paymentToken?.priceInUsd) > 0
 						? `$${
 								(tradeData?.volume as any)?.all
 									? formatNumber(
@@ -212,7 +207,7 @@ const ZNS: React.FC<ZNSProps> = () => {
 												ethers.utils.formatEther(
 													(tradeData?.volume as any)?.all,
 												),
-											) * wildPriceUsd,
+											) * Number(paymentToken?.priceInUsd),
 									  )
 									: 0
 						  }`
@@ -250,38 +245,9 @@ const ZNS: React.FC<ZNSProps> = () => {
 
 	const previewCard = () => {
 		const isVisible = domain !== '' && !isNftView;
-		let to;
-		if (isVisible && previewCardRef) {
-			// If should be visible, slide down
-			to = { opacity: 1, marginTop: 0, marginBottom: 0 };
-		} else {
-			// If root view, slide up
-			to = {
-				opacity: 0,
-				marginTop: -(previewCardRef?.current?.clientHeight || 0) - 14,
-				marginBottom: 16,
-			};
-		}
 
-		return (
-			<>
-				{/* Preview Card */}
-				<Spring to={to}>
-					{(styles) => (
-						<animated.div style={styles}>
-							<div ref={previewCardRef}>
-								<CurrentDomainPreview />
-							</div>
-						</animated.div>
-					)}
-				</Spring>
-			</>
-		);
+		return isVisible ? <CurrentDomainPreview /> : <></>;
 	};
-
-	const subTable = useMemo(() => {
-		return <SubdomainTable style={{ marginTop: 16 }} isNftView={isNftView} />;
-	}, [isNftView]);
 
 	////////////
 	// Render //
@@ -293,7 +259,7 @@ const ZNS: React.FC<ZNSProps> = () => {
 			{modal === Modal.Transfer && (
 				<TransferOwnership
 					metadataUrl={znsDomain?.metadata ?? ''}
-					domainName={domain}
+					domainName={znsDomain?.name ?? ''}
 					domainId={znsDomain?.id ?? ''}
 					onTransfer={closeModal}
 					creatorId={znsDomain?.minter?.id || ''}
@@ -301,38 +267,28 @@ const ZNS: React.FC<ZNSProps> = () => {
 				/>
 			)}
 			{/* ZNS Content */}
-			<WheelsRaffle />
-
-			{/* <Banner /> */}
-
+			{enableBanner && <Raffle setClaimDropStage={setClaimDropStage} />}
 			{!isNftView && (
-				<div
-					className="background-primary border-primary border-rounded"
-					style={{
-						background: 'var(--background-primary)',
-						overflow: 'hidden',
-						marginTop: 16,
-					}}
-				>
+				<div className="main">
 					{previewCard()}
-					{nftStats()}
-					{showDomainTable && subTable}
+					{!(isMobile || isMobilePortrait || isRootDomain(znsDomain?.id)) &&
+						nftStats()}
+					{showDomainTable && (
+						<div className={styles.TableContainer}>
+							<SubdomainTable />
+						</div>
+					)}
 				</div>
 			)}
 			{znsDomain && isNftView && (
-				<Spring
-					from={{ opacity: 0, marginTop: 16 }}
-					to={{ opacity: 1, marginTop: 16 }}
-				>
-					{(styles) => (
-						<animated.div style={styles}>
-							<NFTView
-								// domain={domain}
-								onTransfer={openTransferOwnershipModal}
-							/>
-						</animated.div>
-					)}
-				</Spring>
+				<NFTViewModalProvider>
+					<NFTView
+						// domain={domain}
+						onTransfer={openTransferOwnershipModal}
+						claimDropStage={claimDropStage}
+						setClaimDropStage={setClaimDropStage}
+					/>
+				</NFTViewModalProvider>
 			)}
 		</>
 	);

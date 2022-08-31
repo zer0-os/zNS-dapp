@@ -1,0 +1,78 @@
+@use 'styles/variables/dimensions';
+@use 'styles/variables/colors';
+
+.NFTDetailsContainer {
+	margin-bottom: 28px;
+	display: flex;
+	justify-content: center;
+
+	// Tablet Breakpoint
+	@media only screen and (min-width: #{dimensions.$breakpoint-tablet-xs}) {
+		justify-content: unset;
+	}
+}
+
+.PlaceBidContainer {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	// Tablet Breakpoint
+	@media only screen and (min-width: #{dimensions.$breakpoint-tablet-xs}) {
+		margin-top: 12px;
+	}
+}
+
+.TextContainer {
+	display: inline-block;
+	text-align: center;
+	word-break: break-word;
+	line-height: 24px;
+	padding-bottom: 0px;
+
+	div {
+		display: inline-block;
+	}
+
+	// Tablet Breakpoint
+	@media only screen and (min-width: #{dimensions.$breakpoint-tablet-xs}) {
+		padding-bottom: 8px;
+	}
+}
+
+.Estimate {
+	margin: 16px auto;
+}
+
+.TextInput {
+	color: #{colors.$text-glow-white};
+	width: 304px;
+	margin: 0 auto;
+	padding: 14px 24px 10px 24px;
+
+	background: #{colors.$text-input-background-gradient};
+}
+
+.Buttons {
+	display: flex;
+	justify-content: center;
+	margin-top: 26px;
+}
+
+.Buttons > button:not(:first-child) {
+	margin-left: 24px;
+}
+
+.SuccessConfirmation {
+	color: #{colors.$success-green};
+	line-height: 24px;
+	text-align: center;
+	margin: 20px 0 20px 0;
+}
+
+.Error {
+	color: #{colors.$red-300};
+	line-height: 24px;
+	text-align: center;
+	margin-top: 10px;
+}

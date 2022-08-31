@@ -1,4 +1,4 @@
-import { UploadMetadata } from 'lib/types';
+import { UploadMetadata, AdditionalMetadata } from 'lib/types';
 
 export * from './domains';
 export * from './number';
@@ -8,6 +8,7 @@ interface DomainMetadataParams {
 	image: Buffer;
 	name: string;
 	story: string;
+	additionalMetadata?: AdditionalMetadata;
 }
 
 interface UploadResponseDTO {
@@ -39,6 +40,7 @@ const uploadMetadata = async (params: DomainMetadataParams) => {
 		name: params.name,
 		description: params.story,
 		image: image.url,
+		...params.additionalMetadata,
 	};
 
 	if (params.previewImage) {
@@ -74,7 +76,7 @@ export const createDomainMetadata = async (params: DomainMetadataParams) => {
 		};
 
 		return uploadedMetadata;
-	} catch (e) {
+	} catch (e: any) {
 		console.error(e);
 		throw Error(e);
 	}
@@ -93,7 +95,7 @@ export const uploadToIPFS = async (data: string | Buffer) => {
 export async function tryFunction<T>(func: () => Promise<T>, msg: string) {
 	try {
 		return await func();
-	} catch (e) {
+	} catch (e: any) {
 		if (e.message || e.data || e.code) {
 			throw Error(`Failed to ${msg}: ${e.data} ${e.message} code: ${e.code}`);
 		}

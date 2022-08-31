@@ -1,0 +1,57 @@
+@use 'styles/variables/colors';
+
+.Container {
+	td {
+		&:first-child {
+			padding-left: 11px !important;
+		}
+
+		&:not(:first-child) {
+			text-align: right;
+		}
+
+		&:last-child {
+			width: 230px;
+
+			> button {
+				margin-left: auto;
+			}
+		}
+
+		&.Lead {
+			color: #{colors.$success-green};
+		}
+
+		&.Outbid {
+			color: #{colors.$red-300};
+		}
+	}
+
+	.Button {
+		margin-left: auto;
+		background: none;
+	}
+
+	td {
+		&:last-of-type {
+			width: 32px;
+			padding-left: 32px !important;
+		}
+	}
+
+	.MoreDropdown {
+		:global(ul) {
+			left: unset;
+			right: 0;
+			transform: unset;
+
+			li {
+				display: flex;
+
+				span {
+					margin-left: 10px;
+				}
+			}
+		}
+	}
+}

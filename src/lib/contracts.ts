@@ -32,6 +32,7 @@ export interface ContractAddresses {
 	lpToken: string;
 	wildStakingPool: string;
 	lpStakingPool: string;
+	zDao: string;
 }
 
 export interface Contracts {

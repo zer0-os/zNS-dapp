@@ -1,18 +1,38 @@
+//- React Imports
 import { useMemo, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+
+//- Web3 Imports
+import { Web3Provider } from '@ethersproject/providers';
+import { useWeb3React } from '@web3-react/core';
+
+//- Library Imports
+import { ethers } from 'ethers';
+import { AppState } from 'store';
+import { useZSaleSdk } from 'lib/hooks/sdk';
 import useNotification from 'lib/hooks/useNotification';
 import { useBasicController } from 'lib/hooks/useBasicController';
 import { Maybe, NftParams, NftStatusCard } from 'lib/types';
-import * as wheels from 'lib/wheelSale';
-import { useZnsContracts } from 'lib/contracts';
-import { ethers } from 'ethers';
 import { createDomainMetadata, UploadedDomainMetadata } from 'lib/utils';
-import { AppState } from 'store';
+import { ClaimableDomain } from '@zero-tech/zsale-sdk';
+
+//- Store Imports
+import { getMinting, getMinted } from 'store/mint/selectors';
 import {
 	setMintingRequest as reduxSetMintingRequest,
 	setMintedRequest as reduxSetMintedRequest,
 } from 'store/mint/actions';
-import { getMinting, getMinted } from 'store/mint/selectors';
+
+//- Constants Imports
+import { Labels } from 'constants/labels';
+import { ImageUri } from 'constants/uris';
+import { Errors } from 'constants/errors';
+import { Status } from 'constants/status';
+import {
+	MINTING_FLOW_NOTIFICATIONS,
+	CLAIM_FLOW_NOTIFICATIONS,
+} from 'constants/notifications';
+import { ZNA } from 'constants/zna';
 
 export type UseMintReturn = {
 	minting: NftStatusCard[];
@@ -23,6 +43,15 @@ export type UseMintReturn = {
 		setStatus: (status: string) => void,
 		onFinish: () => void,
 		onError: (error: string) => void,
+	) => Promise<void>;
+	claimNFT: (
+		quantity: number,
+		eligibleDomains: ClaimableDomain[],
+		setEligibleDomains: React.Dispatch<React.SetStateAction<ClaimableDomain[]>>,
+		setIsClaimingInProgress: (state: boolean) => void,
+		setStatus: (status: string) => void,
+		onError: (error: string) => void,
+		onFinish: () => void,
 	) => Promise<void>;
 };
 
@@ -62,15 +91,15 @@ const useMintRedux = () => {
 	return { reduxState, reduxActions };
 };
 
-const useMint = (): UseMintReturn => {
+export const useMint = (): UseMintReturn => {
 	////////////////////////
 	//  Hooks From Out    //
 	////////////////////////
 
 	const { addNotification } = useNotification();
+	const { instance: zSaleInstance, claimInstance } = useZSaleSdk();
+	const { account, library } = useWeb3React<Web3Provider>();
 	const basicController = useBasicController();
-	const contracts = useZnsContracts();
-	const saleContract = contracts?.wheelSale;
 	const { reduxState, reduxActions } = useMintRedux();
 
 	////////////////////////////////
@@ -86,14 +115,13 @@ const useMint = (): UseMintReturn => {
 			// Set up default wheel to render
 			const wheel = {
 				zNA: '',
-				title: 'Your Wheels',
-				imageUri:
-					'https://res.cloudinary.com/fact0ry/image/upload/c_fill,h_200,w_296/v1632961649/zns/minting-in-progress.gif',
+				title: Labels.MINT_NFT_DROP_DEFAULT_TITLE,
+				imageUri: ImageUri.MINT_NFT_DROP_DEFAULT_IMAGE_URI,
 				story: '',
 				transactionHash: '',
 			};
 
-			if (!saleContract) {
+			if (!zSaleInstance || !library) {
 				return;
 			}
 
@@ -102,19 +130,16 @@ const useMint = (): UseMintReturn => {
 			//////////////////////////////////////
 
 			let tx: Maybe<ethers.ContractTransaction>;
-			setStatus('Pending wallet approval');
-
-			const network = await saleContract.provider.getNetwork();
+			setStatus(Status.CONFIRM_WALLET);
 
 			try {
-				tx = await wheels.purchaseWheels(
-					numWheels,
-					saleContract,
-					network.chainId === 1,
+				tx = await zSaleInstance.purchaseDomains(
+					ethers.BigNumber.from(numWheels),
+					library.getSigner(),
 				);
 			} catch (e) {
 				console.error(e);
-				onError('Failed to submit transaction');
+				onError(Errors.FAILED_TRANSACTION);
 				return;
 			}
 
@@ -122,9 +147,7 @@ const useMint = (): UseMintReturn => {
 			// Send the transaction //
 			//////////////////////////
 
-			setStatus(
-				'Minting your wheels... The transaction will continue in the backround if you close this window. Your Wheels will be in your profile when complete.',
-			);
+			setStatus(Status.MINTING);
 
 			reduxActions.setMinting(wheel);
 
@@ -134,29 +157,102 @@ const useMint = (): UseMintReturn => {
 			// Transaction complete //
 			//////////////////////////
 
-			addNotification(
-				`Successfully minted ${numWheels} Wheels. Open your Profile to view them`,
-			);
+			addNotification(MINTING_FLOW_NOTIFICATIONS.MINT_SUCCESSFUL);
 
 			reduxActions.setMinted(wheel);
 
 			onFinish();
 		},
-		[reduxActions, addNotification, saleContract],
+		[reduxActions, addNotification, zSaleInstance, library],
 	);
 
+	const claimNFT = useCallback(
+		async (
+			quantity: number,
+			eligibleDomains: ClaimableDomain[],
+			setEligibleDomains: React.Dispatch<
+				React.SetStateAction<ClaimableDomain[]>
+			>,
+			setIsClaimingInProgress: (state: boolean) => void,
+			setStatus: (status: string) => void,
+			onError: (error: string) => void,
+			onFinish: () => void,
+		) => {
+			// To generate mint preview data
+			const asset = {
+				zNA: ZNA.CLAIM_NFT_DOMAIN_ROOT,
+				title: Labels.CLAIM_NFT_DROP_DEFAULT_TITLE,
+				imageUri: ImageUri.CLAIM_NFT_DROP_DEFAULT_IMAGE_URI,
+				story: '',
+				transactionHash: '0x00000',
+			};
+
+			try {
+				if (!library) {
+					return;
+				}
+				let tx: Maybe<ethers.ContractTransaction>;
+
+				const domainsForClaiming = eligibleDomains
+					.splice(0, quantity)
+					.map((i) => i.id);
+
+				setStatus(Status.PLEASE_APPROVE);
+				setIsClaimingInProgress(true);
+
+				tx = await claimInstance.claimDomains(
+					domainsForClaiming,
+					library?.getSigner(),
+				);
+
+				setStatus(CLAIM_FLOW_NOTIFICATIONS.MINTING_MOTO);
+				onFinish();
+
+				reduxActions.setMinting(asset);
+
+				await tx.wait();
+
+				addNotification(CLAIM_FLOW_NOTIFICATIONS.CLAIM_SUCCESS);
+				reduxActions.setMinted(asset);
+			} catch (err) {
+				onError(Errors.REJECTED_WALLET);
+				setStatus('');
+				setIsClaimingInProgress(false);
+				console.log(err);
+
+				// Reset claimable total if error
+				if (account && library) {
+					try {
+						const claimingIDs = await claimInstance.getClaimingIDsForUser(
+							account,
+						);
+						setEligibleDomains(claimingIDs.filter((i) => i.canBeClaimed));
+					} catch (err) {
+						console.log(err);
+					}
+				}
+			}
+			setStatus('');
+			setIsClaimingInProgress(false);
+		},
+		[account, addNotification, claimInstance, library, reduxActions],
+	);
+
+	// TODO: Migrate this once zNS SDK supports minting
 	const mint = useCallback(
 		async (nft: NftParams, setStatus: (status: string) => void) => {
 			// @todo better validation
 			if (/[A-Z]/.test(nft.zna)) {
-				throw Error(`Invalid domain name: ${nft.zna} (Uppercase characters)`);
+				throw Error(
+					`${MINTING_FLOW_NOTIFICATIONS.INVALID_DOMAIN_NAME}Invalid domain name: ${nft.zna} ${MINTING_FLOW_NOTIFICATIONS.INVALID_DOMAIN_NAME}`,
+				);
 			}
 
 			let tx: Maybe<ethers.ContractTransaction>;
 
 			// get metadata uri
 			let metadata: Maybe<UploadedDomainMetadata>;
-			setStatus(`Uploading metadata`);
+			setStatus(Status.UPLOADING_METADATA);
 
 			try {
 				metadata = await createDomainMetadata({
@@ -164,13 +260,14 @@ const useMint = (): UseMintReturn => {
 					image: nft.image,
 					name: nft.name,
 					story: nft.story,
+					additionalMetadata: nft.additionalMetadata,
 				});
 			} catch (e) {
 				console.error(e);
-				throw Error(`Failed to upload metadata.`);
+				throw Error(Errors.FAILED_METADATA_UPLOAD);
 			}
 
-			setStatus(`Waiting for transaction to be approved by wallet`);
+			setStatus(Status.PENDING_WALLET_APPROVAL);
 
 			tx = await basicController.registerSubdomain({
 				parentId: nft.parent,
@@ -180,7 +277,9 @@ const useMint = (): UseMintReturn => {
 				metadataUri: metadata.url,
 			});
 
-			addNotification(`Started minting ${nft.name}`);
+			addNotification(
+				`${MINTING_FLOW_NOTIFICATIONS.STARTED_MINTING} ${nft.name}`,
+			);
 
 			const nftStatusCard: NftStatusCard = {
 				zNA: nft.zna,
@@ -194,7 +293,9 @@ const useMint = (): UseMintReturn => {
 
 			await tx.wait();
 
-			addNotification(`Finished minting ${nftStatusCard.title}.`);
+			addNotification(
+				`${MINTING_FLOW_NOTIFICATIONS.FINISH_MINTING} ${nftStatusCard.title}.`,
+			);
 
 			reduxActions.setMinted(nftStatusCard);
 		},
@@ -207,8 +308,9 @@ const useMint = (): UseMintReturn => {
 			minted: reduxState.minted,
 			mint,
 			mintWheels,
+			claimNFT,
 		}),
-		[reduxState, mint, mintWheels],
+		[reduxState, mint, mintWheels, claimNFT],
 	);
 };
 

@@ -1,7 +1,9 @@
+@use 'styles/variables/colors';
+@use 'styles/variables/animations';
+@use 'styles/variables/typography';
+
 .Container {
 	width: 100%;
-	padding: 16px;
-	margin-top: 16px;
 
 	> * {
 		&:not(:first-child) {
@@ -13,23 +15,19 @@
 		padding: 8px 16px;
 
 		> a {
-			color: var(--color-grey-lighter-2);
-			font-size: 24px;
-			font-weight: 700;
+			color: #{colors.$grey-lighter-2};
+			font-size: #{typography.$size-large};
+			font-weight: #{typography.$font-weight-bold};
 
-			transition: color var(--animation-time-short) ease-in-out;
+			transition: color #{animations.$time-short} ease-in-out;
 
 			&:not(:first-of-type) {
 				margin-left: 40px;
 			}
 
 			&.Active {
-				color: var(--color-text-primary);
-				text-shadow: var(--glow-text-white) !important;
-			}
-
-			&:hover {
-				text-shadow: none;
+				color: #{colors.$text-primary};
+				text-shadow: #{colors.$text-glow-primary} !important;
 			}
 		}
 	}

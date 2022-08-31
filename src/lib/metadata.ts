@@ -1,4 +1,8 @@
+import { DomainMetadata } from '@zero-tech/zns-sdk/lib/types';
+import { getHashFromIPFSUrl } from './ipfs';
 import { Metadata } from './types';
+
+import { DEFAULT_IPFS_GATEWAY } from 'constants/ipfs';
 
 interface MetadataCache {
 	[url: string]: Metadata | undefined;
@@ -14,25 +18,12 @@ export async function getMetadata(
 			return memoryCache[metadataUrl];
 		}
 
-		let requestUrl = metadataUrl;
-		if (metadataUrl.startsWith('ipfs://')) {
-			requestUrl = 'https://ipfs.fleek.co/ipfs/' + metadataUrl.slice(7);
-		}
+		const hash = getHashFromIPFSUrl(metadataUrl);
+		const requestUrl = DEFAULT_IPFS_GATEWAY + hash;
 
 		const response = await fetch(requestUrl);
 		const data = await response.json();
-		const metadata = {
-			attributes: data.attributes,
-			title: data.name || data.title,
-			description: data.description,
-			image: data.image,
-			image_full: data.image_full,
-			animation_url: data.animation_url,
-		} as Metadata;
-
-		if (!metadata.title || !metadata.description || !metadata.image) {
-			throw Error();
-		}
+		const metadata = parseDomainMetadata(data);
 
 		memoryCache[metadataUrl] = metadata;
 
@@ -42,3 +33,28 @@ export async function getMetadata(
 		return;
 	}
 }
+
+export const parseDomainMetadata = (
+	domainMetadata: DomainMetadata,
+): Metadata => {
+	return {
+		attributes: domainMetadata.attributes,
+		title: domainMetadata.name || domainMetadata.title,
+		description: domainMetadata.description,
+		image: domainMetadata.image,
+		image_full: domainMetadata.image_full,
+		previewImage: domainMetadata.previewImage,
+		animation_url: domainMetadata.animation_url,
+		stakingRequests:
+			domainMetadata.stakingRequests || domainMetadata.stakingrequests,
+		isBiddable:
+			domainMetadata.isBiddable === undefined ||
+			Boolean(domainMetadata.isBiddable),
+		isMintable: Boolean(domainMetadata.isMintable),
+		gridViewByDefault:
+			domainMetadata.gridViewByDefault === undefined ||
+			Boolean(domainMetadata.gridViewByDefault),
+		customDomainHeader: Boolean(domainMetadata.customDomainHeader),
+		customDomainHeaderValue: domainMetadata.customDomainHeaderValue,
+	} as Metadata;
+};

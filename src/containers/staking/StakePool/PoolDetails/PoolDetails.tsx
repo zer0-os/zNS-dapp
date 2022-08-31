@@ -1,6 +1,6 @@
 import { FutureButton, Image, StatsWidget } from 'components';
 import { ConnectWalletButton } from 'containers';
-import { truncateAddress } from 'lib/utils';
+import { truncateWalletAddress } from 'lib/utils';
 
 import styles from './PoolDetails.module.scss';
 
@@ -104,7 +104,7 @@ const PoolDetails: React.FC<PoolDetailsProps> = ({
 					className="normalView"
 					fieldName={'Contract Address'}
 					isLoading={contractAddress === undefined}
-					title={contractAddress && truncateAddress(contractAddress)}
+					title={contractAddress && truncateWalletAddress(contractAddress)}
 					subTitle={
 						<a
 							href={'https://etherscan.io/address/' + contractAddress}

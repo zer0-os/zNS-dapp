@@ -1,10 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import styles from './GenericTable.module.scss';
-import { useInView } from 'react-intersection-observer';
-import { IconButton, SearchBar, Spinner, TextButton } from 'components';
+import { LoadingIndicator, IconButton, SearchBar } from 'components';
+import { usePropsState } from 'lib/hooks/usePropsState';
+import { useInfiniteScroll } from 'lib/hooks/useInfiniteScroll';
 import grid from './assets/grid.svg';
 import list from './assets/list.svg';
+import classNames from 'classnames';
+import useMatchMedia from 'lib/hooks/useMatchMedia';
+
+const DEFAULT_SEARCH_KEY = 'name';
+const GRID_BREAKPOINT = 744;
 
 type GenericTableHeader = {
 	label: string | React.ReactNode;
@@ -17,69 +23,94 @@ const GenericTable = (props: any) => {
 	// State & Variables //
 	///////////////////////
 
-	// chunk defines which row we're up to when infinite scroll is enabled
-	// i.e., chunk 2 with chunkSize 6 means we've loaded 12 rows
-	const [chunk, setChunk] = useState<number>(1);
+	const isGridViewByDefault = props.isGridViewByDefault;
 
-	const [isGridView, setIsGridView] = useState<boolean>(false);
 	const [searchQuery, setSearchQuery] = useState<string>();
 
-	const contentRef = useRef<HTMLDivElement>(null);
+	const shouldShowViewToggle = props.rowComponent && props.gridComponent;
+	const shouldShowSearchBar = !props.notSearchable && props.data?.length > 0;
+	const isSmallScreen = !useMatchMedia(`(min-width: ${GRID_BREAKPOINT}px)`);
 
-	const rawData = props.data;
+	const [isGridView, setIsGridView] = usePropsState<boolean>(
+		!isSmallScreen && isGridViewByDefault,
+	);
+
+	const rawData = props.data || [];
 	const chunkSize = isGridView ? 6 : 12;
 
-	const shouldShowViewToggle = props.rowComponent && props.gridComponent;
-	const shouldShowSearchBar = !props.notSearchable;
+	//////////////
+	// Ddata    //
+	/////////////
+	// This will need to be expanded to be generic
+	const matchesSearch = useCallback(
+		(d: any): boolean => {
+			if (!searchQuery) return true;
 
-	// Handler for infinite scroll trigger
-	const {
-		ref,
-		inView: shouldLoadMore,
-		entry,
-	} = useInView({ initialInView: true });
+			if (!d || typeof d !== 'object') return false;
 
-	///////////////
-	// Functions //
-	///////////////
+			const searchKey: string | string[] =
+				props.searchKey ?? DEFAULT_SEARCH_KEY;
 
-	const resetChunkSize = () => {
-		setChunk(1);
-	};
+			if (Array.isArray(searchKey)) {
+				return searchKey.some(
+					(key: string) =>
+						Boolean(d[key]) &&
+						d[key].toLowerCase().includes(searchQuery.toLocaleLowerCase()),
+				);
+			}
 
-	const increaseChunkSize = (amount?: number) => {
-		if (rawData && chunk * chunkSize <= rawData.length) {
-			setChunk(chunk + (amount || 1));
-		}
-	};
+			return (
+				Boolean(d[searchKey]) &&
+				d[searchKey].toLowerCase().includes(searchQuery.toLocaleLowerCase())
+			);
+		},
+		[props, searchQuery],
+	);
+
+	// Handle infinite scroll
+	const filteredData = useMemo(() => {
+		return rawData.filter((d: any) =>
+			searchQuery && !props.notSearchable ? matchesSearch(d) : true,
+		);
+	}, [props.notSearchable, searchQuery, rawData]);
+
+	const { ref, data, hasMore, reset } = useInfiniteScroll(
+		filteredData,
+		chunkSize,
+	);
+
+	//////////////
+	// Handlers //
+	/////////////
+	// Change view type list <==> grid
+	const changeView = useCallback(
+		(isGridView: boolean) => {
+			reset();
+			setIsGridView(isGridView);
+		},
+		[reset, setIsGridView],
+	);
 
 	// Updates search query state based on search bar input
-	const onSearchBarUpdate = (event: any) => {
-		const query = event.target.value;
-		setSearchQuery(query.length > 2 ? query : undefined);
-	};
-
-	// Since due date is coming up, I'm rushing the search algo
-	// This will need to be expanded to be generic
-	const matchesSearch = (d: any) => {
-		return d.name.includes(searchQuery);
-	};
+	const onSearchBarUpdate = useCallback(
+		(event: any) => {
+			const query = event.target.value;
+			setSearchQuery(query.length > 2 ? query : undefined);
+		},
+		[setSearchQuery],
+	);
 
 	// Toggles to grid view when viewport
-	// resizes to below 700px
-	const handleResize = () => {
-		if (window.innerWidth <= 700) {
-			setIsGridView(true);
+	// resizes to below 744px
+	const handleResize = useCallback(() => {
+		if (window.innerWidth < GRID_BREAKPOINT && props.gridComponent) {
+			changeView(true);
 		}
-	};
+	}, [changeView]);
 
 	/////////////
 	// Effects //
 	/////////////
-
-	useEffect(() => {
-		resetChunkSize();
-	}, [isGridView, searchQuery]);
 
 	// Add a listener for window resizes
 	useEffect(() => {
@@ -90,68 +121,12 @@ const GenericTable = (props: any) => {
 		};
 	}, []);
 
-	useEffect(() => {
-		resetChunkSize();
-	}, [rawData]);
-
-	useEffect(() => {
-		if (entry?.isIntersecting) {
-			increaseChunkSize();
-		}
-	}, [entry]);
-
-	useEffect(() => {
-		if (shouldLoadMore && chunk === 1) {
-			increaseChunkSize();
-		}
-	}, [rawData, searchQuery]);
-
 	///////////////
 	// Fragments //
 	///////////////
 
 	// List view container and rows
-	const ListView = useMemo(() => {
-		const rows = () => {
-			if (!rawData) {
-				return <></>;
-			}
-
-			let filteredData = rawData.filter((d: any) =>
-				searchQuery ? matchesSearch(d) : true,
-			);
-
-			if (!props.infiniteScroll) {
-				return (
-					<>
-						{filteredData.map((d: any, index: number) => (
-							<props.rowComponent
-								key={index}
-								rowNumber={index}
-								data={d}
-								headers={props.headers}
-							/>
-						))}
-					</>
-				);
-			} else {
-				return (
-					<>
-						{filteredData
-							.slice(0, chunk * chunkSize)
-							.map((d: any, index: number) => (
-								<props.rowComponent
-									key={d[props.itemKey]}
-									rowNumber={index}
-									data={d}
-									headers={props.headers}
-								/>
-							))}
-					</>
-				);
-			}
-		};
-
+	const renderListView = useCallback(() => {
 		return (
 			<table className={styles.Table}>
 				<thead>
@@ -170,28 +145,28 @@ const GenericTable = (props: any) => {
 						))}
 					</tr>
 				</thead>
-				<tbody>{rows()}</tbody>
+				<tbody>
+					{data.map((d: any, index: number) => (
+						<props.rowComponent
+							key={d[props.itemKey] ?? index}
+							rowNumber={index}
+							data={d}
+							headers={props.headers}
+						/>
+					))}
+				</tbody>
 			</table>
 		);
-	}, [rawData, chunk, searchQuery]);
+	}, [props, data]);
 
 	// Grid View container & cards
-	const GridView = useMemo(() => {
-		if (!rawData || !props.gridComponent) {
-			return <></>;
-		}
-		const data = props.infiniteScroll
-			? rawData
-					.filter((d: any) =>
-						searchQuery ? d.name.includes(searchQuery) : true,
-					)
-					.slice(0, chunk * chunkSize)
-			: rawData.filter((d: any) =>
-					searchQuery ? d.name.includes(searchQuery) : true,
-			  );
-
+	const renderGridView = useCallback(() => {
 		return (
-			<div className={styles.Grid}>
+			<div
+				className={`${styles.Grid} ${
+					props.isSingleGridColumn && styles.GridWithSingleColumn
+				}`}
+			>
 				{data.map((d: any, index: number) => (
 					<props.gridComponent
 						key={d[props.itemKey]}
@@ -208,7 +183,7 @@ const GenericTable = (props: any) => {
 				)}
 			</div>
 		);
-	}, [rawData, chunk, searchQuery]);
+	}, [props, data]);
 
 	////////////
 	// Render //
@@ -216,26 +191,26 @@ const GenericTable = (props: any) => {
 
 	return (
 		<div className={styles.Container} style={props.style}>
-			<div ref={contentRef} className={styles.Content}>
-				{(shouldShowSearchBar || shouldShowViewToggle) && (
+			<div className={styles.Content}>
+				{(shouldShowViewToggle || shouldShowSearchBar) && (
 					<div className={styles.Controls}>
 						{shouldShowSearchBar && (
 							<SearchBar
-								placeholder="Search by domain name"
+								placeholder={'Search by ' + (props.searchBy ?? 'domain name')}
 								onChange={onSearchBarUpdate}
-								style={{ width: '100%', marginRight: 16 }}
+								style={{ width: '100%' }}
 							/>
 						)}
-						{shouldShowViewToggle && (
+						{shouldShowViewToggle && !isSmallScreen && (
 							<div className={styles.Buttons}>
 								<IconButton
-									onClick={() => setIsGridView(false)}
+									onClick={() => changeView(false)}
 									toggled={!isGridView}
 									iconUri={list}
 									style={{ height: 32, width: 32 }}
 								/>
 								<IconButton
-									onClick={() => setIsGridView(true)}
+									onClick={() => changeView(true)}
 									toggled={isGridView}
 									iconUri={grid}
 									style={{ height: 32, width: 32 }}
@@ -244,26 +219,34 @@ const GenericTable = (props: any) => {
 						)}
 					</div>
 				)}
-				{!props.isLoading && (isGridView ? GridView : ListView)}
-				{props.isLoading && (
-					<div className={styles.Loading}>
-						<Spinner /> {props.loadingText ? props.loadingText : 'Loading'}
-					</div>
+
+				{props.isReloading && (
+					<LoadingIndicator className={styles.Reloading} text="" />
 				)}
-				<div ref={ref}></div>
+
+				{!props.isLoading &&
+					((rawData?.length ?? 0) === 0 ? (
+						<p className={classNames(styles.Loading, 'text-center')}>
+							{props.emptyText}
+						</p>
+					) : isGridView ? (
+						renderGridView()
+					) : (
+						renderListView()
+					))}
+
+				{props.isLoading && (
+					<LoadingIndicator
+						className={styles.Loading}
+						text={props.loadingText ? props.loadingText : 'Loading'}
+						spinnerPosition="left"
+					/>
+				)}
+
+				<div ref={hasMore ? ref : undefined} />
 			</div>
-			{rawData && !searchQuery && chunk * chunkSize < rawData.length && (
-				<TextButton
-					onClick={() =>
-						isGridView ? increaseChunkSize() : increaseChunkSize(2)
-					}
-					className={styles.LoadMore}
-				>
-					Load More
-				</TextButton>
-			)}
 		</div>
 	);
 };
 
-export default GenericTable;
+export default memo(GenericTable);

@@ -1,12 +1,12 @@
 import { useState } from 'react';
 
 import Claim from './steps/Claim/Claim';
-import { Confirm, Header } from '../';
+import { Confirm } from '../';
 
 import styles from './ClaimFlow.module.scss';
 
 import classNames from 'classnames/bind';
-import { LoadingIndicator } from 'components';
+import { Wizard } from 'components';
 import { ethers } from 'ethers';
 import { useStakingPoolSelector } from 'lib/providers/staking/PoolSelectProvider';
 import { displayEther } from 'lib/currency';
@@ -30,8 +30,6 @@ const ClaimFlow = (props: ClaimFlowProps) => {
 	const { onClose, onSuccess } = props;
 	const { claiming } = useStakingPoolSelector();
 	const { account, library } = useWeb3React();
-
-	const HEADER = <Header text="Claim Pool Rewards" />;
 
 	const [rewardAmount, setRewardAmount] = useState<
 		ethers.BigNumber | undefined
@@ -112,33 +110,27 @@ const ClaimFlow = (props: ClaimFlowProps) => {
 				);
 			case Steps.Confirm:
 				return (
-					<>
-						{HEADER}
-						<Confirm
-							content={
-								<>
-									<p>
-										When you claim pool rewards, they are staked in the WILD
-										pool and can be unstaked after a 12 month vesting period.
-									</p>
-									<p>
-										Are you sure you want to claim{' '}
-										<b>{displayEther(rewardAmount!)} WILD</b> in pool rewards?
-									</p>
-								</>
-							}
-							hideCancel
-							confirmText={'Confirm Claim'}
-							onConfirm={onConfirm}
-						/>
-					</>
+					<Confirm
+						content={
+							<>
+								<p>
+									When you claim pool rewards, they are staked in the WILD pool
+									and can be unstaked after a 12 month vesting period.
+								</p>
+								<p>
+									Are you sure you want to claim{' '}
+									<b>{displayEther(rewardAmount!)} WILD</b> in pool rewards?
+								</p>
+							</>
+						}
+						hideCancel
+						confirmText={'Confirm Claim'}
+						onConfirm={onConfirm}
+					/>
 				);
 			case Steps.Processing:
 				return (
-					<>
-						{HEADER}
-						<LoadingIndicator text={'Your transaction is being processed...'} />
-					</>
+					<Wizard.Loading message={'Your transaction is being processed...'} />
 				);
 
 			default:
@@ -151,16 +143,12 @@ const ClaimFlow = (props: ClaimFlowProps) => {
 	}
 
 	return (
-		<div
-			className={cx(
-				styles.Container,
-				'background-primary',
-				'border-rounded',
-				'border-primary',
-			)}
+		<Wizard
+			header={'Claim Pool Rewards'}
+			className={cx('background-primary', 'border-rounded', 'border-primary')}
 		>
 			{stepNode()}
-		</div>
+		</Wizard>
 	);
 };
 

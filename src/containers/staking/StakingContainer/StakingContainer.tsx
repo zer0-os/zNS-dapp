@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import { Overlay } from 'components';
 
@@ -16,12 +16,12 @@ import {
 	useRouteMatch,
 } from 'react-router-dom';
 import { useStakingPoolSelector } from 'lib/providers/staking/PoolSelectProvider';
-// import { useNav } from 'lib/providers/NavProvider';
 import { useStakingUserData } from 'lib/providers/staking/StakingUserDataProvider';
 import { useStaking } from 'lib/providers/staking/StakingSDKProvider';
 import { useWeb3React } from '@web3-react/core';
-import { useNavBarContents } from 'lib/providers/NavBarProvider';
+import { useNavbar } from 'lib/hooks/useNavbar';
 import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
+import { ROUTES } from 'constants/routes';
 
 type StakingContainerProps = {
 	className?: string;
@@ -45,70 +45,33 @@ const StakingContainer: React.FC<StakingContainerProps> = ({
 	const { refetch: refetchUserData } = useStakingUserData();
 
 	const { pathname } = useLocation();
-	// const { setLocation } = useNav();
+
 	const { path } = useRouteMatch();
-
-	// useEffect(() => {
-	// 	console.log(path);
-	// }, [path]);
-
-	const [isBelowBreakpoint, setIsBelowBreakpoint] = useState<boolean>();
-
-	const handleResize = () => {
-		setIsBelowBreakpoint(window.innerWidth <= 701);
-	};
 
 	const refetchAll = () => {
 		refetchPoolData();
 		refetchUserData();
 	};
 
-	const { setTitle } = useNavBarContents();
+	const { setNavbarTitle } = useNavbar();
 
 	useUpdateEffect(() => {
-		switch (pathname.replace('/staking', '')) {
-			case '/pools':
-				setTitle('Staking - Pools');
+		switch (pathname.replace(ROUTES.STAKING, '')) {
+			case ROUTES.STAKING_POOLS:
+				setNavbarTitle('Staking - Pools');
 				break;
-			case '/deposits':
-				setTitle('Staking - My Deposits');
+			case ROUTES.STAKING_DEPOSITS:
+				setNavbarTitle('Staking - My Deposits');
 				break;
 			default:
-				setTitle(undefined);
+				setNavbarTitle(undefined);
 				break;
 		}
 	}, [pathname]);
 
-	useEffect(() => {
-		window.addEventListener('resize', handleResize);
-		handleResize();
-		return () => {
-			window.removeEventListener('resize', handleResize);
-		};
-	}, []);
-
 	useUpdateEffect(() => {
 		poolSelection.claim(undefined);
 	}, [account]);
-
-	if (isBelowBreakpoint) {
-		return (
-			<div
-				style={{
-					position: 'fixed',
-					top: '50%',
-					left: '50%',
-					transform: 'translate(-50%, -100%)',
-					width: '100%',
-					padding: 16,
-					textAlign: 'center',
-					fontWeight: 700,
-				}}
-			>
-				Staking is currently only available on desktop
-			</div>
-		);
-	}
 
 	return (
 		<>
@@ -153,39 +116,41 @@ const StakingContainer: React.FC<StakingContainerProps> = ({
 					/>
 				)}
 			</Overlay>
-			<Switch>
-				<div
-					className={cx(
-						className,
-						styles.Container,
-						'main',
-						'background-primary',
-						'border-primary',
-						'border-rounded',
-					)}
-					style={style}
-				>
-					<nav className={styles.Links}>
-						<Link
-							className={cx({ Active: pathname.includes('/pools') })}
-							to={`${path}/pools`}
-						>
-							Pools
-						</Link>
-						<Link
-							className={cx({ Active: pathname.includes('/deposits') })}
-							to={`${path}/deposits`}
-						>
-							My Deposits
-						</Link>
-					</nav>
-					<Route exact path={`${path}/deposits`} component={Deposits} />
-					<Route exact path={`${path}/pools`} component={StakePools} />
+			<div className={cx(className, styles.Container)} style={style}>
+				<nav className={styles.Links}>
+					<Link
+						className={cx({
+							Active: pathname.includes(ROUTES.STAKING_POOLS),
+						})}
+						to={path + ROUTES.STAKING_POOLS}
+					>
+						Pools
+					</Link>
+					<Link
+						className={cx({
+							Active: pathname.includes(ROUTES.STAKING_DEPOSITS),
+						})}
+						to={path + ROUTES.STAKING_DEPOSITS}
+					>
+						My Deposits
+					</Link>
+				</nav>
+				<Switch>
+					<Route
+						exact
+						path={path + ROUTES.STAKING_DEPOSITS}
+						component={Deposits}
+					/>
+					<Route
+						exact
+						path={path + ROUTES.STAKING_POOLS}
+						component={StakePools}
+					/>
 					<Route exact path={path}>
-						<Redirect to={`${path}/pools`} />
+						<Redirect to={path + ROUTES.STAKING_POOLS} />
 					</Route>
-				</div>
-			</Switch>
+				</Switch>
+			</div>
 		</>
 	);
 };

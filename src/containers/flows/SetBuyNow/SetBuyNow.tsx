@@ -1,3 +1,4 @@
+import { ConvertedTokenInfo } from '@zero-tech/zns-sdk';
 import { Wizard } from 'components';
 import { ethers } from 'ethers';
 import DomainStep from './Steps/DomainStep';
@@ -32,7 +33,8 @@ type SetBuyNowProps = {
 	onCancel: () => void;
 	setBuyNowPrice: (buyNowPrice?: number) => void;
 	step: Step;
-	wildPriceUsd: number;
+	account?: string;
+	paymentTokenInfo: ConvertedTokenInfo;
 };
 
 const SetBuyNow = ({
@@ -43,17 +45,26 @@ const SetBuyNow = ({
 	setBuyNowPrice,
 	onCancel,
 	step,
-	wildPriceUsd,
+	paymentTokenInfo,
+	account,
 }: SetBuyNowProps) => {
+	const editText = account !== domain?.owner ? 'selecting' : 'purchasing';
+
+	const wizardHeader = isLoadingDomainData
+		? ''
+		: domain?.currentBuyNowPrice?.gt(0)
+		? 'Edit Buy Now'
+		: 'Set Buy Now';
+
 	if (isLoadingDomainData) {
 		return (
-			<Wizard header="Set Buy Now">
+			<Wizard header={wizardHeader}>
 				<Wizard.Loading message="Loading domain data..." />
 			</Wizard>
 		);
 	} else if (!domain) {
 		return (
-			<Wizard header="Set Buy Now">
+			<Wizard header={wizardHeader}>
 				<Wizard.Confirmation
 					message={'Failed to load domain data'}
 					primaryButtonText={'Cancel'}
@@ -62,7 +73,6 @@ const SetBuyNow = ({
 			</Wizard>
 		);
 	}
-
 	const steps = [];
 	steps[Step.CheckingZAuctionApproval] = (
 		<Wizard.Loading message="Checking status of zAuction approval..." />
@@ -94,7 +104,7 @@ const SetBuyNow = ({
 					error={error}
 					onNext={(buyNowPrice?: number) => setBuyNowPrice(buyNowPrice)}
 					domainData={domain}
-					wildPriceUsd={wildPriceUsd}
+					paymentTokenInfo={paymentTokenInfo}
 					isWaitingForWalletConfirmation={
 						step === Step.WaitingForBuyNowConfirmation
 					}
@@ -103,7 +113,18 @@ const SetBuyNow = ({
 				/>
 			);
 
-	return <Wizard header="Set Buy Now">{steps[step]}</Wizard>;
+	return (
+		<Wizard
+			header={wizardHeader}
+			subHeader={
+				step === Step.SetBuyNow || step === Step.WaitingForBuyNowConfirmation
+					? `Please review the information and the art to make sure you are ${editText} the right NFT.`
+					: ''
+			}
+		>
+			{steps[step]}
+		</Wizard>
+	);
 };
 
 export default SetBuyNow;

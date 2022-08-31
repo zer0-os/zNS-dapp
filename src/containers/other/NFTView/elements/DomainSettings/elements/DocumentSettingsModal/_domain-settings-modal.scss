@@ -1,0 +1,88 @@
+@use 'styles/variables/colors';
+@use 'styles/variables/typography';
+
+$width: 640px;
+$gutter: 16px;
+
+.domain-settings-modal {
+	&__overlay {
+		align-content: center;
+		background: radial-gradient(
+			50% 50% at 50% 50%,
+			#{colors.$background-alt-50} 0%,
+			#{colors.$background-50} 100%
+		) !important;
+		backdrop-filter: blur(20px);
+
+		> div {
+			padding: 0 !important;
+		}
+	}
+
+	&__modal {
+		width: $width;
+		padding: 30px 48px 48px;
+		background: #{colors.$background-primary};
+
+		@media only screen and (max-width: #{$width + $gutter + $gutter}) {
+			width: calc(100vw - $gutter - $gutter);
+			padding: 48px 16px;
+		}
+
+		&-header {
+			position: relative;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			padding-bottom: 24px;
+
+			h1 {
+				font-size: #{typography.$size-large};
+				font-weight: #{typography.$font-weight-bold};
+				text-align: center;
+				overflow-wrap: anywhere;
+			}
+
+			&--close-icon {
+				position: absolute;
+				top: 0;
+				right: 0;
+				color: #{colors.$grey};
+
+				&:hover {
+					background-color: unset !important;
+				}
+			}
+
+			&::after {
+				content: ' ';
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				border-bottom: 1px solid #{colors.$mine-shaft};
+			}
+		}
+
+		&-body {
+			padding: 32px 0;
+			text-align: center;
+		}
+
+		&-footer {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+
+			button {
+				@media only screen and (max-width: #{$width + $gutter + $gutter}) {
+					padding: 0 25px;
+				}
+			}
+
+			button + button {
+				margin-left: 20px;
+			}
+		}
+	}
+}

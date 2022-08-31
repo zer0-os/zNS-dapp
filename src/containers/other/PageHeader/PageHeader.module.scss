@@ -1,3 +1,5 @@
+@use 'styles/variables/borders';
+
 .NavBar {
 	position: fixed;
 	top: 29px;
@@ -8,7 +10,7 @@
 	flex-direction: column;
 	justify-content: space-between;
 
-	border-radius: var(--box-radius);
+	border-radius: #{borders.$radius-primary};
 	z-index: 10;
 
 	transition: opacity 0.4s ease-in-out, 0.4s ease-in-out;

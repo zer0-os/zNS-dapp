@@ -48,7 +48,7 @@ export function useStakingController(): StakingControllerHooks {
 				params.domain,
 				params.domainRequestUri,
 			);
-		} catch (e) {
+		} catch (e: any) {
 			console.error(e);
 			if (e.code === 4001) {
 				throw Error(`Transaction rejected by wallet.`);

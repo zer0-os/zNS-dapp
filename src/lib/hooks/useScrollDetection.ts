@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 
 var lastY = 0; // Just a global variable to stash last scroll position
 
-const useScrollDetection = (setIsScrollDown: any) => {
+const useScrollDetection = (setIsScrollDown: (state: boolean) => void) => {
 	//- Data
 	const body = document.getElementsByTagName('body')[0];
 

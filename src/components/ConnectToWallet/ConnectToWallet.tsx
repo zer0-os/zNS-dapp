@@ -17,10 +17,10 @@ import { AbstractConnector } from '@web3-react/abstract-connector';
 import WalletStyles from './Wallet.module.scss';
 
 //- Component Imports
-import { FutureButton, Spinner, Image } from 'components';
+import { FutureButton, Spinner, Image, Wizard } from 'components';
 
 //- Utils Imports
-import { WalletOptionType, getWalletOptionStyle } from './utils';
+import { getWalletOptionStyle } from './utils';
 
 //- Asset Imports
 import metamaskIcon from './assets/metamask.svg';
@@ -30,7 +30,10 @@ import fortmaticIcon from './assets/fortmatic.svg';
 import portisIcon from './assets/portis.svg';
 import useNotification from 'lib/hooks/useNotification';
 
-type ConnectToWalletProps = {
+import { LOCAL_STORAGE_KEYS } from 'constants/localStorage';
+import { WALLETS } from 'constants/wallets';
+
+export type ConnectToWalletProps = {
 	onConnect: () => void;
 };
 
@@ -42,7 +45,7 @@ const nameToConnector: { [key: string]: AbstractConnector } = {
 };
 
 export const connectorFromName = (name: string) => {
-	if (name === WalletOptionType.WALLET_CONNECT) {
+	if (name === WALLETS.WALLET_CONNECT) {
 		return createWalletConnectConnector();
 	}
 
@@ -79,7 +82,7 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 
 		if (c) {
 			//if user tries to connect metamask without provider
-			if (wallet === WalletOptionType.METAMASK && !window.ethereum) {
+			if (wallet === WALLETS.METAMASK && !window.ethereum) {
 				addNotification(
 					'Unable to find Metamask. Please check it is installed.',
 				);
@@ -87,17 +90,20 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 				return;
 			}
 
-			const previousWallet = localStorage.getItem('chosenWallet');
+			const previousWallet = localStorage.getItem(
+				LOCAL_STORAGE_KEYS.CHOOSEN_WALLET,
+			);
 			if (previousWallet) await closeSession(previousWallet);
-			localStorage.setItem('chosenWallet', wallet); //sets the actual wallet key to reconnect if connected
+			localStorage.setItem(LOCAL_STORAGE_KEYS.CHOOSEN_WALLET, wallet); //sets the actual wallet key to reconnect if connected
 
 			//metamask may get stuck due to eth_requestAccounts promise, if user close log in overlay
-			if (wallet === WalletOptionType.METAMASK) {
+			if (wallet === WALLETS.METAMASK) {
 				setTimeout(async () => {
 					const authorized = await injected.isAuthorized();
 					if (
 						!authorized &&
-						localStorage.getItem('chosenWallet') === WalletOptionType.METAMASK
+						localStorage.getItem(LOCAL_STORAGE_KEYS.CHOOSEN_WALLET) ===
+							WALLETS.METAMASK
 					)
 						addNotification('Cant connect?, please reload and retry');
 				}, 20000); //@todo: check if metamask solves this, issue #10085
@@ -105,7 +111,7 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 
 			await activate(c, async (e) => {
 				addNotification(`Failed to connect to wallet.`);
-				localStorage.removeItem('chosenWallet');
+				localStorage.removeItem(LOCAL_STORAGE_KEYS.CHOOSEN_WALLET);
 				console.error(`Encounter error while connecting to ${wallet}.`);
 				console.error(e);
 				//if page has a connection request stuck, it needs to reload to get connected again
@@ -124,41 +130,40 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 		deactivate();
 		//if has a wallet connected, instead of just deactivate, close connection too
 		switch (wallet) {
-			case WalletOptionType.COINBASE: {
+			case WALLETS.COINBASE: {
 				walletlink.close();
 				break;
 			}
-			case WalletOptionType.PORTIS: {
+			case WALLETS.PORTIS: {
 				portis.close();
 				break;
 			}
-			case WalletOptionType.FORTMATIC: {
+			case WALLETS.FORTMATIC: {
 				fortmatic.close();
 				break;
 			}
-			case WalletOptionType.WALLET_CONNECT: {
-				localStorage.removeItem(WalletOptionType.WALLET_CONNECT); //session info of walletconnect
+			case WALLETS.WALLET_CONNECT: {
+				localStorage.removeItem(WALLETS.WALLET_CONNECT); //session info of walletconnect
 				break;
 			}
 			default:
 				break;
 		}
-		localStorage.removeItem('chosenWallet');
+		localStorage.removeItem(LOCAL_STORAGE_KEYS.CHOOSEN_WALLET);
 	};
 
 	const disconnect = () => {
-		const wallet = localStorage.getItem('chosenWallet');
+		const wallet = localStorage.getItem(LOCAL_STORAGE_KEYS.CHOOSEN_WALLET);
 		if (wallet) closeSession(wallet);
 		onConnect();
 	};
 
 	return (
-		<div className={`${WalletStyles.connect} border-primary`}>
-			<div className={WalletStyles.header}>
-				<h3 className={`glow-text-white`}>Connect To A Wallet</h3>
-			</div>
-			<hr className="glow" />
-
+		<Wizard
+			header="Connect To A Wallet"
+			headerClassName={WalletStyles.Header}
+			className={`${WalletStyles.connect} border-primary`}
+		>
 			{isLoading && (
 				<div className={WalletStyles.Disconnect}>
 					<hr className="glow" />
@@ -200,8 +205,8 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 			{!isLoading && (
 				<ul>
 					<li
-						onClick={() => connectToWallet(WalletOptionType.METAMASK)}
-						className={getWalletOptionStyle(WalletOptionType.METAMASK)}
+						onClick={() => connectToWallet(WALLETS.METAMASK)}
+						className={getWalletOptionStyle(WALLETS.METAMASK)}
 					>
 						Metamask
 						<div>
@@ -213,8 +218,8 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 						</div>
 					</li>
 					<li
-						onClick={() => connectToWallet(WalletOptionType.WALLET_CONNECT)}
-						className={getWalletOptionStyle(WalletOptionType.WALLET_CONNECT)}
+						onClick={() => connectToWallet(WALLETS.WALLET_CONNECT)}
+						className={getWalletOptionStyle(WALLETS.WALLET_CONNECT)}
 					>
 						<span>Wallet Connect</span>
 						<div>
@@ -222,8 +227,8 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 						</div>
 					</li>
 					<li
-						onClick={() => connectToWallet(WalletOptionType.COINBASE)}
-						className={getWalletOptionStyle(WalletOptionType.COINBASE)}
+						onClick={() => connectToWallet(WALLETS.COINBASE)}
+						className={getWalletOptionStyle(WALLETS.COINBASE)}
 					>
 						<span>Coinbase Wallet</span>
 						<div>
@@ -231,8 +236,8 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 						</div>
 					</li>
 					<li
-						onClick={() => connectToWallet(WalletOptionType.FORTMATIC)}
-						className={getWalletOptionStyle(WalletOptionType.FORTMATIC)}
+						onClick={() => connectToWallet(WALLETS.FORTMATIC)}
+						className={getWalletOptionStyle(WALLETS.FORTMATIC)}
 					>
 						<span>Fortmatic</span>
 						<div>
@@ -240,8 +245,8 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 						</div>
 					</li>
 					<li
-						onClick={() => connectToWallet(WalletOptionType.PORTIS)}
-						className={getWalletOptionStyle(WalletOptionType.PORTIS)}
+						onClick={() => connectToWallet(WALLETS.PORTIS)}
+						className={getWalletOptionStyle(WALLETS.PORTIS)}
 					>
 						<span>Portis</span>
 						<div>
@@ -272,7 +277,7 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 					</a>
 				</p>
 			</div>
-		</div>
+		</Wizard>
 	);
 };
 

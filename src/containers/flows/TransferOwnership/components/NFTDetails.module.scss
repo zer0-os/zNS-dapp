@@ -1,0 +1,19 @@
+@use 'styles/variables/colors';
+
+.InputWrapper {
+	margin: 40px 0 32px 0;
+}
+
+.InputWrapper p {
+	color: #{colors.$text-glow-white};
+}
+
+.InputSubmitButton {
+	display: flex;
+	justify-content: center;
+	margin: 0 auto;
+}
+
+.Inputs {
+	width: 100%;
+}

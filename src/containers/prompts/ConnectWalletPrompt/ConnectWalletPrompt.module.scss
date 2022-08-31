@@ -1,3 +1,5 @@
+@use 'styles/variables/typography';
+
 .DialogText {
-	font-weight: 400 !important;
+	font-weight: #{typography.$font-weight-regular} !important;
 }

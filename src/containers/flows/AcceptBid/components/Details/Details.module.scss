@@ -1,0 +1,41 @@
+@use 'styles/variables/colors';
+
+.NFTDetailsContainer {
+	margin-bottom: 28px;
+}
+
+.TextContainer {
+	display: inline-block;
+	text-align: center;
+	word-break: break-word;
+	line-height: 24px;
+	padding-bottom: 0;
+
+	div {
+		display: inline-block;
+	}
+}
+
+.Buttons {
+	display: flex;
+	justify-content: center;
+	margin-top: 20px;
+}
+
+.Buttons > button:not(:first-child) {
+	margin-left: 24px;
+}
+
+.SuccessConfirmation {
+	color: #{colors.$success-green};
+	line-height: 24px;
+	text-align: center;
+	margin: 20px 0 20px 0;
+}
+
+.Error {
+	color: #{colors.$red-300};
+	line-height: 24px;
+	text-align: center;
+	margin: 20px 0 20px 0;
+}

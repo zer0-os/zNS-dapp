@@ -1,41 +1,49 @@
+@use 'styles/variables/animations';
+@use 'styles/variables/colors';
+
 .Dropdown {
 	position: relative;
+	display: flex;
+	align-items: flex-end;
 }
 
 .Drawer {
 	position: absolute;
-	top: calc(100% + 8px);
+	top: calc(100%);
 	left: 50%;
-	padding: 8px 0;
-
-	width: calc(100% + 58px);
-
-	background: var(--color-purple-dark);
-	border: 1px solid #50207b;
-	box-shadow: 0px 0px 16px rgba(140, 84, 221, 0.25);
-
+	width: 224px;
+	background: #{colors.$purple-10};
+	border: 1px solid #{colors.$bossanova};
 	transform: translateX(-50%);
-
 	z-index: 10;
 	overflow: hidden;
+	padding: 8px 0 8px 0;
 }
 
 .Drawer li {
 	position: relative;
-	padding: 16px 32px;
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	padding: 8px 0 8px 16px;
 	cursor: pointer;
 
-	transition: text-shadow var(--animation-time-short) ease-in-out,
-		font-weight var(--animation-time-short) ease-in-out;
+	img {
+		width: 24px;
+		height: 24px;
+		object-fit: contain;
+	}
+
+	transition: text-shadow #{animations.$time-short} ease-in-out,
+		font-weight #{animations.$time-short} ease-in-out;
 
 	&:hover {
-		text-shadow: var(--glow-text-white);
-		font-weight: 700;
+		text-shadow: #{colors.$text-glow-white};
 	}
 }
 
 .Selected {
-	background: rgba(60, 161, 255, 0.05) !important;
+	background: rgba(82, 87, 255, 0.05) !important;
 }
 
 .Selected::before {

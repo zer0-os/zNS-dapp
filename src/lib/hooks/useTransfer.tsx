@@ -1,10 +1,23 @@
+//- React Import
 import { useMemo, useCallback } from 'react';
+
+//- Web3 Imports
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
-import { useZnsContracts } from 'lib/contracts';
+
+// - Library Imports
 import { TransferSubmitParams } from 'lib/types';
 import useNotification from 'lib/hooks/useNotification';
+
+//- Hooks
 import { useTransferRedux } from 'store/transfer/hooks';
+
+//- Constant Imports
+import {
+	getTransferSuccessMessage,
+	MESSAGES,
+} from 'containers/flows/TransferOwnership/TransferOwnership.constants';
+import { useZnsSdk } from 'lib/hooks/sdk';
 
 export type UseTransferReturn = {
 	transferring: TransferSubmitParams[];
@@ -14,48 +27,56 @@ export type UseTransferReturn = {
 
 export const useTransfer = (): UseTransferReturn => {
 	const { addNotification } = useNotification();
+	const { instance: sdk } = useZnsSdk();
 
 	const { reduxState, reduxActions } = useTransferRedux();
 
-	const registryContract = useZnsContracts()!.registry;
-
 	const walletContext = useWeb3React<Web3Provider>();
-	const { account } = walletContext;
+	const { account, library } = walletContext;
 
 	const transferRequest = useCallback(
 		async (params: TransferSubmitParams) => {
-			if (!account) {
-				console.error('No wallet detected');
+			const successNotification = getTransferSuccessMessage(params.name);
+
+			if (!account || !library) {
+				console.error(MESSAGES.REQUEST_NO_WALLET);
 				return;
 			}
 			if (account.toLowerCase() !== params.ownerId.toLowerCase()) {
-				console.error('You are not the owner');
+				console.error(MESSAGES.REQUEST_NOT_OWNER);
+				return;
+			}
+
+			if (account.toLowerCase() === params.walletAddress.toLowerCase()) {
+				console.error(MESSAGES.REQUEST_ADDRESS_NOT_VALID_ERROR);
 				return;
 			}
 
 			try {
-				const tx = await registryContract.transferFrom(
-					account,
+				const tx = await sdk.transferDomainOwnership(
 					params.walletAddress,
 					params.domainId,
+					library.getSigner(),
 				);
 
 				// start transferring
-				addNotification('Started transfer');
+				addNotification(MESSAGES.REQUEST_TRANSFER_STARTED);
 				reduxActions.setTransferring(params);
+				params.onClose();
 
 				// in transferring
 				await tx.wait();
 
 				// completed transferring
-				addNotification(`Ownership of "${params.name}" has been transferred`);
+				addNotification(successNotification);
 				reduxActions.setTransferred(params);
 			} catch (err) {
-				addNotification('Encountered an error while attempting to transfer.');
+				console.warn(err);
+				addNotification(MESSAGES.REQUEST_ERROR);
 				throw err;
 			}
 		},
-		[account, registryContract, reduxActions, addNotification],
+		[account, library, sdk, reduxActions, addNotification],
 	);
 
 	return useMemo(

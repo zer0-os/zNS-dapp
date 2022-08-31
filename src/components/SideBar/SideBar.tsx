@@ -1,50 +1,119 @@
-import { FC } from 'react';
+/**
+ * Note 27/06/2022:
+ * There's a few instances of startsWith(wilder)
+ * This is because we only want to show WILD token and
+ * the WW icon on the wilder network. We don't have anything
+ * specified for other networks, so for now, we will just
+ * handle WW.
+ */
 
-import SideBarStyles from './SideBar.module.scss';
+//- React Imports
+import { Link, useLocation } from 'react-router-dom';
 
-import marketIcon from './assets/icon_market.svg';
-import stakingIcon from './assets/icon_staking.svg';
-import { useHistory } from 'react-router-dom';
+//- Containers Imports
+import { PriceWidget } from 'containers';
 
-const SideBar: FC = () => {
-	const history = useHistory();
-	// Can't use route match without being inside a route
+//- Constants Imports
+import { getNavLinks } from 'lib/utils/nav';
+import { ROUTES } from 'constants/routes';
+import { DOMAIN_LOGOS, IS_DEFAULT_NETWORK } from 'constants/domains';
+import { ALT_TEXT, COLOURS } from './SideBar.constants';
+
+//- Utils Imports
+import { getNetworkLogo, getPriceWidget } from './SideBar.utils';
+
+//- Styles Imports
+import styles from './SideBar.module.scss';
+
+//- Library Imports
+import classNames from 'classnames/bind';
+import { appFromPathname, zNAFromPathname } from 'lib/utils';
+import { useWeb3React } from '@web3-react/core';
+import { chainIdToNetworkType, NETWORK_TYPES } from 'lib/network';
+import { startCase, toLower } from 'lodash';
+
+const cx = classNames.bind(styles);
+
+const SideBar = () => {
+	const { pathname } = useLocation();
+	const { chainId } = useWeb3React();
+
+	const navLinks = getNavLinks();
+
+	/* Get location context */
+	const network = chainIdToNetworkType(chainId);
+	const zna = zNAFromPathname(pathname);
+	const app = appFromPathname(pathname);
+	const isProfilePath = app.includes(ROUTES.PROFILE);
+	const isDefaultNetworkRootPath =
+		IS_DEFAULT_NETWORK && (app !== ROUTES.MARKET || zna.length === 0);
+
+	const networkLogo = getNetworkLogo(zna, app);
+	const priceWidget = getPriceWidget(zna);
 
 	return (
-		<div className={SideBarStyles.SideBar}>
-			<div className={SideBarStyles.Navigator}>
-				<div className={SideBarStyles.Icons}>
-					<div
-						className={SideBarStyles.Action}
-						key="market"
-						onClick={() => history.push('/market')}
+		<div className={styles.BorderContainer}>
+			<div className={styles.Container}>
+				<div className={styles.LinkContainer}>
+					<Link
+						className={styles.HomeLink}
+						to={
+							isDefaultNetworkRootPath
+								? isProfilePath
+									? ROUTES.MARKET
+									: app
+								: !IS_DEFAULT_NETWORK
+								? ROUTES.MARKET
+								: ROUTES.MARKET + '/' + zna.split('.')[0]
+						}
 					>
-						<div
-							className={`${SideBarStyles.Hype} ${
-								history.location.pathname.indexOf('/market') > -1 &&
-								SideBarStyles.Selected
-							}`}
-						>
-							<img alt="market icon" src={marketIcon} />
-						</div>
-						{/* TODO: Fix overlaying issue with Name */}
-						<div className={SideBarStyles.Name}>Market</div>
-					</div>
+						<img alt={ALT_TEXT.APP_LOGO} src={networkLogo} />
+					</Link>
+					<ul className={styles.Links}>
+						{navLinks.map((l) => (
+							<li key={`${l.label}`}>
+								<Link
+									to={l.route}
+									className={cx({ Selected: pathname.startsWith(l.route) })}
+								>
+									<div
+										className={cx(
+											{ Selected: pathname.startsWith(l.route) },
+											styles.ImageContainer,
+										)}
+									>
+										{l.icon &&
+											l.icon(
+												pathname.startsWith(l.route)
+													? COLOURS.WHITE
+													: COLOURS.ALTO,
+											)}
+									</div>
+									<label>{l.label}</label>
+								</Link>
+							</li>
+						))}
+					</ul>
+				</div>
+
+				<div className={styles.Footer}>
+					<PriceWidget isNetworkSet={priceWidget} />
 					<div
-						className={SideBarStyles.Action}
-						key="staking"
-						onClick={() => history.push('/staking')}
+						className={cx(styles.ZeroIconContainer, {
+							Hidden: isDefaultNetworkRootPath,
+						})}
 					>
-						<div
-							className={`${SideBarStyles.Hype} ${
-								history.location.pathname.indexOf('/staking') > -1 &&
-								SideBarStyles.Selected
-							}`}
-						>
-							<img alt="staking icon" src={stakingIcon} />
-						</div>
-						<div className={SideBarStyles.Name}>Staking</div>
+						{zna.startsWith('wilder') && (
+							<Link className={styles.Zero} to={app}>
+								<img alt={ALT_TEXT.ZERO_LOGO} src={DOMAIN_LOGOS.ZERO} />
+							</Link>
+						)}
 					</div>
+					{network !== NETWORK_TYPES.MAINNET && (
+						<label className={styles.Network}>
+							Network: {startCase(toLower(network))}
+						</label>
+					)}
 				</div>
 			</div>
 		</div>

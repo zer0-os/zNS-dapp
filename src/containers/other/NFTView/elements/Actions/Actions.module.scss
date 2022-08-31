@@ -1,0 +1,37 @@
+@use 'styles/variables/colors';
+@use 'styles/variables/typography';
+
+$gap: 40px;
+
+.Container {
+	display: flex;
+	flex-wrap: wrap;
+	gap: $gap;
+
+	.Border {
+		border-right: 1px solid #{colors.$mine-shaft};
+		padding-right: $gap;
+
+		@media only screen and (max-width: 700px) {
+			border-right: unset;
+			padding-right: unset;
+		}
+	}
+
+	.Action {
+		display: flex;
+		align-items: center;
+
+		height: 32px;
+		margin-top: 16px;
+
+		.TextButton {
+			padding-left: 0;
+		}
+	}
+
+	.Label {
+		font-weight: #{typography.$font-weight-demi-bold};
+		font-size: 20px;
+	}
+}

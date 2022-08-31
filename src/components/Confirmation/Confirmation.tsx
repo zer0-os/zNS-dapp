@@ -57,7 +57,7 @@ const Confirmation: React.FC<ConfirmationProps> = ({
 
 	return (
 		<div
-			className={`${styles.Confirmation} blur border-primary border-rounded`}
+			className={`${styles.Confirmation} border-primary border-rounded background-primary `}
 		>
 			<h2 className="glow-text-white">{title ?? 'Are you sure?'}</h2>
 			{hasCloseButton && (
@@ -72,14 +72,6 @@ const Confirmation: React.FC<ConfirmationProps> = ({
 			{children}
 			{!hideButtons && !showLoading && (
 				<div className={styles.Buttons}>
-					<FutureButton
-						style={{ textTransform: 'uppercase' }}
-						alt
-						glow
-						onClick={onCancel}
-					>
-						{cancelText ?? 'Cancel'}
-					</FutureButton>
 					<FutureButton
 						style={{ textTransform: 'uppercase' }}
 						glow

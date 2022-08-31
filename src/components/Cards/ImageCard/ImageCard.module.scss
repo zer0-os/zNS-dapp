@@ -1,0 +1,103 @@
+@use 'styles/variables/dimensions';
+@use 'styles/variables/typography';
+@use 'styles/variables/colors';
+@use 'styles/variables/borders';
+
+$placeholder-background: #000;
+
+.Container {
+	--image-card-padding: 100%;
+
+	position: relative !important;
+
+	background: #{colors.$background-primary};
+	border: 1px solid #{colors.$mine-shaft};
+	border-radius: calc(#{borders.$radius-primary} / 2) !important;
+
+	cursor: pointer;
+	overflow: hidden;
+
+	.Body {
+		position: relative;
+		overflow: hidden;
+		// max-height: 170px;
+		.Placeholder {
+			position: relative;
+			padding-top: var(--image-card-padding);
+			background: $placeholder-background;
+
+			.Spinner {
+				display: block;
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				transform: translate(-50%, -50%);
+			}
+		}
+	}
+
+	&.Landscape {
+		--image-card-padding: 56.25%;
+	}
+
+	&.Portrait {
+		--image-card-padding: 125%;
+	}
+
+	@media only screen and (max-width: 414px) {
+		min-width: unset;
+	}
+
+	.Image {
+		position: absolute !important;
+		top: 0;
+		left: 0;
+		height: 100% !important;
+		width: 100% !important;
+		object-fit: cover;
+		overflow: hidden;
+		border-radius: #{borders.$radius-secondary-top};
+
+		img,
+		video {
+			width: 100%;
+			border-radius: #{borders.$radius-secondary-top};
+			background: $placeholder-background;
+		}
+
+		// Hide default spinner in image
+		div[class*='Spinner'] {
+			display: none;
+		}
+	}
+
+	.Footer {
+		padding: 16px;
+
+		h5 {
+			color: #{colors.$text-primary};
+			font-size: #{typography.$size-small};
+			font-weight: #{typography.$font-weight-bold};
+
+			@media only screen and (min-width: #{dimensions.$breakpoint-mobile-l}) {
+				font-size: #{typography.$size-small};
+				line-height: 20px;
+			}
+
+			@media only screen and (min-width: #{dimensions.$breakpoint-tablet-xs}) {
+				font-size: #{typography.$size-default};
+				line-height: 24px;
+			}
+		}
+
+		.Subheader {
+			font-size: #{typography.$size-tiny};
+			color: #{colors.$grey-lighter-2};
+			word-break: break-all;
+
+			@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
+				line-height: 14.5px;
+			}
+		}
+	}
+}

@@ -2,8 +2,9 @@
 <browserconfig>
     <msapplication>
         <tile>
-            <square150x150logo src="/android-chrome-512x512.png"/>
-            <TileColor>#da532c</TileColor>
+        
+            <square150x150logo src="https://res.cloudinary.com/fact0ry/image/upload/w_512,h_512/v1655958535/logos/zero-favicon.png"/>
+            <TileColor>#0a0a0a</TileColor>
         </tile>
     </msapplication>
 </browserconfig>

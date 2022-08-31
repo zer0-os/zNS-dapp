@@ -1,5 +1,16 @@
+@use 'styles/variables/dimensions';
+@use 'styles/variables/typography';
+@use 'styles/variables/colors';
+
 .Inputs {
-	margin-top: 72px;
+	margin-top: 24px;
+
+	// Tablet Breakpoint
+	@media only screen and (min-width: #{dimensions.$breakpoint-tablet-xs}) {
+		> * {
+			margin-top: 52px;
+		}
+	}
 
 	> *:not(:first-child) {
 		margin-top: 40px;
@@ -15,9 +26,9 @@
 	margin-top: 7px;
 	padding-left: 24px;
 
-	font-size: 12px;
+	font-size: #{typography.$size-tiny};
 
-	color: var(--color-grey-lighter-2);
+	color: #{colors.$grey-lighter-2};
 }
 
 .Success {

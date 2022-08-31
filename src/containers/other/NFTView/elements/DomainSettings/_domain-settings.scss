@@ -1,0 +1,56 @@
+@use 'styles/variables/dimensions';
+@use 'styles/variables/colors';
+
+$width: 640px;
+$gutter: 16px;
+
+.domain-settings {
+	&__overlay {
+		background: radial-gradient(
+			50% 50% at 50% 50%,
+			rgba(0, 0, 0, 0.73) 0%,
+			rgba(0, 0, 0, 0.43) 100%
+		) !important;
+		backdrop-filter: blur(20px);
+
+		> div {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: 0 !important;
+		}
+	}
+
+	&__modal {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		flex-wrap: nowrap;
+		width: $width;
+		max-height: calc(100vh - 16px);
+		margin: 8px 0;
+		background: #{colors.$background-primary};
+
+		@media only screen and (max-width: #{$width + $gutter + $gutter}) {
+			width: calc(100vw - $gutter - $gutter);
+			padding: 0 16px;
+		}
+
+		@media only screen and (max-width: #{dimensions.$breakpoint-mobile-l}) {
+			width: 100vw;
+			height: 100vh;
+			border: none;
+			max-width: unset !important;
+		}
+	}
+
+	&__disable-outside-clicks {
+		display: flex;
+		justify-content: center;
+		position: fixed;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+	}
+}

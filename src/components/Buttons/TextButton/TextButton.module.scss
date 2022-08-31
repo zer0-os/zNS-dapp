@@ -1,30 +1,36 @@
+@use 'styles/variables/colors';
+@use 'styles/variables/animations';
+
 .TextButton {
-	color: var(--color-accent-1);
-	font-weight: 700;
+	color: #{colors.$blue};
 
 	display: flex;
 	align-items: center;
 
-	padding-top: 3px;
-	padding-bottom: 0;
+	background-color: transparent;
 
-	background-color: rgba(0, 0, 0, 0);
+	transition: color #{animations.$time-short} ease-in-out,
+		text-shadow #{animations.$time-short} ease-in-out,
+		opacity #{animations.$time-short} ease-in-out;
 
-	transition: color var(--animation-time-short) ease-in-out,
-		text-shadow var(--animation-time-short) ease-in-out,
-		opacity var(--animation-time-short) ease-in-out;
+	img {
+		height: 14px;
+		width: 14px;
+		margin-left: 6px;
+	}
 }
 
 .TextButton:hover {
-	text-shadow: var(--glow-text-blue);
+	text-shadow: #{colors.$text-glow-primary};
 }
 
 .Selected {
-	color: white;
-	text-shadow: var(--glow-text-white) !important;
+	color: #{colors.$text-primary};
+	text-shadow: #{colors.$text-glow-white} !important;
 }
 
 .Disabled {
-	color: var(--color-grey) !important;
+	color: #{colors.$grey} !important;
 	opacity: 70%;
+	pointer-events: none;
 }

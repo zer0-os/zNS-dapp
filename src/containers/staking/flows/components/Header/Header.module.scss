@@ -1,3 +1,6 @@
+@use 'styles/variables/colors';
+@use 'styles/variables/typography';
+
 .Container {
 	display: flex;
 	flex-direction: column;
@@ -8,8 +11,8 @@
 
 	h1 {
 		padding: 5.5px 0;
-		font-size: 24px;
-		font-weight: 700;
+		font-size: #{typography.$size-large};
+		font-weight: #{typography.$font-weight-bold};
 	}
 
 	hr {
@@ -17,6 +20,6 @@
 		margin-top: 18px;
 		border: 0;
 		height: 0;
-		border-top: 1px solid var(--color-purple-lighter);
+		border-top: 1px solid #{colors.$purple-15};
 	}
 }

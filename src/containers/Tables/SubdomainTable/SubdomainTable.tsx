@@ -4,108 +4,49 @@
  */
 
 // React Imports
-import React, { useRef, useState } from 'react';
+import React, { memo } from 'react';
+
+import { useLocation } from 'react-router-dom';
 
 // Library Imports
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
-import { useAsyncEffect } from 'use-async-effect';
-import BidProvider, { useBid } from './BidProvider';
+import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
+import { zNAFromPathname } from 'lib/utils';
 
 // Component Imports
 import SubdomainTableRow from './SubdomainTableRow';
 import SubdomainTableCard from './SubdomainTableCard';
-import { GenericTable, Overlay } from 'components';
-import { MakeABid } from 'containers';
-import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
-import { DisplayDomain } from 'lib/types';
-import { DomainMetrics } from '@zero-tech/zns-sdk/lib/types';
+import { GenericTable } from 'components';
+
+// Hook for data specific to this table
+import useSubdomainTableData from './hooks/useSubdomainTableData';
+
+const DEFAULT_TABLE_HEADER = 'Domain';
 
 type SubdomainTableProps = {
-	isNftView?: boolean;
 	style?: React.CSSProperties;
 };
 
-const SubdomainTable = (props: SubdomainTableProps) => {
-	const sdk = useZnsSdk();
-
-	const d = useRef<string | undefined>();
-
+const SubdomainTable = ({ style }: SubdomainTableProps) => {
 	// Domain hook data
-	const { domain, loading } = useCurrentDomain();
+	const { domain, loading: isDomainLoading } = useCurrentDomain();
 
-	const { domain: biddingOn, close, bidPlaced } = useBid();
+	// Get metadata and custom header
+	const domainMetadata = useDomainMetadata(domain?.metadata);
 
-	const [areDomainMetricsLoading, setAreDomainMetricsLoading] = useState(false);
-	const [data, setData] = useState<
-		| (DisplayDomain & {
-				metrics: DomainMetrics;
-		  })[]
-		| undefined
-	>();
+	const { isLoading, data } = useSubdomainTableData(
+		domain?.id,
+		domain?.subdomains,
+	);
 
-	useAsyncEffect(async () => {
-		let isMounted = true;
-		setData(undefined);
-		if (domain?.subdomains) {
-			setAreDomainMetricsLoading(true);
-			d.current = domain.name;
-			const subdomains = domain.subdomains.map((item) => item.id);
+	const { pathname } = useLocation();
+	const zna = zNAFromPathname(pathname);
+	const isNetworkRootDomain = zna.length === 0 || zna.split('.').length === 1;
 
-			var i;
-			var j;
-			var temporary: string[] = [];
-			const chunk = 900;
-			const promises = [];
-			for (i = 0, j = subdomains.length; i < j; i += chunk) {
-				temporary = subdomains.slice(i, i + chunk);
-				promises.push(
-					// eslint-disable-next-line no-loop-func
-					new Promise((resolve, reject) => {
-						try {
-							sdk.instance.getDomainMetrics(temporary).then((d) => {
-								resolve(d);
-							});
-						} catch {
-							reject();
-						}
-					}),
-				);
-			}
-
-			try {
-				var tradeData: any = {}; // @todo fix any
-				try {
-					const rawData = (await Promise.all(promises)) as any[];
-					for (var m = 0; m < rawData.length; m++) {
-						tradeData = { ...tradeData, ...rawData[m] };
-					}
-				} catch (e) {
-					console.error(e);
-				}
-				const subDomainsData = domain.subdomains.map((item) =>
-					Object.assign({}, item, { metrics: tradeData[item.id] }),
-				);
-				if (isMounted && (!d.current || d.current === domain.name)) {
-					setData(subDomainsData);
-					setAreDomainMetricsLoading(false);
-				} else {
-					console.warn(
-						`Detected a domain change while loading ${domain.name} - unloaded data`,
-					);
-				}
-			} catch (err) {
-				console.error(err);
-			}
-		} else {
-			setData([]);
-			d.current = domain?.name;
-		}
-
-		return () => {
-			isMounted = false;
-		};
-	}, [domain]);
-
+	/*
+	 * Not being stored as a constant as one of the headers depends
+	 * on a value in the domain's metadata
+	 */
 	const headers = [
 		{
 			label: '',
@@ -113,29 +54,14 @@ const SubdomainTable = (props: SubdomainTableProps) => {
 			className: '',
 		},
 		{
-			label: 'Domain',
+			label: domainMetadata?.customDomainHeaderValue ?? DEFAULT_TABLE_HEADER,
 			accessor: '',
 			className: 'domain',
 		},
 		{
-			label: 'Highest Bid (WILD)',
+			label: 'Volume (all time)',
 			accessor: '',
 			className: '',
-		},
-		{
-			label: '# of Bids',
-			accessor: '',
-			className: '',
-		},
-		{
-			label: 'Last Sale (WILD)',
-			accessor: '',
-			className: 'lastSale',
-		},
-		{
-			label: 'Volume (WILD)',
-			accessor: '',
-			className: 'volume',
 		},
 		{
 			label: '',
@@ -145,33 +71,22 @@ const SubdomainTable = (props: SubdomainTableProps) => {
 	];
 
 	return (
-		<>
-			{biddingOn !== undefined && (
-				<Overlay onClose={close} open={biddingOn !== undefined}>
-					<MakeABid domain={biddingOn!} onBid={bidPlaced} />
-				</Overlay>
-			)}
-			<GenericTable
-				alignments={[0, 0, 1, 1, 1, 1, 1]}
-				data={data}
-				itemKey={'id'}
-				headers={headers}
-				rowComponent={SubdomainTableRow}
-				gridComponent={SubdomainTableCard}
-				infiniteScroll
-				isLoading={loading || areDomainMetricsLoading}
-				loadingText={'Loading Subdomains'}
-			/>
-		</>
+		<GenericTable
+			alignments={[0, 0, 1, 1, 1, 1, 1]}
+			data={data}
+			itemKey={'id'}
+			headers={headers}
+			rowComponent={(props: any) => <SubdomainTableRow {...props} />}
+			gridComponent={(props: any) => <SubdomainTableCard {...props} />}
+			infiniteScroll
+			isLoading={isLoading || isDomainLoading}
+			loadingText={'Loading Subdomains'}
+			isGridViewByDefault={
+				domainMetadata?.gridViewByDefault || isNetworkRootDomain
+			}
+			style={style}
+		/>
 	);
 };
 
-const WrappedSubdomainTable = (props: SubdomainTableProps) => {
-	return (
-		<BidProvider>
-			<SubdomainTable {...props} />
-		</BidProvider>
-	);
-};
-
-export default React.memo(WrappedSubdomainTable);
+export default memo(SubdomainTable);

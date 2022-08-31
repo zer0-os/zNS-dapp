@@ -1,0 +1,82 @@
+@use 'styles/variables/dimensions';
+@use 'styles/variables/typography';
+@use 'styles/variables/colors';
+@use 'styles/variables/borders';
+
+.Container {
+	h1 {
+		font-size: #{typography.$size-large};
+		font-weight: bold;
+
+		// Tablet Breakpoints
+		@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
+			font-size: 36px;
+		}
+	}
+
+	.Description {
+		padding-bottom: 24px;
+	}
+
+	.Banner {
+		width: 100%;
+		height: 100%;
+
+		img {
+			max-height: 370px;
+			border-radius: 0;
+			cursor: pointer;
+			border-radius: calc(#{borders.$radius-primary} / 2);
+		}
+	}
+
+	.Members {
+		display: flex;
+		justify-content: space-between;
+
+		> *:not(:first-child) {
+			margin-left: 32px;
+		}
+	}
+
+	.Tray {
+		display: flex;
+		background: #{colors.$purple-10};
+
+		border-radius: calc(#{borders.$radius-primary} / 2);
+
+		button {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			width: 37px;
+			height: 37px;
+			padding-top: 0;
+			background: none;
+
+			@media only screen and (min-width: #{dimensions.$breakpoint-mobile-l}) {
+				width: 56px;
+			}
+		}
+
+		.MoreDropdown {
+			:global(ul) {
+				left: unset;
+				right: 0;
+				transform: unset;
+
+				li {
+					display: flex;
+
+					span {
+						margin-left: 10px;
+					}
+				}
+			}
+		}
+	}
+
+	> *:not(:first-child) {
+		margin-top: 24px;
+	}
+}

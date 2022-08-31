@@ -1,0 +1,88 @@
+@use 'styles/variables/animations';
+@use 'styles/variables/colors';
+
+.toggle-switch {
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;
+	width: 48px;
+	margin-right: 10px;
+	text-align: left;
+
+	&-checkbox {
+		display: none;
+	}
+
+	&-label {
+		display: block;
+		margin: 0;
+		border: 1px solid #{colors.$grey-lighter-3};
+		border-radius: 20px;
+		cursor: pointer;
+		overflow: hidden;
+	}
+
+	&-inner {
+		display: block;
+		width: 200%;
+		margin-left: -100%;
+		transition: margin #{animations.$time-short} ease-in 0s;
+
+		&:before,
+		&:after {
+			display: block;
+			float: left;
+			width: 50%;
+			height: 24px;
+			padding: 0;
+			font-size: 8px;
+			font-weight: bold;
+			color: #{colors.$grey-lighter-3};
+			line-height: 24px;
+			box-sizing: border-box;
+		}
+
+		&:before {
+			content: attr(data-yes);
+			padding-left: 8px;
+			text-transform: uppercase;
+			color: #{colors.$blue};
+			background: #{colors.$ocean-10} !important;
+		}
+
+		&:after {
+			content: attr(data-no);
+			padding-right: 5px;
+			text-transform: uppercase;
+			text-align: right;
+			color: #{colors.$grey-lighter-3};
+			background-color: rgba(colors.$white, 0.1);
+		}
+	}
+
+	&-switch {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		right: 23px;
+		display: block;
+		width: 20px;
+		height: 20px;
+		margin: 3px;
+		background: #{colors.$grey-lighter-3};
+		border-radius: 10px;
+		transition: all #{animations.$time-short} ease-in 0s;
+	}
+
+	&-checkbox:checked + &-label {
+		border: 1px solid #{colors.$blue};
+
+		.toggle-switch-inner {
+			margin-left: 0;
+		}
+		.toggle-switch-switch {
+			right: 0px;
+			background: #{colors.$blue};
+		}
+	}
+}

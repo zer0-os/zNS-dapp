@@ -8,6 +8,8 @@ import { NFTMedia, Image } from 'components';
 
 //- Library Imports
 import { getMetadata } from 'lib/metadata';
+import { ROOT_DOMAIN } from '../../constants/domains';
+import { truncateDomain } from 'lib/utils/domains';
 
 //- Type Imports
 import { Metadata } from 'lib/types';
@@ -15,6 +17,8 @@ import { Metadata } from 'lib/types';
 //- Style Imports
 import styles from './Artwork.module.scss';
 import classNames from 'classnames/bind';
+
+const DOMAIN_MAX_LENGTH = 40;
 
 type ArtworkProps = {
 	circleIcon?: boolean;
@@ -27,6 +31,8 @@ type ArtworkProps = {
 	name?: string;
 	pending?: boolean;
 	style?: React.CSSProperties;
+	subtext?: string;
+	shouldUseCloudinary?: boolean;
 };
 
 const cx = classNames.bind(styles);
@@ -36,17 +42,17 @@ const Artwork: React.FC<ArtworkProps> = ({
 	domain,
 	disableAnimation,
 	disableInteraction,
-	id,
 	image,
 	metadataUrl,
 	name,
 	pending,
 	style,
+	subtext,
+	shouldUseCloudinary,
 }) => {
 	const isMounted = useRef(false);
 	const loadTime = useRef<Date | undefined>();
 	const [metadata, setMetadata] = useState<Metadata | undefined>();
-	const [truncatedDomain, setTruncatedDomain] = useState<string | undefined>();
 	const [shouldAnimate, setShouldAnimate] = useState<boolean>(true);
 
 	useEffect(() => {
@@ -62,34 +68,21 @@ const Artwork: React.FC<ArtworkProps> = ({
 					const loadedInMs = new Date().getTime() - loadTime.current.getTime();
 					setShouldAnimate(loadedInMs > 60);
 				}
-				if (isMounted.current === true) {
+				if (isMounted.current) {
 					setMetadata(m);
 				}
 			});
 		}
 
-		// Truncate
-		if (domain && ('wilder.' + domain).length > 30) {
-			const split = domain.split('.');
-			if (isMounted.current === true) {
-				setTruncatedDomain('wilder...' + split[split.length - 1]);
-			}
-		} else {
-			if (isMounted.current === true) {
-				setTruncatedDomain(undefined);
-			}
-		}
-
 		return () => {
 			isMounted.current = false;
 		};
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [domain, metadataUrl]);
 
 	const artwork = React.useMemo(() => {
-		if (image) {
-			return <Image alt="pool icon" src={image} />;
-		}
-		if (metadata) {
+		if (shouldUseCloudinary || metadata) {
 			return (
 				<NFTMedia
 					disableLightbox
@@ -99,10 +92,14 @@ const Artwork: React.FC<ArtworkProps> = ({
 					size="tiny"
 					className={`${styles.Image} border-rounded`}
 					alt="NFT Preview"
-					ipfsUrl={metadata?.image_full || metadata?.image || ''}
+					ipfsUrl={image ?? metadata?.image_full ?? metadata?.image ?? ''}
 				/>
 			);
 		}
+		if (image) {
+			return <Image alt="pool icon" src={image} />;
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [image, metadata]);
 
 	return (
@@ -128,7 +125,10 @@ const Artwork: React.FC<ArtworkProps> = ({
 							{(animatedStyles) => (
 								<animated.div style={animatedStyles}>
 									<span
-										style={{ cursor: pending ? 'default' : 'pointer' }}
+										style={{
+											cursor:
+												pending || disableInteraction ? 'default' : 'pointer',
+										}}
 										className={styles.Title}
 									>
 										{metadata?.title || name}
@@ -139,7 +139,9 @@ const Artwork: React.FC<ArtworkProps> = ({
 					)}
 					{!shouldAnimate && metadata?.title && (
 						<span
-							style={{ cursor: pending ? 'default' : 'pointer' }}
+							style={{
+								cursor: pending || disableInteraction ? 'default' : 'pointer',
+							}}
 							className={styles.Title}
 						>
 							{metadata?.title || name}
@@ -149,17 +151,20 @@ const Artwork: React.FC<ArtworkProps> = ({
 						<>
 							{disableInteraction && domain && (
 								<span className={styles.Domain}>
-									{truncatedDomain || 'wilder.' + domain}
+									{truncateDomain(domain, DOMAIN_MAX_LENGTH)}
 								</span>
 							)}
-							{!disableInteraction && domain && (
+							{subtext && !domain && (
+								<span className={styles.Domain}>{subtext}</span>
+							)}
+							{!disableInteraction && name && domain && (
 								<Link
 									className={styles.Domain}
-									to={domain.split('wilder.')[1]}
+									to={domain.split(ROOT_DOMAIN)[1]}
 									target="_blank"
 									rel="noreferrer"
 								>
-									{truncatedDomain || domain}
+									{truncateDomain(domain, DOMAIN_MAX_LENGTH)}
 								</Link>
 							)}
 						</>

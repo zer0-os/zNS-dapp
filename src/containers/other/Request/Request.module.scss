@@ -1,3 +1,8 @@
+@use 'styles/variables/colors';
+@use 'styles/variables/borders';
+@use 'styles/variables/animations';
+@use 'styles/variables/typography';
+
 .Request {
 	display: flex;
 
@@ -14,16 +19,16 @@
 
 .Error {
 	padding: 0;
-	font-weight: 700 !important;
-	color: var(--color-primary-lighter-3);
+	font-weight: #{typography.$font-weight-bold} !important;
+	color: #{colors.$mauve};
 }
 
 .Image {
 	width: 543px;
 	max-width: 543px;
-	border-radius: var(--box-radius);
+	border-radius: #{borders.$radius-primary};
 	cursor: pointer;
-	background: rgba(0, 0, 0, 0.3);
+	background: rgba(colors.$black, 0.3);
 }
 
 .Image:hover > * {
@@ -31,7 +36,7 @@
 }
 
 .Image > * {
-	transition: transform var(--animation-time-medium) ease-in-out;
+	transition: transform #{animations.$time-medium} ease-in-out;
 	height: 100%;
 	width: 100%;
 	object-fit: contain !important;
@@ -48,7 +53,7 @@
 
 .Info h1 {
 	font-size: 36px;
-	font-weight: 700;
+	font-weight: #{typography.$font-weight-bold};
 }
 
 .Info > div {
@@ -83,12 +88,12 @@
 
 .Offer > span:first-of-type {
 	font-size: 40px;
-	font-weight: 700;
+	font-weight: #{typography.$font-weight-bold};
 }
 
 .Offer > span:last-of-type {
-	font-size: 24px;
-	color: var(--color-primary-lighter-3);
+	font-size: #{typography.$size-large};
+	color: #{colors.$mauve};
 	margin-left: 16px;
 }
 
@@ -105,12 +110,12 @@
 .Confirmation {
 	width: 588px;
 	padding: 32px 40px 40px 40px;
-	background: var(--color-background);
+	background: #{colors.$background-primary};
 }
 
 .Confirmation h2 {
 	font-size: 36px;
-	font-weight: 700;
+	font-weight: #{typography.$font-weight-bold};
 	text-align: center;
 }
 
@@ -120,8 +125,8 @@
 }
 
 .Confirmation p {
-	font-size: 24px;
-	font-weight: 700;
+	font-size: #{typography.$size-large};
+	font-weight: #{typography.$font-weight-bold};
 	line-height: 28.8px;
 	text-align: center;
 }
@@ -131,7 +136,7 @@
 }
 
 .FulfillIndicator > div > p {
-	font-size: 24px !important;
+	font-size: #{typography.$size-large} !important;
 }
 
 @media only screen and (max-width: 1200px) {
@@ -159,7 +164,7 @@
 	}
 
 	.Offer > span {
-		font-size: 24px !important;
+		font-size: #{typography.$size-large} !important;
 	}
 }
 

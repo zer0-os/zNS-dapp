@@ -1,0 +1,33 @@
+@use 'styles/variables/animations';
+
+.TriggerContentContainer {
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+	position: relative;
+}
+
+.DropdownContentContainer {
+	position: absolute;
+	pointer-events: none;
+	transition: all #{animations.$time-short} linear;
+	opacity: 0;
+	display: block;
+	z-index: 10000;
+
+	&.down {
+		top: 100%;
+		right: -4px;
+		padding-top: 8px;
+	}
+
+	&.up {
+		bottom: 100%;
+	}
+}
+
+.TriggerContentContainer:hover .DropdownContentContainer {
+	display: block;
+	opacity: 1;
+	pointer-events: all;
+}

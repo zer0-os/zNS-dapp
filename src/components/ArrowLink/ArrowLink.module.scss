@@ -1,3 +1,6 @@
+@use 'styles/variables/animations';
+@use 'styles/variables/colors';
+
 .Link {
 	position: relative;
 }
@@ -11,7 +14,7 @@
 }
 
 .Link:hover .ArrowContainer::after {
-	box-shadow: 0px 0px 10px 3px var(--color-accent-1);
+	box-shadow: 0px 0px 10px 3px #{colors.$blue};
 }
 
 .ArrowContainer {
@@ -21,7 +24,7 @@
 	height: 100%;
 	width: 12px;
 
-	transition: margin-left var(--animation-time-medium) ease-in-out;
+	transition: margin-left #{animations.$time-medium} ease-in-out;
 }
 
 .ArrowContainer::after {
@@ -31,11 +34,11 @@
 	left: 50%;
 	height: 0px;
 	width: 0px;
-	background: rgba(0, 0, 0, 0);
+	background: #{colors.$black};
 
 	transform: translate(-60%, -50%);
 
-	transition: box-shadow var(--animation-time-short) ease-in-out;
+	transition: box-shadow #{animations.$time-short} ease-in-out;
 }
 
 .Arrow {
@@ -45,7 +48,7 @@
 	left: 0;
 	top: 50%;
 
-	background: var(--color-accent-1);
+	background: #{colors.$blue};
 }
 
 .Arrow::after,

@@ -1,22 +1,36 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
-// Library Imports
+//-Library Imports
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
-import useCurrency from 'lib/hooks/useCurrency';
-import { DomainMetrics } from '@zero-tech/zns-sdk/lib/types';
+import {
+	ConvertedTokenInfo,
+	DomainMetrics,
+} from '@zero-tech/zns-sdk/lib/types';
 import { ethers } from 'ethers';
-import { formatNumber, formatEthers } from 'lib/utils';
+import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
+import useSubdomainData from './hooks/useSubdomainData';
+import {
+	formatNumber,
+	formatEthers,
+	getParentZna,
+	getAspectRatioForZna,
+	getNetworkZNA,
+} from 'lib/utils';
 
-// Component Imports
-import { Spinner, NFTCard } from 'components';
-import { BidButton } from 'containers';
+//-Component Imports
+import { Spinner, ImageCard, Overlay } from 'components';
 
-// Local Imports
-import { useBid } from './BidProvider';
+//-Containers Imports
+import { BidButton, BuyNowButton, MakeABid } from 'containers';
 
+//-Constants Imports
+import { LABELS, Modal } from './SubdomainTableCard.constants';
+import { ROUTES } from 'constants/routes';
+
+//-Styles Imports
 import styles from './SubdomainTableCard.module.scss';
 
 const SubdomainTableCard = (props: any) => {
@@ -27,14 +41,16 @@ const SubdomainTableCard = (props: any) => {
 	const walletContext = useWeb3React<Web3Provider>();
 	const { account } = walletContext;
 	const { push: goTo } = useHistory();
-	const { makeABid, updated } = useBid();
 
-	const { wildPriceUsd } = useCurrency();
+	const [modal, setModal] = useState<Modal | undefined>();
 
 	const domain = props.data;
+	const paymentTokenInfo: ConvertedTokenInfo = props.data.paymentTokenInfo;
 	const tradeData: DomainMetrics = domain?.metrics;
-
-	const [hasUpdated, setHasUpdated] = useState<boolean>(false);
+	const domainMetadata = useDomainMetadata(domain?.metadata);
+	const isRootDomain = domain.name.split('.').length <= 2;
+	const isBiddable =
+		isRootDomain || Boolean(domainMetadata?.isBiddable ?? true);
 
 	const isOwnedByUser =
 		account?.toLowerCase() === domain?.owner?.id.toLowerCase();
@@ -43,74 +59,106 @@ const SubdomainTableCard = (props: any) => {
 	// Functions //
 	///////////////
 
+	const {
+		isLoading: isLoadingSubdomain,
+		buyNowPrice,
+		refetch,
+	} = useSubdomainData(domain.id);
+
 	const onButtonClick = (event: any) => {
-		makeABid(domain);
+		if (account !== undefined && !isOwnedByUser && isBiddable) {
+			setModal(Modal.MAKE_A_BID);
+		}
 	};
 
 	const onClick = (event: any) => {
 		if (!event.target.className.includes('FutureButton')) {
-			goTo('/market/' + domain.name.split('wilder.')[1]);
+			goTo(ROUTES.MARKET + '/' + getNetworkZNA(domain.name));
 		}
 	};
-
-	/////////////
-	// Effects //
-	/////////////
-
-	useEffect(() => {
-		if (updated && updated.id === domain.id) {
-			setHasUpdated(!hasUpdated);
-		}
-	}, [updated]);
 
 	////////////
 	// Render //
 	////////////
 
 	return (
-		<NFTCard
-			domain={domain.name}
-			metadataUrl={domain.metadata}
-			nftOwnerId={domain.owner?.id || ''}
-			nftMinterId={domain.minter?.id || ''}
-			showCreator
-			showOwner
-			onClick={onClick}
-		>
-			<div className={styles.Container}>
-				<div className={styles.Bid}>
-					{!tradeData && <Spinner style={{ marginTop: 1 }} />}
-					{tradeData && (
-						<>
-							<label>Highest Bid</label>
-							<span className={`${styles.Crypto} glow-text-blue`}>
-								{tradeData.highestBid ? formatEthers(tradeData.highestBid) : 0}{' '}
-								WILD
-							</span>
-							{wildPriceUsd > 0 && (
-								<span className={styles.Fiat}>
-									$
-									{tradeData.highestBid
-										? formatNumber(
-												Number(
-													ethers.utils.formatEther(tradeData?.highestBid),
-												) * wildPriceUsd,
-										  )
-										: 0}{' '}
-								</span>
-							)}
-						</>
-					)}
+		<>
+			{modal === Modal.MAKE_A_BID && (
+				<Overlay onClose={() => setModal(undefined)} open>
+					<MakeABid
+						domain={domain}
+						onBid={refetch}
+						onClose={() => setModal(undefined)}
+						paymentTokenInfo={paymentTokenInfo}
+					/>
+				</Overlay>
+			)}
+			<ImageCard
+				subHeader={`0://${domain.name}`}
+				imageUri={domainMetadata?.image_full ?? domainMetadata?.image}
+				header={domainMetadata?.title}
+				onClick={onClick}
+				aspectRatio={getAspectRatioForZna(getParentZna(domain.name))}
+				shouldUseCloudinary={true}
+			>
+				<div className={styles.Container}>
+					<div className={styles.Bid}>
+						{isLoadingSubdomain && <Spinner />}
+						{!isLoadingSubdomain && (
+							<>
+								<label>{LABELS.TOP_BID}</label>
+								{!tradeData && <span className={styles.Crypto}>-</span>}
+								{tradeData && (
+									<>
+										<span className={styles.Crypto}>
+											{tradeData.highestBid
+												? formatEthers(tradeData.highestBid)
+												: 0}{' '}
+											{paymentTokenInfo?.symbol}
+										</span>
+										{Number(paymentTokenInfo?.priceInUsd) > 0 && (
+											<span className={styles.Fiat}>
+												$
+												{tradeData.highestBid
+													? formatNumber(
+															Number(
+																ethers.utils.formatEther(tradeData?.highestBid),
+															) * Number(paymentTokenInfo?.priceInUsd),
+													  )
+													: 0}{' '}
+											</span>
+										)}
+									</>
+								)}
+							</>
+						)}
+					</div>
+					<div className={styles.ButtonContainer}>
+						{buyNowPrice ? (
+							<BuyNowButton
+								onSuccess={refetch}
+								buttonText={LABELS.BUY}
+								domainId={domain.id}
+								disabled={isOwnedByUser || !account}
+								isLoading={isLoadingSubdomain}
+								className={styles.Button}
+								paymentTokenInfo={paymentTokenInfo}
+							/>
+						) : (
+							<BidButton
+								glow={account !== undefined && !isOwnedByUser && isBiddable}
+								onClick={onButtonClick}
+								className={styles.Button}
+								loading={isLoadingSubdomain}
+							>
+								{LABELS.BID}
+							</BidButton>
+						)}
+					</div>
 				</div>
-				<BidButton
-					glow={account !== undefined && !isOwnedByUser}
-					onClick={onButtonClick}
-				>
-					Bid
-				</BidButton>
-			</div>
-		</NFTCard>
+			</ImageCard>
+		</>
 	);
 };
 
-export default React.memo(SubdomainTableCard);
+export default SubdomainTableCard;

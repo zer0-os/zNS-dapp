@@ -1,3 +1,9 @@
+@use 'styles/variables/typography';
+@use 'styles/variables/colors';
+@use 'styles/variables/borders';
+@use 'styles/variables/animations';
+@use 'styles/variables/dimensions';
+
 .NFTView {
 	width: 100%;
 }
@@ -12,18 +18,18 @@
 	justify-content: space-between;
 	padding: 40px;
 	filter: drop-shadow(0px 0px 16px rgba(140, 84, 221, 0.25));
-	border-radius: var(--box-radius);
-	border: 1px solid #50207b;
+	border-radius: #{borders.$radius-primary};
+	border: 1px solid #{colors.$purple-lighter};
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-color: var(--color-background);
-	transition: background var(--animation-time-medium) ease-in-out;
+	background-color: #{colors.$background-primary};
+	transition: background #{animations.$time-medium} ease-in-out;
 	overflow: hidden;
 }
 
 .Loaded {
-	background-color: rgba(0, 0, 0, 0);
+	background-color: #{colors.$black};
 }
 
 .Loaded .BG {
@@ -38,7 +44,7 @@
 	height: 100%;
 	z-index: -1;
 	object-fit: cover;
-	border-radius: var(--box-radius);
+	border-radius: #{borders.$radius-primary};
 }
 
 .NFT > div {
@@ -56,7 +62,7 @@
 }
 
 .Image > div {
-	transition: transform var(--animation-time-medium) ease-in-out;
+	transition: transform #{animations.$time-medium} ease-in-out;
 }
 
 .Image:hover > div {
@@ -65,7 +71,7 @@
 
 .Image img {
 	object-fit: cover;
-	border-radius: 8px;
+	border-radius: calc(#{borders.$radius-primary} / 2);
 }
 
 .Info {
@@ -81,12 +87,10 @@
 	top: 40px;
 	right: 40px;
 
-	background: var(--color-purple-darkest);
+	background: #{colors.$purple-darkest};
 
-	border-radius: 8px;
-	border: 1px solid var(--color-purple-ligher);
-
-	overflow: hidden;
+	border-radius: calc(#{borders.$radius-primary} / 2);
+	border: 1px solid #{colors.$purple-15};
 
 	button {
 		display: flex;
@@ -102,7 +106,7 @@
 
 .Info h1 {
 	font-size: 36px;
-	font-weight: bold;
+	font-weight: #{typography.$font-weight-bold};
 	line-height: 44px;
 }
 
@@ -141,19 +145,19 @@
 }
 
 .Price h2 {
-	color: var(--color-primary-lighter-3);
+	color: #{colors.$mauve};
 	margin-bottom: 4px;
 }
 
 .Crypto {
-	font-size: 24px;
-	font-weight: 700;
+	font-size: #{typography.$size-large};
+	font-weight: #{typography.$font-weight-bold};
 }
 
 .Fiat {
-	font-size: 18px;
-	font-weight: 400;
-	color: var(--color-primary-lighter-3);
+	font-size: #{typography.$size-medium};
+	font-weight: #{typography.$font-weight-regular};
+	color: #{colors.$mauve};
 }
 
 .Buttons {
@@ -167,19 +171,20 @@
 .Box {
 	/* height: 95.5px; */
 	padding: 20px;
-	background: var(--color-background);
+	background: #{colors.$purple-5};
+	border-radius: #{borders.$radius-primary};
 }
 
 .Box h4 {
 	margin-bottom: 4px;
-	font-size: 12px;
-	color: #bfbfbf;
+	font-size: #{typography.$size-tiny};
+	color: #{colors.$grey-lighter-2};
 }
 
 .Box span {
 	width: 100%;
 	text-overflow: ellipsis;
-	font-weight: 700;
+	font-weight: #{typography.$font-weight-bold};
 }
 
 .Story {
@@ -204,7 +209,7 @@
 }
 
 .History ul::-webkit-scrollbar-corner {
-	background: rgba(0, 0, 0, 0);
+	background: #{colors.$black};
 	height: 0;
 	width: 0;
 }
@@ -220,7 +225,7 @@
 
 .History ul::-webkit-scrollbar-thumb {
 	border-radius: 10px;
-	background-color: rgba(60, 161, 255, 0.2);
+	background-color: rgba(82, 87, 255, 0.2);
 }
 
 .Contract {
@@ -244,7 +249,7 @@
 
 	cursor: pointer;
 
-	transition: transform var(--animation-time-medium) ease-in-out;
+	transition: transform #{animations.$time-medium} ease-in-out;
 }
 
 .Copy:hover {
@@ -260,25 +265,18 @@
 }
 
 .History {
-	padding: 20px 0 20px 0;
+	padding: 24px 12px 0 12px;
 	margin-top: 24px;
-}
-.HistoryNoBids {
-	padding: 20px 0 0 0;
-}
 
-.History h4 {
-	padding: 0 20px;
-}
-
-.History ul {
-	padding: 0 20px;
+	// Tablet Breakpoints
+	@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
+		padding: 24px 0 0 0;
+	}
 }
 
 .History span {
-	padding: 20px;
 	padding-top: 0;
-	font-weight: 400;
+	font-weight: #{typography.$font-weight-regular};
 }
 
 .History .Loading {
@@ -296,14 +294,39 @@
 
 .Bid:first-child {
 	margin-top: 12px;
+
+	// Tablet Breakpoints
+	@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
+		margin-top: 24px;
+	}
 }
 
-.Stats {
+.NFTStats {
 	display: flex;
 	align-items: unset;
 	justify-content: space-between;
 	margin-top: 24px;
-	flex-wrap: wrap;
+	gap: 8px;
+
+	// Tablet Breakpoints
+	@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
+		gap: 16px;
+		margin-top: 48px;
+	}
+
+	.NFTStatContainer {
+		flex: 1;
+
+		@media only screen and (max-width: 768px) {
+			&.BidsStat {
+				display: none;
+			}
+		}
+	}
+
+	@media only screen and (max-width: 520px) {
+		flex-direction: column;
+	}
 }
 
 .Stats:first-child {
@@ -314,6 +337,43 @@
 	display: flex;
 	justify-content: space-between;
 	grid-gap: 16px;
+	font-size: 12px;
+
+	h4:first-of-type {
+		white-space: nowrap;
+		margin-right: 4px;
+	}
+
+	.FlexWrapper {
+		display: flex;
+		flex-direction: row;
+	}
+
+	.BoxArrowLink {
+		margin-top: 4px;
+		width: fit-content;
+		padding-right: 4px;
+		font-size: 12px;
+	}
+
+	.TextButton {
+		margin-top: 4px;
+		padding-left: 0;
+		font-size: 12px;
+		width: fit-content;
+		background: transparent;
+
+		img {
+			display: none;
+		}
+	}
+
+	.Spinner {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 100%;
+	}
 }
 
 @media only screen and (max-width: 1280px) {
@@ -393,22 +453,22 @@
 	}
 
 	.Bid .From b {
-		font-size: 14px;
-		font-weight: 400;
+		font-size: #{typography.$size-small};
+		font-weight: #{typography.$font-weight-regular};
 	}
 }
 
 @media only screen and (max-width: 600px) {
 	.Price h2 {
-		font-size: 18px !important;
+		font-size: #{typography.$size-medium} !important;
 	}
 
 	.Crypto {
-		font-size: 24px !important;
+		font-size: #{typography.$size-large} !important;
 	}
 
 	.Fiat {
-		font-size: 18px !important;
+		font-size: #{typography.$size-medium} !important;
 	}
 
 	.TokenHashContainer {
@@ -417,26 +477,14 @@
 
 	.Contract {
 		width: 100%;
-		&:last-child {
-			margin-top: 0;
+		margin-top: 0;
+		&:first-of-type {
+			margin-top: 16px;
 		}
 	}
 
 	.Stats {
 		align-items: baseline;
-	}
-}
-
-// Stats Widget Container Styles
-@media only screen and (max-width: 520px) {
-	.WidgetContainer {
-		margin: 4px 0;
-		&:first-child {
-			margin-top: 0px;
-		}
-		&:last-child {
-			margin-bottom: 0px;
-		}
 	}
 }
 
@@ -470,14 +518,13 @@
 
 .Attributes {
 	margin-top: 24px;
-	padding: 24px;
-	background: var(--color-background);
+	background: #{colors.$background-primary};
 }
 
 .Attributes h4 {
 	padding: 0;
-	color: var(--color-grey-lighter-2);
-	font-size: 12px;
+	color: #{colors.$grey-lighter-2};
+	font-size: #{typography.$size-tiny};
 	text-transform: capitalize;
 	font-weight: normal;
 }
@@ -490,7 +537,7 @@
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(194px, 1fr));
 	grid-row-start: 1;
-	column-gap: 4px;
+	column-gap: 8px;
 	margin-top: 16px;
 	position: relative;
 }
@@ -503,8 +550,8 @@
 	flex-direction: column;
 	justify-content: center;
 	padding: 8px 16px 8px 20px;
-	border: 1px solid #50207b;
-	border-radius: 999px;
+	border-radius: calc(#{borders.$radius-primary} / 2);
+	background: #{colors.$purple-5};
 }
 
 @media only screen and (max-width: 768px) {
@@ -530,7 +577,7 @@
 }
 
 .SetOpacityAnimation {
-	animation: animatedOpacity var(--animation-time-medium) ease-in-out;
+	animation: animatedOpacity #{animations.$time-medium} ease-in-out;
 }
 
 @keyframes animatedOpacity {
@@ -546,12 +593,12 @@
 }
 
 .Traits {
-	font-size: 12px;
+	font-size: #{typography.$size-tiny};
 	color: #bcbcbc;
 }
 
 .Properties {
-	font-size: 12px;
+	font-size: #{typography.$size-tiny};
 	margin-top: 2px;
 }
 
@@ -562,36 +609,21 @@
 	text-overflow: ellipsis;
 }
 
+.ButtonContainer {
+	width: 100%;
+}
+
 button.ToggleAttributes {
 	background: none;
-	color: #52cbff;
-	font-size: 16px;
-	width: 190px;
+	color: #{colors.$blue};
 	height: 48px;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	padding: 8px 20px;
 	margin: 4px 0;
-	position: absolute;
-	right: 8px;
-	bottom: 0px;
 	cursor: pointer;
-}
-
-@media only screen and (max-width: 768px) {
-	button.ToggleAttributes {
-		width: 150px;
-	}
-}
-
-@media only screen and (max-width: 414px) {
-	button.ToggleAttributes {
-		position: relative;
-		width: 100%;
-		margin: 8px;
-	}
+	width: 100%;
 }
 /* Attributes styles End */
 

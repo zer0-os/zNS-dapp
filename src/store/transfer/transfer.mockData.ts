@@ -12,6 +12,7 @@ export const TRANSFER_SUBMIT_PARAMS_1: TransferSubmitParams = {
 	creatorId: '0x13fc7bcca25bc0bab1c9cbec2ea2a254f4357f6e',
 	walletAddress:
 		'0x034cc407339c063b85fcbae3ca0b2cc247f36019117dc48421426c2f979409e0',
+	onClose: () => {},
 };
 
 export const TRANSFER_SUBMIT_PARAMS_2: TransferSubmitParams = {
@@ -26,6 +27,7 @@ export const TRANSFER_SUBMIT_PARAMS_2: TransferSubmitParams = {
 		'0x034cc407339c063b85fcbae3ca0b2cc247f36019117dc48421426c2f979409e0',
 	walletAddress:
 		'0x034cc407339c063b85fcbae3ca0b2cc247f36019117dc48421426c2f979409e0',
+	onClose: () => {},
 };
 
 export const transferReady: TransferState = {

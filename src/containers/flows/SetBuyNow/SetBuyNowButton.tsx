@@ -1,6 +1,10 @@
+//- React Imports
 import { useState } from 'react';
+
+//- Components Imports
 import { FutureButton, Overlay, TextButton } from 'components';
 import SetBuyNow from '.';
+import { ConvertedTokenInfo } from '@zero-tech/zns-sdk';
 
 interface SetBuyNowButtonProps {
 	className?: string;
@@ -9,6 +13,7 @@ interface SetBuyNowButtonProps {
 	disabled?: boolean;
 	onSuccess?: () => void;
 	isTextButton?: boolean;
+	paymentTokenInfo: ConvertedTokenInfo;
 }
 
 const SetBuyNowButton = ({
@@ -18,6 +23,7 @@ const SetBuyNowButton = ({
 	disabled,
 	onSuccess,
 	isTextButton,
+	paymentTokenInfo,
 }: SetBuyNowButtonProps) => {
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -35,6 +41,7 @@ const SetBuyNowButton = ({
 						onSuccess={onSuccess}
 						domainId={domainId}
 						onCancel={() => setIsModalOpen(false)}
+						paymentTokenInfo={paymentTokenInfo}
 					/>
 				</Overlay>
 			)}
@@ -50,5 +57,4 @@ const SetBuyNowButton = ({
 		</>
 	);
 };
-
 export default SetBuyNowButton;

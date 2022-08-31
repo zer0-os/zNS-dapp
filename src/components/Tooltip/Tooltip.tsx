@@ -1,16 +1,17 @@
 //- React Imports
-import React, { useMemo } from 'react';
+import React from 'react';
 
 // Library Imports
 import { useLayer, useHover, Arrow } from 'react-laag';
 import { motion, AnimatePresence, MotionProps } from 'framer-motion';
+import classNames from 'classnames/bind';
 
 //- Style Imports
 import styles from './Tooltip.module.scss';
 
 type TooltipProps = {
 	children: React.ReactNode | string | number;
-	text: string;
+	text: React.ReactNode;
 	auto?: boolean;
 	placement?:
 		| 'top-start'
@@ -30,7 +31,10 @@ type TooltipProps = {
 	delayLeave?: number;
 	hideOnScroll?: boolean;
 	animationProps?: MotionProps;
+	deepPadding?: boolean;
 };
+
+const cx = classNames.bind(styles);
 
 const Tooltip: React.FC<TooltipProps> = ({
 	children,
@@ -38,8 +42,8 @@ const Tooltip: React.FC<TooltipProps> = ({
 	auto = true,
 	placement = 'top-center',
 	triggerOffset = 8,
-	delayEnter = 100,
-	delayLeave = 200,
+	delayEnter = 0,
+	delayLeave = 0,
 	hideOnScroll = true,
 	animationProps = {
 		initial: { opacity: 0, scale: 0.9 },
@@ -47,11 +51,8 @@ const Tooltip: React.FC<TooltipProps> = ({
 		exit: { opacity: 0, scale: 0.9 },
 		transition: { duration: 0.1 },
 	},
+	deepPadding,
 }) => {
-	const isReactText = useMemo(() => {
-		return ['string', 'number'].includes(typeof children);
-	}, [children]);
-
 	const [isOver, hoverProps] = useHover({
 		delayEnter,
 		delayLeave,
@@ -65,22 +66,11 @@ const Tooltip: React.FC<TooltipProps> = ({
 		triggerOffset,
 	});
 
-	// when children equals text (string | number), we need to wrap it in an
-	// extra span-element in order to attach props
-	let trigger;
-	if (isReactText) {
-		trigger = (
-			<span className="tooltip-text-wrapper" {...triggerProps} {...hoverProps}>
-				{children}
-			</span>
-		);
-	} else {
-		// In case of an react-element, we need to clone it in order to attach our own props
-		trigger = React.cloneElement(children as React.ReactElement, {
-			...triggerProps,
-			...hoverProps,
-		});
-	}
+	const trigger = (
+		<span className="tooltip-text-wrapper" {...triggerProps} {...hoverProps}>
+			{children}
+		</span>
+	);
 
 	// We're using framer-motion for our enter / exit animations.
 	// This is why we need to wrap our actual tooltip inside `<AnimatePresence />`.
@@ -91,9 +81,13 @@ const Tooltip: React.FC<TooltipProps> = ({
 				<AnimatePresence>
 					{isOver && (
 						<motion.div
-							className={styles.Tooltip}
+							className={cx(styles.Tooltip, {
+								Padded: deepPadding,
+							})}
 							{...animationProps}
 							{...layerProps}
+							// TODO: this ensures tooltip content is displayed when on a modal - also fixes domain settings tooltips that were hidden
+							{...(layerProps.style.zIndex = 999999)}
 						>
 							{text}
 							<Arrow {...arrowProps} className={styles.Arrow} />

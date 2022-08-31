@@ -1,0 +1,76 @@
+@use 'styles/variables/animations';
+@use 'styles/variables/colors';
+@use 'styles/variables/typography';
+
+.Button {
+	margin: 40px auto 0 auto;
+}
+
+.Green {
+	color: #{colors.$success-green};
+}
+
+.Error {
+	display: inline-block;
+	width: 100%;
+	margin-top: 40px;
+	color: #{colors.$red-300};
+	text-align: center;
+}
+
+.Terms {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	margin-top: 40px;
+}
+
+.Terms * {
+	cursor: pointer;
+}
+
+.Terms input {
+	opacity: 0;
+	position: absolute;
+}
+
+.Terms div {
+	position: relative;
+	height: 16px;
+	width: 16px;
+	border: 1px solid #{colors.$blue};
+	border-radius: 4px;
+	transition: border-color #{animations.$time-short} ease;
+}
+
+.Terms .Selected {
+	border-color: #{colors.$japanese-laurel};
+	background-color: #{colors.$success-darker};
+}
+
+.Terms div::after {
+	content: ' ';
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-image: url('./assets/check.svg');
+	background-repeat: no-repeat;
+	background-position: center;
+	opacity: 0;
+	transition: opacity #{animations.$time-short} ease;
+}
+
+.Terms .Selected::after {
+	opacity: 1;
+}
+
+.Terms button {
+	font-weight: #{typography.$font-weight-regular};
+}
+
+.Terms label {
+	margin-left: 8px;
+}

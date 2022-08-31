@@ -1,8 +1,11 @@
+//- Constants Imports
+import { ASPECT_RATIOS, AspectRatio } from 'constants/aspectRatios';
+
+//- Library Imports
 import { ethers } from 'ethers';
 
-export const rootDomainName = 'wilder';
-export const rootDomainId =
-	'0x196c0a1e30004b9998c97b363e44f1f4e97497e59d52ad151208e9393d70bb3b';
+export const rootDomainName = '';
+export const rootDomainId = ethers.constants.HashZero;
 
 export const hash = (x: string): string => {
 	const hash = ethers.utils.id(x);
@@ -20,6 +23,9 @@ const getSubnodeHash = (parentHash: string, labelHash: string): string => {
 	return calculatedHash;
 };
 
+export const isRootDomain = (domainId: string | undefined): boolean =>
+	domainId === rootDomainId;
+
 export const getDomainId = (name: string): string => {
 	let hashReturn = rootDomainId;
 
@@ -35,7 +41,7 @@ export const getDomainId = (name: string): string => {
 };
 
 export const getRelativeDomainPath = (domain: string): string => {
-	const fixedPath = domain.replace(`${rootDomainName}.`, '');
+	const fixedPath = domain;
 
 	return fixedPath;
 };
@@ -55,11 +61,98 @@ export const zNAToLink = (domain: string): string => {
 		domain = domain.substr(1);
 	}
 
-	return 'market/' + domain;
+	return '/market/' + domain;
 };
 
-export const truncateAddress = (address: string) => {
-	return `${address.substring(0, 2)}...${address.substring(
-		address.length - 4,
-	)}`;
+// Truncate wallet address
+export const truncateWalletAddress = (
+	address: string,
+	startingCharacters?: number,
+) => {
+	return `${address.substring(
+		0,
+		2 + (startingCharacters ?? 0),
+	)}...${address.substring(address.length - 4)}`;
 };
+
+/**
+ * Extracts a zNA from a full pathname
+ * e.g. /market/test.name/hello => test.name
+ * @param pathname from react-router-dom::useLocation
+ * @returns zNA from pathname, or empty string
+ */
+export const zNAFromPathname = (pathname: string): string => {
+	return pathname.replace(/^\/[a-zA-Z]*\//, '').split('/')[0] ?? '';
+};
+
+/**
+ * Extracts app name from pathname
+ * e.g. /market/test.name/hello => /market
+ * @param pathname from react-router-dom::useLocation
+ * @returns app from pathname, or empty string
+ */
+export const appFromPathname = (pathname: string): string => {
+	const matches = pathname.match(/^\/[a-zA-Z]*/);
+	return matches ? matches[0] : '';
+};
+
+/**
+ * Gets zNA of parent, e.g. wilder.wheels.genesis -> wilder.wheels
+ * @param zna to get parent of
+ * @returns zNA of parent, or the original zNA if at root
+ */
+export const getParentZna = (zna: string): string => {
+	if (!zna.includes('.')) {
+		return zna;
+	}
+	return zna.slice(0, zna.lastIndexOf('.'));
+};
+
+/**
+ * Gets a hardcoded aspect ratio for a zNA
+ * @param zna to get aspect ratio for
+ * @returns
+ */
+export const getAspectRatioForZna = (zna: string): AspectRatio | undefined => {
+	/* This if is not a long term solution */
+	if (zna === 'wilder') {
+		return AspectRatio.LANDSCAPE;
+	}
+	for (const key in ASPECT_RATIOS) {
+		const znas = ASPECT_RATIOS[key as unknown as AspectRatio];
+		for (var i = 0; i < znas.length; i++) {
+			const z = znas[i];
+			if (zna.startsWith(z)) {
+				return key as AspectRatio;
+			}
+		}
+	}
+};
+
+// Parse ZNA
+export const getNetworkZNA = (zna: string) => {
+	return (process.env.REACT_APP_NETWORK ?? '') !== ''
+		? zna.split('.').splice(1).join('.')
+		: zna;
+};
+
+// Truncate domain
+export const truncateDomain = (
+	domainName: string,
+	maxCharacterLength: number,
+) => {
+	if (domainName.length > maxCharacterLength) {
+		const splits = domainName.split('.');
+		if (splits.length > 2) {
+			return `${splits[0]}...${splits[splits.length - 1]}`;
+		}
+		return domainName;
+	}
+	return domainName;
+};
+
+// Used to replace hardcoded WILD Token name in the constants string with the required domain token
+export const replaceWildWithProperToken = (
+	sourceString: string,
+	paymentTokenName: string,
+) => sourceString.replaceAll('WILD', paymentTokenName);

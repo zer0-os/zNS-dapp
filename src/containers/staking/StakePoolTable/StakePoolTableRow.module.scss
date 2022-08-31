@@ -1,8 +1,10 @@
+@use 'styles/variables/colors';
+
 .Row {
 	cursor: pointer;
 
 	&:hover {
-		background: var(--color-background-alt-50);
+		background: #{colors.$purple-10};
 	}
 
 	td {
@@ -34,4 +36,8 @@
 	& > * {
 		margin-right: auto;
 	}
+}
+
+.ButtonContainer {
+	padding: 4px 0;
 }
