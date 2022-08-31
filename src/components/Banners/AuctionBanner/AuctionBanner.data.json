@@ -1,0 +1,25 @@
+[
+	{
+		"startTime": 1661964753875,
+		"imgUrl": "https://media.giphy.com/media/NxWk4NY7C59Fm/giphy.gif",
+		"link": {
+			"text": "Go To Guidance",
+			"url": "wilder.guild.knight.guidance"
+		},
+		"countdown": {
+			"primaryText": "Guidance Auction Starting Soon...",
+			"secondaryText": "Bidding opens in",
+			"duration": 1661964812432
+		},
+		"auctionOpen": {
+			"primaryText": "Guidance Auction Is Live.",
+			"secondaryText": "Bidding ends in",
+			"duration": 1661964812432
+		},
+		"auctionClosed": {
+			"primaryText": "Guidance Auction Has Now Ended.",
+			"secondaryText": "The highest bid has now been accepted",
+			"duration": 83098245236150
+		}
+	}
+]
