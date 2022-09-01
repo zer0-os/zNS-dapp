@@ -3,12 +3,7 @@ import { useEffect, useState } from 'react';
 import useAsyncEffect from 'use-async-effect';
 
 //- Components Imports
-import {
-	MintDropNFTBanner,
-	AuctionBanner,
-	Overlay,
-	Countdown,
-} from 'components';
+import { MintDropNFTBanner, Banner, Overlay, Countdown } from 'components';
 import WaitlistRegistration from './WaitlistRegistration';
 import RaffleRegistration from './RaffleRegistration';
 
@@ -241,7 +236,8 @@ const RaffleContainer = ({ setClaimDropStage }: RaffleContainerProps) => {
 						buttonText={bannerButtonLabel()}
 						onClick={onBannerClick}
 					/> */}
-					<AuctionBanner />
+
+					<Banner />
 				</div>
 			</>
 		);

@@ -1,0 +1,18 @@
+[
+	{
+		"primaryText": "Guidance Auction Starting Soon...",
+		"secondaryText": "Bidding opens in",
+		"imgUrl": "https://media.giphy.com/media/NxWk4NY7C59Fm/giphy.gif",
+		"buttonText": "Go To Guidance",
+		"startTime": 1662029633388,
+		"endTime": 83101481669400
+	},
+	{
+		"primaryText": "Test",
+		"secondaryText": "Test",
+		"imgUrl": "https://media.giphy.com/media/NxWk4NY7C59Fm/giphy.gif",
+		"buttonText": "Go To Guidance",
+		"startTime": 1662030029526,
+		"endTime": 83101501746250
+	}
+]

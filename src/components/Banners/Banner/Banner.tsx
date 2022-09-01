@@ -1,132 +1,51 @@
 //- React Imports
-import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import React from 'react';
 
-//- Component Imports
-import { BannerContent } from 'components';
+//- Constants Imports
+import { ALT_TEXT } from './Banner.constants';
 
-//- Utils Imports
-import { BannerContentType, getBannerContent } from './utils';
-import { isWilderWorldAppDomain } from 'lib/utils/url';
+//- Assets Imports
+import arrow from './assets/bidarrow.svg';
 
-//- Banner Data
-import BannerData from './BannerData.json';
+//- Style Imports
+import styles from './Banner.module.scss';
 
-const Banner: React.FC = () => {
-	//////////////////
-	//     Hooks    //
-	//////////////////
+type BannerProps = {
+	primaryText?: string;
+	secondaryText?: React.ReactNode;
+	background?: string;
+	buttonText?: string;
+	onClick?: (event: any) => void;
+	style?: React.CSSProperties;
+};
 
-	const history = useHistory();
-
-	//////////////////
-	//     Data     //
-	//////////////////
-
-	const currentTime = new Date().getTime();
-	const contentData: BannerContentType[] = BannerData;
-
-	//////////////////
-	//    State     //
-	//////////////////
-
-	const [backgroundBlob, setBackgroundBlob] = useState<string | undefined>();
-	const [shouldDisplayBanner, setShouldDisplayBanner] = useState<boolean>(true);
-	const [shouldDisplayCountdown, setShouldDisplayCountdown] =
-		useState<boolean>(false);
-	const [bannerContent, setBannerContent] = useState<
-		BannerContentType | undefined
-	>();
-
-	//////////////////
-	//    Effects   //
-	//////////////////
-
-	// Set banner
-	useEffect(() => {
-		let isActive = true;
-
-		const content = getBannerContent(currentTime, contentData);
-		setBannerContent(content);
-
-		if (isActive) {
-			if (!bannerContent) {
-				setShouldDisplayBanner(false);
-			} else {
-				setShouldDisplayBanner(true);
-				if (
-					bannerContent.countdownDate &&
-					currentTime < bannerContent.countdownDate
-				) {
-					setShouldDisplayCountdown(true);
-				}
-			}
-		}
-	}, [bannerContent, contentData, currentTime]);
-
-	// Set background image
-	useEffect(() => {
-		if (!bannerContent?.imgUrl) {
-			return;
-		}
-
-		let isMounted = true;
-
-		fetch(bannerContent.imgUrl)
-			.then((r) => r.blob())
-			.then((blob) => {
-				if (isMounted) {
-					const url = URL.createObjectURL(blob);
-					setBackgroundBlob(url);
-				}
-			});
-		return () => {
-			isMounted = false;
-		};
-	}, [bannerContent?.imgUrl]);
-
-	//////////////////
-	//   Functions  //
-	//////////////////
-
-	const onCountDownFinish = () => {
-		setShouldDisplayCountdown(false);
-	};
-
-	const onBannerClick = () => {
-		if (bannerContent?.href && bannerContent.action === 'link') {
-			if (!isWilderWorldAppDomain(bannerContent?.href)) {
-				window.open(bannerContent?.href, '_blank');
-			} else {
-				history.push(bannerContent?.href);
-			}
-		} else {
-			return;
-		}
-	};
-
-	//////////////////
-	//    Render    //
-	//////////////////
-
+const Banner: React.FC<BannerProps> = ({
+	primaryText,
+	secondaryText,
+	background,
+	buttonText,
+	onClick,
+	style,
+}) => {
 	return (
-		<div style={{ paddingTop: '16px' }}>
-			{shouldDisplayBanner && bannerContent ? (
-				<BannerContent
-					title={bannerContent.title}
-					subtext={bannerContent.subtext}
-					countdownDate={bannerContent.countdownDate}
-					actionText={bannerContent.actionText}
-					backgroundBlob={backgroundBlob}
-					imgAlt={bannerContent.imgAlt}
-					onClick={onBannerClick}
-					onFinish={onCountDownFinish}
-					shouldDisplayCountdown={shouldDisplayCountdown}
-				/>
-			) : (
-				<div style={{ marginTop: '-16px' }}>{null}</div>
-			)}
-		</div>
+		<button className={styles.Container} style={style} onClick={onClick}>
+			<img
+				className={styles.Background}
+				src={background}
+				alt={ALT_TEXT.BANNER}
+			/>
+			<div className={styles.Content}>
+				<div className={styles.TextContainer}>
+					<h2 className={styles.PrimaryText}>{primaryText}</h2>
+					<div className={styles.SecondaryText}>{secondaryText}</div>
+				</div>
+
+				<p className={styles.ButtonText}>
+					{buttonText}
+					<img alt={ALT_TEXT.ARROW} src={arrow} />
+				</p>
+			</div>
+		</button>
 	);
 };
 

@@ -12,7 +12,7 @@
 // TODO: Change this file to TypeScript
 
 //- Banners
-export { default as AuctionBanner } from './Banners/AuctionBanner';
+export { default as Banner } from './Banners/Banner';
 export { default as CountdownBanner } from './Banners/CountdownBanner/CountdownBanner';
 export { default as MessageBanner } from './Banners/MessageBanner/MessageBanner';
 export { default as NextDrop } from './Banners/NextDrop/NextDrop.js';
@@ -88,7 +88,6 @@ export { default as ZNALink } from './ZNALink/ZNALink';
 export { default as Confirmation } from './Confirmation/Confirmation';
 export { default as LoadingIndicator } from './LoadingIndicator/LoadingIndicator';
 export { default as Countdown } from './Countdown/Countdown';
-export { default as BannerContent } from './Banners/Banner/BannerContent';
 export { default as Wizard } from './Wizard/Wizard';
 
 //- Glyphs
