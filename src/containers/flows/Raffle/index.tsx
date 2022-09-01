@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import useAsyncEffect from 'use-async-effect';
 
 //- Components Imports
-import { MintDropNFTBanner, Banner, Overlay, Countdown } from 'components';
+import { MintDropNFTBanner, Overlay, Countdown } from 'components';
 import WaitlistRegistration from './WaitlistRegistration';
 import RaffleRegistration from './RaffleRegistration';
 
@@ -226,7 +226,7 @@ const RaffleContainer = ({ setClaimDropStage }: RaffleContainerProps) => {
 			<>
 				{isModalOpen && overlay()}
 				<div className={styles.BannerContainer}>
-					{/* <MintDropNFTBanner
+					<MintDropNFTBanner
 						title={
 							hasRaffleEnded
 								? 'Claim Your Moto Blessings'
@@ -235,9 +235,7 @@ const RaffleContainer = ({ setClaimDropStage }: RaffleContainerProps) => {
 						label={bannerLabel()}
 						buttonText={bannerButtonLabel()}
 						onClick={onBannerClick}
-					/> */}
-
-					<Banner />
+					/>
 				</div>
 			</>
 		);
