@@ -1,18 +1,38 @@
 [
 	{
-		"primaryText": "Guidance Auction Starting Soon...",
-		"secondaryText": "Bidding opens in",
+		"primaryText": "Test 1",
+		"secondaryText": "Test 1",
 		"imgUrl": "https://media.giphy.com/media/NxWk4NY7C59Fm/giphy.gif",
-		"buttonText": "Go To Guidance",
-		"startTime": 1662029633388,
-		"endTime": 83101481669400
+		"buttonText": "Test 1",
+		"startTime": 1662422100000,
+		"endTime": 1662422550000,
+		"target": {
+			"type": "url",
+			"value": "wilder.boat.notreal.fluxcapacitor.futurecity"
+		}
 	},
 	{
-		"primaryText": "Test",
-		"secondaryText": "Test",
+		"primaryText": "Test 2",
+		"secondaryText": "Test 2",
 		"imgUrl": "https://media.giphy.com/media/NxWk4NY7C59Fm/giphy.gif",
-		"buttonText": "Go To Guidance",
-		"startTime": 1662030029526,
-		"endTime": 83101501746250
+		"buttonText": "Test 2",
+		"startTime": 1662422550000,
+		"endTime": 1662422560000,
+		"target": {
+			"type": "url",
+			"value": "https://zine.wilderworld.com/moto-drop-details/"
+		}
+	},
+	{
+		"primaryText": "Test 3",
+		"secondaryText": "Test 3",
+		"imgUrl": "https://media.giphy.com/media/NxWk4NY7C59Fm/giphy.gif",
+		"buttonText": "Test 3",
+		"startTime": 1662422560000,
+		"endTime": 1662422570000,
+		"target": {
+			"type": "url",
+			"value": "wilder.cats"
+		}
 	}
 ]

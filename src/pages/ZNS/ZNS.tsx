@@ -12,8 +12,9 @@ import styles from './ZNS.module.scss';
 //- Components & Containers
 import { StatsWidget } from 'components';
 import { NFTViewModalProvider } from 'containers/other/NFTView/providers/NFTViewModalProvider/NFTViewModalProvider';
-import { SubdomainTable, CurrentDomainPreview, Raffle } from 'containers';
+import { SubdomainTable, CurrentDomainPreview } from 'containers';
 import { Stage } from 'containers/flows/MintDropNFT/types';
+import Banner from 'components/Banners/Banner';
 
 //- Library Imports
 import { NFTView, TransferOwnership } from 'containers';
@@ -267,7 +268,8 @@ const ZNS: React.FC<ZNSProps> = () => {
 				/>
 			)}
 			{/* ZNS Content */}
-			{enableBanner && <Raffle setClaimDropStage={setClaimDropStage} />}
+			{/* {enableBanner && <Raffle setClaimDropStage={setClaimDropStage} />} */}
+			{enableBanner && <Banner />}
 			{!isNftView && (
 				<div className="main">
 					{previewCard()}

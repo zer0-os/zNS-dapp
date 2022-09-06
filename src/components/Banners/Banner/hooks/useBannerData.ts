@@ -11,55 +11,59 @@ import { getBannerContent } from '../Banner.utils';
 import BannerData from '../Banner.data.json';
 
 export type UseBannerDataReturn = {
-	data?: BannerType;
-	background?: string;
-	isBanner?: boolean;
+	bannerContent?: BannerType;
+	isBanner: boolean;
+	isCountdown: boolean;
+	onFinish: () => void;
+	background: string;
 };
 
 const useBannerData = (): UseBannerDataReturn => {
 	const currentTime = new Date().getTime();
-	const jsonData: BannerType[] = BannerData;
-
-	const [data, setData] = useState<BannerType>();
-	const [background, setBackground] = useState<string | undefined>();
+	// temp endpoint
+	const contentData: BannerType[] = BannerData;
 	const [isBanner, setIsBanner] = useState<boolean>(true);
+	const [isCountdown, setIsCountdown] = useState<boolean>(false);
+	const [bannerContent, setBannerContent] = useState<BannerType | undefined>();
+	const [background, setBackground] = useState<string>('');
 
 	useEffect(() => {
-		let isMounted = true;
+		let isActive = true;
 
-		const content = getBannerContent(currentTime, jsonData);
-		setData(content);
+		const content = getBannerContent(currentTime, contentData);
+		setBannerContent(content);
 
-		if (isMounted) {
-			if (!data) {
-				setIsBanner(false);
-			} else {
-				setIsBanner(true);
+		if (isActive) {
+			if (bannerContent?.imgUrl) {
+				fetch(bannerContent.imgUrl)
+					.then((r) => r.blob())
+					.then((blob) => {
+						const url = URL.createObjectURL(blob);
+						setBackground(url);
+					});
 			}
 		}
 
-		fetch(content.imgUrl)
-			.then((r) => r.blob())
-			.then((blob) => {
-				if (isMounted) {
-					const url = URL.createObjectURL(blob);
-					setBackground(url);
-				}
-			});
-		return () => {
-			isMounted = false;
-		};
-	}, [currentTime, data, jsonData]);
+		if (!bannerContent) {
+			setIsBanner(false);
+		} else {
+			setIsBanner(true);
+			if (bannerContent.endTime && currentTime < bannerContent.endTime) {
+				setIsCountdown(true);
+			}
+		}
+	}, [bannerContent, contentData, currentTime]);
 
-	// to be removed
-	console.log('current', currentTime);
-	console.log('open', currentTime + 50000);
-	console.log('end', currentTime * 50);
+	const onFinish = () => {
+		setIsCountdown(false);
+	};
 
 	return {
-		data,
-		background,
+		bannerContent,
 		isBanner,
+		isCountdown,
+		onFinish,
+		background,
 	};
 };
 
