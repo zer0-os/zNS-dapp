@@ -2,7 +2,7 @@
 import React from 'react';
 
 //- Constants Imports
-import { ALT_TEXT } from './Banner.constants';
+import { AltText } from './Banner.constants';
 
 //- Components Imports
 import Countdown from 'components/Countdown/Countdown';
@@ -19,10 +19,9 @@ type BannerProps = {
 	background?: string;
 	buttonText?: string;
 	endTime?: number;
-	isCountdown: boolean;
+	hasCountdown?: boolean;
 	onClick: () => void;
 	onFinish: () => void;
-	style?: React.CSSProperties;
 };
 
 const Banner: React.FC<BannerProps> = ({
@@ -32,27 +31,27 @@ const Banner: React.FC<BannerProps> = ({
 	buttonText,
 	endTime,
 	onClick,
-	isCountdown,
+	hasCountdown,
 	onFinish,
-	style,
 }) => {
 	const setCountdownDate = endTime === undefined ? 0 : endTime;
 
 	return (
-		<button className={styles.Container} style={style} onClick={onClick}>
-			<img
-				className={styles.Background}
-				src={background}
-				alt={ALT_TEXT.BANNER}
-			/>
+		<button className={styles.Container} onClick={onClick}>
+			{background && (
+				<img
+					className={styles.Background}
+					src={background}
+					alt={AltText.BANNER}
+				/>
+			)}
 			<div className={styles.Content}>
 				<div className={styles.TextContainer}>
 					<h2 className={styles.PrimaryText}>{primaryText}</h2>
 					<div className={styles.SecondaryText}>
 						{secondaryText}{' '}
-						{isCountdown && (
+						{hasCountdown && (
 							<b>
-								{/* Banner Countdown */}
 								{setCountdownDate && (
 									<Countdown to={setCountdownDate} onFinish={onFinish} />
 								)}
@@ -63,7 +62,7 @@ const Banner: React.FC<BannerProps> = ({
 
 				<p className={styles.ButtonText}>
 					{buttonText}
-					<img alt={ALT_TEXT.ARROW} src={arrow} />
+					<img alt={AltText.ARROW} src={arrow} />
 				</p>
 			</div>
 		</button>

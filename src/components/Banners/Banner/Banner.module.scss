@@ -4,6 +4,14 @@
 @use 'styles/variables/borders';
 @use 'styles/variables/animations';
 
+.BannerContainer {
+	padding-bottom: 0;
+
+	&.isBanner {
+		padding-bottom: 16px;
+	}
+}
+
 /* Mobile */
 .Container {
 	width: 100%;

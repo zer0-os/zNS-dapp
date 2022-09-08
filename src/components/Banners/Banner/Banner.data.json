@@ -4,8 +4,9 @@
 		"secondaryText": "Test 1",
 		"imgUrl": "https://media.giphy.com/media/NxWk4NY7C59Fm/giphy.gif",
 		"buttonText": "Test 1",
-		"startTime": 1662422100000,
-		"endTime": 1662422550000,
+		"startTime": 1662642850000,
+		"endTime": 1662643770000,
+		"hasCountdown": true,
 		"target": {
 			"type": "url",
 			"value": "wilder.boat.notreal.fluxcapacitor.futurecity"
@@ -16,8 +17,9 @@
 		"secondaryText": "Test 2",
 		"imgUrl": "https://media.giphy.com/media/NxWk4NY7C59Fm/giphy.gif",
 		"buttonText": "Test 2",
-		"startTime": 1662422550000,
-		"endTime": 1662422560000,
+		"startTime": 1662642870000,
+		"endTime": 1662642890000,
+		"hasCountdown": true,
 		"target": {
 			"type": "url",
 			"value": "https://zine.wilderworld.com/moto-drop-details/"
@@ -28,8 +30,9 @@
 		"secondaryText": "Test 3",
 		"imgUrl": "https://media.giphy.com/media/NxWk4NY7C59Fm/giphy.gif",
 		"buttonText": "Test 3",
-		"startTime": 1662422560000,
-		"endTime": 1662422570000,
+		"startTime": 1662642890000,
+		"endTime": 1662642910000,
+		"hasCountdown": false,
 		"target": {
 			"type": "url",
 			"value": "wilder.cats"

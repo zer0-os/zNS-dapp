@@ -5,6 +5,7 @@ export type BannerType = {
 	buttonText: string;
 	startTime: number;
 	endTime: number;
+	hasCountdown: boolean;
 	target: {
 		type: string;
 		value: string;

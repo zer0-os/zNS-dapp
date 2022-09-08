@@ -13,7 +13,7 @@ import BannerData from '../Banner.data.json';
 export type UseBannerDataReturn = {
 	bannerContent?: BannerType;
 	isBanner: boolean;
-	isCountdown: boolean;
+	hasCountdown?: boolean;
 	onFinish: () => void;
 	background: string;
 };
@@ -23,9 +23,11 @@ const useBannerData = (): UseBannerDataReturn => {
 	// temp endpoint
 	const contentData: BannerType[] = BannerData;
 	const [isBanner, setIsBanner] = useState<boolean>(true);
-	const [isCountdown, setIsCountdown] = useState<boolean>(false);
 	const [bannerContent, setBannerContent] = useState<BannerType | undefined>();
 	const [background, setBackground] = useState<string>('');
+	const [hasCountdown, setHasCountdown] = useState<boolean | undefined>(
+		bannerContent?.hasCountdown,
+	);
 
 	useEffect(() => {
 		let isActive = true;
@@ -48,20 +50,25 @@ const useBannerData = (): UseBannerDataReturn => {
 			setIsBanner(false);
 		} else {
 			setIsBanner(true);
-			if (bannerContent.endTime && currentTime < bannerContent.endTime) {
-				setIsCountdown(true);
+
+			if (
+				Boolean(bannerContent.hasCountdown) &&
+				Boolean(bannerContent.endTime) &&
+				currentTime < bannerContent.endTime
+			) {
+				setHasCountdown(true);
 			}
 		}
 	}, [bannerContent, contentData, currentTime]);
 
 	const onFinish = () => {
-		setIsCountdown(false);
+		setHasCountdown(false);
 	};
 
 	return {
 		bannerContent,
 		isBanner,
-		isCountdown,
+		hasCountdown,
 		onFinish,
 		background,
 	};

@@ -5,11 +5,21 @@ import { useHistory } from 'react-router-dom';
 //- Components Imports
 import Banner from './Banner';
 
+//- Constants Imports
+import { ROUTES } from 'constants/routes';
+import { TargetType, Protocols } from './Banner.constants';
+
+//- Utils Imports
+import { getNetworkZNA } from 'lib/utils';
+
 //- Hooks Imports
 import useBannerData from './hooks/useBannerData';
 
-//- Utils Imports
-import { isWilderWorldAppDomain } from 'lib/utils/url';
+//- Style Imports
+import classNames from 'classnames/bind';
+import styles from './Banner.module.scss';
+
+const cx = classNames.bind(styles);
 
 const BannerContainer: React.FC = () => {
 	const history = useHistory();
@@ -17,28 +27,31 @@ const BannerContainer: React.FC = () => {
 	const {
 		bannerContent: data,
 		isBanner,
-		isCountdown,
+		hasCountdown,
 		onFinish,
 		background,
 	} = useBannerData();
 
+	const hasProtocol = data?.target?.value.includes(Protocols);
+
 	const onBannerClick = () => {
-		if (data?.target?.type === 'url') {
-			if (isWilderWorldAppDomain(data?.target?.value)) {
-				history.push(data?.target?.value);
-			} else {
+		if (data?.target?.type === TargetType.URL) {
+			if (hasProtocol) {
 				window.open(data?.target?.value, '_blank');
+			} else {
+				history.push(`${ROUTES.MARKET}/${getNetworkZNA(data?.target?.value)}`);
 			}
 		} else {
 			return;
 		}
 	};
 
-	// remove temp inline
-	const padding = isBanner ? { padding: '0 0 16px 0 ' } : {};
-
 	return (
-		<div style={padding}>
+		<div
+			className={cx(styles.BannerContainer, {
+				isBanner: isBanner,
+			})}
+		>
 			{isBanner && (
 				<Banner
 					primaryText={data?.primaryText}
@@ -46,7 +59,7 @@ const BannerContainer: React.FC = () => {
 					background={background}
 					buttonText={data?.buttonText}
 					endTime={data?.endTime}
-					isCountdown={isCountdown}
+					hasCountdown={hasCountdown}
 					onClick={onBannerClick}
 					onFinish={onFinish}
 				/>
