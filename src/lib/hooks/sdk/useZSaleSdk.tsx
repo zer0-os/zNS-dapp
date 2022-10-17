@@ -73,6 +73,32 @@ export function useZSaleSdk() {
 				};
 			}
 
+			// TODO: Update this with proper address
+			case NETWORK_TYPES.GOERLI: {
+				return {
+					instance: zsale.createAirWild2SaleInstance({
+						web3Provider,
+						contractAddress: '0x9e903BB3c48BC2b679B20959F365c0be7Ab88961',
+						merkleTreeFileUris: [
+							'https://ipfs.io/ipfs/QmXQLJN49XRAgdgeJ8Hz6zf7izQGokPnQ5MZ6p79m2avpk',
+							'https://ipfs.io/ipfs/QmXn7C5GrzHU8tgdGRT1g25WQe1rrvrfy1rEWjw6Cjm5sL',
+						],
+						advanced: {
+							merkleTreeFileIPFSHashes: [
+								'QmXQLJN49XRAgdgeJ8Hz6zf7izQGokPnQ5MZ6p79m2avpk',
+								'QmXn7C5GrzHU8tgdGRT1g25WQe1rrvrfy1rEWjw6Cjm5sL',
+							],
+						},
+					}),
+					claimInstance: zsale.createClaimWithChildInstance({
+						web3Provider,
+						contractAddress: '0x0cda74723a9945977df45268394dff7989e0265b',
+						claimingRegistrarAddress:
+							'0x06b3fb925b342411fc7420fdc7bd5433f7a7261b',
+					}),
+				};
+			}
+
 			default: {
 				throw new Error('SDK isn´t available for this chainId');
 			}

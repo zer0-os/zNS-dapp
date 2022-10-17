@@ -46,10 +46,7 @@ export const ZdaoSdkProvider: React.FC<DaoSdkProviderProps> = ({
 		const provider =
 			library || new ethers.providers.JsonRpcProvider(RPC_URLS[selectedChain]);
 
-		if (
-			network !== NETWORK_TYPES.MAINNET &&
-			network !== NETWORK_TYPES.RINKEBY
-		) {
+		if (network !== NETWORK_TYPES.MAINNET && network !== NETWORK_TYPES.GOERLI) {
 			throw new Error('Network not supported');
 		}
 

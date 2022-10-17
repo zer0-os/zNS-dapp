@@ -51,4 +51,29 @@ export const DAOS: { [network in NETWORK_TYPES]: CreateZDAOParams[] } = {
 			votingToken: '0xa4F6C921f914ff7972D7C55c15f015419326e0Ca', // guild nft (ggd)
 		},
 	],
+
+	// TODO: Update this  with proper address
+	[NETWORK_TYPES.GOERLI]: [
+		{
+			id: 'joshupgig.eth',
+			ens: 'joshupgig.eth',
+			zNA: 'wilder.test',
+			title: 'Wilder Test DAO',
+			creator: '0x22C38E74B8C0D1AAB147550BcFfcC8AC544E0D8C',
+			network: 420, // for Goerli
+			safeAddress: '0x7a935d07d097146f143A45aA79FD8624353abD5D',
+			votingToken: '0xD53C3bddf27b32ad204e859EB677f709c80E6840',
+		},
+		{
+			id: 'zdao721test.eth',
+			ens: 'zdao721test.eth',
+			zNA: 'wilder.moto',
+			title: 'ERC721 Enumerable DAO',
+			creator: '0x22C38E74B8C0D1AAB147550BcFfcC8AC544E0D8C',
+			network: 420, // for Goerli
+			duration: 86400,
+			safeAddress: '0x7a935d07d097146f143A45aA79FD8624353abD5D',
+			votingToken: '0xa4F6C921f914ff7972D7C55c15f015419326e0Ca', // guild nft (ggd)
+		},
+	],
 } as any;
