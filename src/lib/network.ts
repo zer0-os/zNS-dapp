@@ -46,7 +46,7 @@ export const chainIdToNetworkType = (
 			return NETWORK_TYPES.RINKEBY;
 		case 42:
 			return NETWORK_TYPES.KOVAN;
-		case 420:
+		case 5:
 			return NETWORK_TYPES.GOERLI;
 		default:
 			return NETWORK_TYPES.LOCAL;
@@ -68,7 +68,7 @@ export const chainIdToNetworkName = (chainId: number): string => {
 			return 'Rinkeby Testnet';
 		case 42:
 			return 'Kovan Testnet';
-		case 420:
+		case 5:
 			return 'Goerli Testnet';
 		default:
 			return 'Unknown Network';
