@@ -47,7 +47,6 @@ export const ZnsSdkProvider = ({ children }: ZnsSdkProviderProps) => {
 				);
 			}
 
-			//TODO: Need to check and update this
 			case NETWORK_TYPES.GOERLI: {
 				return zns.createInstance(
 					zns.configuration.goerliConfiguration(provider),
