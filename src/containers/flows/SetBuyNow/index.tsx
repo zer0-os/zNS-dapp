@@ -165,7 +165,7 @@ const SetBuyNowContainer = ({
 			setIsLoadingDomainData(true);
 			try {
 				const [domain, events, buyNowListing] = await Promise.all([
-					sdk.getDomainById(domainId),
+					sdk.getDomainById(domainId, false),
 					sdk.getDomainEvents(domainId),
 					sdk.zauction.getBuyNowListing(domainId),
 				]);

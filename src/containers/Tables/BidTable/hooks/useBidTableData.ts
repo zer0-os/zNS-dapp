@@ -58,7 +58,7 @@ const useBidTableData = (): UseBidTableDataReturn => {
 			uniqueDomainIds.map((id) => sdk.zauction.listBids(id)),
 		);
 		const getDomainDataPromises = Promise.all(
-			uniqueDomainIds.map((id) => sdk.getDomainById(id)),
+			uniqueDomainIds.map((id) => sdk.getDomainById(id, false)),
 		);
 
 		// TODO: Optimize this

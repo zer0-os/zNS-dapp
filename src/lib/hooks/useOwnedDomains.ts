@@ -33,7 +33,7 @@ const useOwnedDomains = (
 		}
 		setIsLoading(true);
 		try {
-			const owned = (await sdk.getDomainsByOwner(account)) as (Domain & {
+			const owned = (await sdk.getDomainsByOwner(account, false)) as (Domain & {
 				paymentTokenInfo: ConvertedTokenInfo;
 			})[];
 			// TODO: Optimize this

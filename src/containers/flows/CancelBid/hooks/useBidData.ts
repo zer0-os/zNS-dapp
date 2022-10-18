@@ -39,7 +39,7 @@ const useBidData = (domainId: string, bidNonce: string): UseBidDataReturn => {
 
 		// Get all relevant domain info
 		const [domainData, bidData] = await Promise.all([
-			sdk.getDomainById(domainId),
+			sdk.getDomainById(domainId, false),
 			sdk.zauction.listBids(domainId),
 		]);
 		const metadata = await getMetadata(domainData.metadataUri);

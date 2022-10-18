@@ -79,7 +79,7 @@ export const useZnsDomain = (
 	const [domainData, setDomainData] = useState<DomainData | undefined>();
 
 	const getDomain = async (id: string) => {
-		const domain = formatDomain(await sdk.getDomainById(id));
+		const domain = formatDomain(await sdk.getDomainById(id, false));
 		const metadata = isRootDomain(domain.id)
 			? undefined
 			: await getMetadata(domain.metadata);

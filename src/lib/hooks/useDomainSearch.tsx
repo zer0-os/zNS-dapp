@@ -28,7 +28,7 @@ export function useDomainSearch() {
 		const id = getDomainId(pattern);
 		if (id) {
 			try {
-				const rawDomain = await sdk.getDomainById(id);
+				const rawDomain = await sdk.getDomainById(id, false);
 				if (rawDomain) {
 					const exactDomain = rawDomain as any;
 					exactDomain.metadata = exactDomain.metadataUri;

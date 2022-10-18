@@ -41,7 +41,7 @@ const useIsClaimable = () => {
 			}
 
 			try {
-				domain = await znsSdk.getDomainById(token);
+				domain = await znsSdk.getDomainById(token, false);
 				if (!domain || !domain.name) {
 					// eslint-disable-next-line no-throw-literal
 					throw undefined;

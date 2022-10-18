@@ -148,7 +148,7 @@ const BuyNowContainer = ({
 		}
 		try {
 			const [domain, balance] = await Promise.all([
-				sdk.getDomainById(domainId),
+				sdk.getDomainById(domainId, false),
 				sdk.zauction.getUserBalanceForPaymentToken(
 					account,
 					paymentTokenInfo.id,

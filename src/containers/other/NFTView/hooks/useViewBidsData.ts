@@ -58,7 +58,7 @@ export const useViewBidsData = (): UseViewBidsDataReturn => {
 
 			// Get all relevant domain info
 			const [domainData, bidData] = await Promise.all([
-				sdk.getDomainById(id),
+				sdk.getDomainById(id, false),
 				sdk.zauction.listBids(id),
 			]);
 
