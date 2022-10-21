@@ -11,6 +11,7 @@ import { filterSearchResultsByNetwork } from 'lib/utils/searchResults';
 
 //- Types Imports
 import { DisplayParentDomain, ParentDomain } from '../types';
+import config from 'config';
 
 export interface DomainSearch {
 	exactMatch?: DisplayParentDomain;
@@ -28,7 +29,7 @@ export function useDomainSearch() {
 		const id = getDomainId(pattern);
 		if (id) {
 			try {
-				const rawDomain = await sdk.getDomainById(id, false);
+				const rawDomain = await sdk.getDomainById(id, config.useDataStore);
 				if (rawDomain) {
 					const exactDomain = rawDomain as any;
 					exactDomain.metadata = exactDomain.metadataUri;

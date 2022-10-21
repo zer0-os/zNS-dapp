@@ -6,6 +6,7 @@ import { getMetadata } from 'lib/metadata';
 import { Domain, ConvertedTokenInfo } from '@zero-tech/zns-sdk';
 import { isRootDomain } from 'lib/utils';
 import getPaymentTokenInfo from 'lib/paymentToken';
+import config from 'config';
 
 export type UseZnsDomainReturn = {
 	loading: boolean;
@@ -79,7 +80,9 @@ export const useZnsDomain = (
 	const [domainData, setDomainData] = useState<DomainData | undefined>();
 
 	const getDomain = async (id: string) => {
-		const domain = formatDomain(await sdk.getDomainById(id, false));
+		const domain = formatDomain(
+			await sdk.getDomainById(id, config.useDataStore),
+		);
 		const metadata = isRootDomain(domain.id)
 			? undefined
 			: await getMetadata(domain.metadata);
@@ -88,7 +91,9 @@ export const useZnsDomain = (
 
 	const getSubdomains = async (id: string) => {
 		// Disable DataStore
-		return formatSubdomains(await sdk.getSubdomainsById(id, false));
+		return formatSubdomains(
+			await sdk.getSubdomainsById(id, config.useDataStore),
+		);
 	};
 
 	/**
