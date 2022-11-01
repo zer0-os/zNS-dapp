@@ -1,5 +1,6 @@
 import { ConvertedTokenInfo } from '@zero-tech/zns-sdk';
 import * as ZNS from '@zero-tech/zns-sdk';
+import * as ZContracts from '@zero-tech/zero-contracts';
 
 interface PaymentTokenCache {
 	[index: string]: ConvertedTokenInfo;
@@ -11,12 +12,13 @@ const getPaymentTokenInfo = async (
 	sdk: ZNS.Instance,
 	tokenId: string,
 ): Promise<ConvertedTokenInfo> => {
+	const { rinkeby, goerli } = ZContracts.zer0ProtocolAddresses;
 	if (paymentTokenCache[tokenId]) {
 		return paymentTokenCache[tokenId];
 	} else {
 		if (
-			tokenId.toLowerCase() ===
-			'0x3Ae5d499cfb8FB645708CC6DA599C90e64b33A79'.toLowerCase()
+			tokenId.toLowerCase() === rinkeby?.tokens?.wildToken?.toLowerCase() ||
+			tokenId.toLowerCase() === goerli?.tokens?.wildToken?.toLowerCase()
 		) {
 			paymentTokenCache[tokenId] = {
 				id: tokenId,
@@ -26,8 +28,9 @@ const getPaymentTokenInfo = async (
 				decimals: '18',
 			};
 		} else if (
-			tokenId.toLowerCase() ===
-			'0x5bAbCA2Af93A9887C86161083b8A90160DA068f2'.toLowerCase()
+			tokenId.toLowerCase() === rinkeby?.tokens?.lootToken?.toLowerCase() ||
+			tokenId.toLowerCase() === goerli?.tokens?.lootToken?.toLowerCase() ||
+			tokenId.toLowerCase() === goerli?.tokens?.zeroToken?.toLowerCase()
 		) {
 			paymentTokenCache[tokenId] = {
 				id: tokenId,

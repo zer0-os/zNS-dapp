@@ -1,5 +1,7 @@
 import { ContractAddresses } from './contracts';
 import { NETWORK_TYPES } from './network';
+import * as ZContracts from '@zero-tech/zero-contracts';
+
 // TODO: remove any, fix network types
 const addresses: { [network in NETWORK_TYPES]: ContractAddresses } = {
 	[NETWORK_TYPES.MAINNET]: {
