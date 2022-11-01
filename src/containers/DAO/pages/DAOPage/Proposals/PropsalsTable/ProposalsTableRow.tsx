@@ -11,6 +11,7 @@ import { useProposals } from 'lib/dao/providers/ProposalsProvider';
 // Lib
 import moment from 'moment';
 import { isEqual } from 'lodash';
+import { ProposalState } from '@zero-tech/zdao-sdk';
 import { truncateString } from 'lib/utils/string';
 import {
 	formatProposalStatus,
@@ -83,7 +84,7 @@ const ProposalsTableRow: React.FC<ProposalsTableRowProps> = ({
 	 * Callbacks
 	 */
 	const refetchProposalData = useCallback(async () => {
-		if (proposal.state !== 'CLOSED') {
+		if (proposal.state !== ProposalState.CLOSED) {
 			setIsLoading(true);
 			try {
 				const updatedProposal = await proposal.updateScoresAndVotes();
@@ -146,7 +147,7 @@ const ProposalsTableRow: React.FC<ProposalsTableRowProps> = ({
 
 			{/* Total votes count of proposal */}
 			<td className={styles.Votes}>
-				<p>{isLoading ? data.votes : proposal.votes}</p>
+				<p>{proposal.scores.reduce((a, b) => a + b, 0)}</p>
 			</td>
 		</tr>
 	);

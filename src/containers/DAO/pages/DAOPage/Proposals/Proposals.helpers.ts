@@ -1,5 +1,6 @@
 import { formatUnits } from 'ethers/lib/utils';
 import type { zDAO, Proposal, TokenMetaData, Token } from '@zero-tech/zdao-sdk';
+import { ProposalState } from '@zero-tech/zdao-sdk';
 import { isEmpty } from 'lodash';
 import moment from 'moment';
 import millify from 'millify';
@@ -27,7 +28,7 @@ export const sortProposals = (proposals?: Proposal[]): Proposal[] => {
 
 	// 2. Sort by state and endting time
 	const closedProposals = filteredProposals.filter(
-		(p) => p.state === 'CLOSED' || moment(p.end).isBefore(moment()),
+		(p) => p.state === ProposalState.CLOSED || moment(p.end).isBefore(moment()),
 	);
 	const activeProposals = filteredProposals.filter(
 		(p) => !closedProposals.includes(p),
@@ -100,20 +101,23 @@ export const formatProposalStatus = (proposal?: Proposal): string => {
 			return '-';
 		}
 
-		const isClosed = proposal.state === 'CLOSED';
+		const isClosed = proposal.state === ProposalState.CLOSED;
+		const approvalFavored = proposal.scores[0] > proposal.scores[1];
 
 		if (!proposal.votes) return isClosed ? 'No Votes' : 'No Votes Yet';
 
 		if (isEmpty(proposal.scores))
 			return isClosed ? 'Expired' : 'More Votes Needed';
 
-		if (proposal.scores[0] > proposal.scores[1]) {
-			return isClosed ? 'Approved' : 'Approval Favoured';
-		} else if (proposal.scores[0] < proposal.scores[1]) {
-			return isClosed ? 'Denied' : 'Denial Favoured';
-		} else {
-			return 'More Votes Needed';
+		if (isClosed) {
+			return proposal.canExecute()
+				? 'Approved'
+				: approvalFavored
+				? 'Failed'
+				: 'Denied';
 		}
+
+		return approvalFavored ? 'Approval Favoured' : 'Denial Favoured';
 	}
 
 	return '';

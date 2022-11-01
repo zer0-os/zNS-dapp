@@ -5,6 +5,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import moment from 'moment';
 import { isEqual } from 'lodash';
 import removeMarkdown from 'markdown-to-text';
+import { ProposalState } from '@zero-tech/zdao-sdk';
 import { truncateString } from 'lib/utils/string';
 import { formatProposalStatus } from '../Proposals.helpers';
 
@@ -85,7 +86,7 @@ const ProposalsTableCard: React.FC<ProposalsTableCardProps> = ({
 	 * Callbacks
 	 */
 	const refetchProposalData = useCallback(async () => {
-		if (proposal.state !== 'CLOSED') {
+		if (proposal.state !== ProposalState.CLOSED) {
 			setIsLoading(true);
 			try {
 				const updatedProposal = await proposal.updateScoresAndVotes();

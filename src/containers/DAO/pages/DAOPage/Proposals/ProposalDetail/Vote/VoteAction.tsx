@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import type { Choice, Proposal } from '@zero-tech/zdao-sdk';
+import { ProposalState } from '@zero-tech/zdao-sdk';
 import {
 	LoadingIndicator,
 	Tooltip,
@@ -58,7 +59,7 @@ export const VoteAction: React.FC<VoteActionProps> = ({
 	if (!account) {
 		return (
 			<ConnectWalletButton>
-				{proposal.state === 'ACTIVE'
+				{proposal.state === ProposalState.ACTIVE
 					? 'Connect Wallet To Vote'
 					: 'Connect Wallet'}
 			</ConnectWalletButton>
@@ -131,7 +132,7 @@ export const VoteAction: React.FC<VoteActionProps> = ({
 		);
 	}
 
-	if (proposal.state === 'CLOSED') {
+	if (proposal.state === ProposalState.CLOSED) {
 		const hasVotes = proposal.votes > 0;
 		const isApproved = proposal.scores[0] > proposal.scores[1];
 
