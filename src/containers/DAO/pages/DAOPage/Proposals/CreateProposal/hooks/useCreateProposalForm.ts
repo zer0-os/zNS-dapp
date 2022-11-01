@@ -59,7 +59,7 @@ export const useCreateProposalForm = ({
 	}>(defaultDiscardConfirm);
 	const [showPublishConfirm, setShowPublishConfirm] = useState<boolean>(false);
 	const [showSuccessConfirm, setShowSuccessConfirm] = useState<boolean>(false);
-	const [createdProposal, setCreatedProposal] = useState<Proposal>();
+	const [createdProposal, setCreatedProposal] = useState<string>();
 
 	// Form Values
 	const defaultDaoProposalFormValues = {
@@ -228,7 +228,7 @@ export const useCreateProposalForm = ({
 		if (createdProposal) {
 			const pathname = history.location.pathname.replace(
 				`/${DAO_CREATE_PROPOSAL}`,
-				`/${createdProposal.id}`,
+				`/${createdProposal}`,
 			);
 			const newProposalUrl = encodeURIComponent(`${config.baseURL}${pathname}`);
 
@@ -247,7 +247,7 @@ export const useCreateProposalForm = ({
 		if (createdProposal) {
 			const pathname = history.location.pathname.replace(
 				`/${DAO_CREATE_PROPOSAL}`,
-				`/${createdProposal.id}`,
+				`/${createdProposal}`,
 			);
 
 			history.push(pathname);

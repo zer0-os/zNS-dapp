@@ -58,7 +58,7 @@ export const VoteAction: React.FC<VoteActionProps> = ({
 	if (!account) {
 		return (
 			<ConnectWalletButton>
-				{proposal.state === 'active'
+				{proposal.state === 'ACTIVE'
 					? 'Connect Wallet To Vote'
 					: 'Connect Wallet'}
 			</ConnectWalletButton>
@@ -131,7 +131,7 @@ export const VoteAction: React.FC<VoteActionProps> = ({
 		);
 	}
 
-	if (proposal.state === 'closed') {
+	if (proposal.state === 'CLOSED') {
 		const hasVotes = proposal.votes > 0;
 		const isApproved = proposal.scores[0] > proposal.scores[1];
 

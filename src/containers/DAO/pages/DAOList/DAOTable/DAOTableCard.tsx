@@ -45,7 +45,7 @@ const DAOTableCard: React.FC<DAOTableCardProps> = ({ data }) => {
 
 	return (
 		<ImageCard
-			imageUri={dao.avatar ?? defaultDaoIcon}
+			imageUri={defaultDaoIcon}
 			header={title}
 			subHeader={zna && '0://' + zna}
 			onClick={onClick}

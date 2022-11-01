@@ -27,7 +27,7 @@ export const sortProposals = (proposals?: Proposal[]): Proposal[] => {
 
 	// 2. Sort by state and endting time
 	const closedProposals = filteredProposals.filter(
-		(p) => p.state === 'closed' || moment(p.end).isBefore(moment()),
+		(p) => p.state === 'CLOSED' || moment(p.end).isBefore(moment()),
 	);
 	const activeProposals = filteredProposals.filter(
 		(p) => !closedProposals.includes(p),
@@ -100,7 +100,7 @@ export const formatProposalStatus = (proposal?: Proposal): string => {
 			return '-';
 		}
 
-		const isClosed = proposal.state === 'closed';
+		const isClosed = proposal.state === 'CLOSED';
 
 		if (!proposal.votes) return isClosed ? 'No Votes' : 'No Votes Yet';
 

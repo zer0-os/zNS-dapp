@@ -83,7 +83,7 @@ const ProposalsTableRow: React.FC<ProposalsTableRowProps> = ({
 	 * Callbacks
 	 */
 	const refetchProposalData = useCallback(async () => {
-		if (proposal.state !== 'closed') {
+		if (proposal.state !== 'CLOSED') {
 			setIsLoading(true);
 			try {
 				const updatedProposal = await proposal.updateScoresAndVotes();
