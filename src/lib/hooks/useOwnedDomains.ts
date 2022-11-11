@@ -7,6 +7,7 @@ import { useDidMount } from 'lib/hooks/useDidMount';
 import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 import { useZnsSdk } from 'lib/hooks/sdk';
 import getPaymentTokenInfo from 'lib/paymentToken';
+import config from 'config';
 
 type UseOwnedDomainsReturn = {
 	isLoading: boolean;
@@ -33,7 +34,10 @@ const useOwnedDomains = (
 		}
 		setIsLoading(true);
 		try {
-			const owned = (await sdk.getDomainsByOwner(account)) as (Domain & {
+			const owned = (await sdk.getDomainsByOwner(
+				account,
+				config.useDataStore,
+			)) as (Domain & {
 				paymentTokenInfo: ConvertedTokenInfo;
 			})[];
 			// TODO: Optimize this

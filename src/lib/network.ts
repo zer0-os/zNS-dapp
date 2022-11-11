@@ -4,6 +4,7 @@ export enum NETWORK_TYPES {
 	ROPSTEN = 'ROPSTEN',
 	LOCAL = 'LOCAL',
 	KOVAN = 'KOVAN',
+	GOERLI = 'GOERLI',
 }
 
 export const defaultNetworkId: number = Number(
@@ -21,6 +22,9 @@ export const getEtherscanUri = (networkType: NETWORK_TYPES): string => {
 			break;
 		case NETWORK_TYPES.KOVAN:
 			prefix = 'kovan.';
+			break;
+		case NETWORK_TYPES.GOERLI:
+			prefix = 'goerli.';
 	}
 	const uri = `https://${prefix}etherscan.io/`;
 
@@ -42,6 +46,8 @@ export const chainIdToNetworkType = (
 			return NETWORK_TYPES.RINKEBY;
 		case 42:
 			return NETWORK_TYPES.KOVAN;
+		case 5:
+			return NETWORK_TYPES.GOERLI;
 		default:
 			return NETWORK_TYPES.LOCAL;
 	}
@@ -62,6 +68,8 @@ export const chainIdToNetworkName = (chainId: number): string => {
 			return 'Rinkeby Testnet';
 		case 42:
 			return 'Kovan Testnet';
+		case 5:
+			return 'Goerli Testnet';
 		default:
 			return 'Unknown Network';
 	}

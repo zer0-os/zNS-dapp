@@ -15,6 +15,7 @@ import { ethers } from 'ethers';
 import useMetadata from 'lib/hooks/useMetadata';
 import { BuyNowParams } from '@zero-tech/zns-sdk/lib/zAuction';
 import { ConvertedTokenInfo } from '@zero-tech/zns-sdk';
+import config from 'config';
 
 export interface SetBuyNowContainerProps {
 	domainId: string;
@@ -165,7 +166,7 @@ const SetBuyNowContainer = ({
 			setIsLoadingDomainData(true);
 			try {
 				const [domain, events, buyNowListing] = await Promise.all([
-					sdk.getDomainById(domainId),
+					sdk.getDomainById(domainId, config.useDataStore),
 					sdk.getDomainEvents(domainId),
 					sdk.zauction.getBuyNowListing(domainId),
 				]);

@@ -2,6 +2,7 @@ import { useZnsSdk, useZSaleSdk } from 'lib/hooks/sdk';
 import { useState } from 'react';
 import { BigNumber } from 'ethers';
 import { TEXT_INPUT } from '../components/WizardSteps/Details/Details.constants';
+import config from 'config';
 
 export enum Status {
 	DEFAULT,
@@ -41,7 +42,7 @@ const useIsClaimable = () => {
 			}
 
 			try {
-				domain = await znsSdk.getDomainById(token);
+				domain = await znsSdk.getDomainById(token, config.useDataStore);
 				if (!domain || !domain.name) {
 					// eslint-disable-next-line no-throw-literal
 					throw undefined;

@@ -16,6 +16,8 @@ import { getMetadata } from 'lib/metadata';
 import { BigNumber } from 'ethers';
 import { useDidMount } from 'lib/hooks/useDidMount';
 
+import config from 'config';
+
 export type UseBidDataReturn = {
 	isLoading: boolean;
 	bid: Bid | undefined;
@@ -39,7 +41,7 @@ const useBidData = (domainId: string, bidNonce: string): UseBidDataReturn => {
 
 		// Get all relevant domain info
 		const [domainData, bidData] = await Promise.all([
-			sdk.getDomainById(domainId),
+			sdk.getDomainById(domainId, config.useDataStore),
 			sdk.zauction.listBids(domainId),
 		]);
 		const metadata = await getMetadata(domainData.metadataUri);

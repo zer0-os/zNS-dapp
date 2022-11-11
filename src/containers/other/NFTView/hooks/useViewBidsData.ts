@@ -14,6 +14,7 @@ import { sortBidsByTime } from 'lib/utils/bids';
 
 //- Constants Imports
 import { MESSAGES } from '../NFTView.constants';
+import config from 'config';
 
 interface UseViewBidsDataReturn {
 	isBidDataLoading: boolean | undefined;
@@ -58,7 +59,7 @@ export const useViewBidsData = (): UseViewBidsDataReturn => {
 
 			// Get all relevant domain info
 			const [domainData, bidData] = await Promise.all([
-				sdk.getDomainById(id),
+				sdk.getDomainById(id, config.useDataStore),
 				sdk.zauction.listBids(id),
 			]);
 

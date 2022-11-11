@@ -1,3 +1,4 @@
+import config from 'config';
 //- React Imports
 import { useEffect, useRef, useState } from 'react';
 
@@ -58,7 +59,7 @@ const useBidTableData = (): UseBidTableDataReturn => {
 			uniqueDomainIds.map((id) => sdk.zauction.listBids(id)),
 		);
 		const getDomainDataPromises = Promise.all(
-			uniqueDomainIds.map((id) => sdk.getDomainById(id)),
+			uniqueDomainIds.map((id) => sdk.getDomainById(id, config.useDataStore)),
 		);
 
 		// TODO: Optimize this
