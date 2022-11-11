@@ -17,7 +17,7 @@ import { useStakingUserData } from 'lib/providers/staking/StakingUserDataProvide
 
 type DepositTableProps = {};
 
-export interface WrappedDeposit extends zfi.Deposit {
+export interface WrappedDeposit extends zfi.LegacyDeposit {
 	pool: WrappedStakingPool;
 }
 
