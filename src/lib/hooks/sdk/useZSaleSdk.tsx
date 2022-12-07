@@ -23,7 +23,7 @@ export function useZSaleSdk() {
 
 		switch (network) {
 			case NETWORK_TYPES.MAINNET: {
-				// TODO: Modify with actual contractAddress for claim
+				// TODO: Modify with actual contractAddress for wapes
 				return {
 					instance: zsale.createAirWild2SaleInstance({
 						web3Provider,
@@ -37,6 +37,17 @@ export function useZSaleSdk() {
 								'QmesUxVUF54mUgMXEVRYoELHa6VGB7DMm7KnMwENAR7dVz',
 								'QmYQXu1gYNUrZF8jBzop6qpqGtENVWaXZuZnqRnzPAHLpV',
 							],
+						},
+					}),
+					//TODO: Update with mainnet address and proper merkleTree
+					wapesInstance: zsale.createWapeSaleInstance({
+						web3Provider,
+						contractAddress: '0x66cA971F1fE3d3d526cAbb0314633F6a7Ef3F887',
+						merkleTreeFileUri:
+							'https://d3810nvssqir6b.cloudfront.net/kovan-test-merkleTree.json',
+						advanced: {
+							merkleTreeFileIPFSHash:
+								'Qmf8XuYT181zdvhNXSeYUhkptgezzK8QJnrAD16GGj8TrV',
 						},
 					}),
 					claimInstance: zsale.createClaimWithChildInstance({
@@ -64,6 +75,16 @@ export function useZSaleSdk() {
 							],
 						},
 					}),
+					wapesInstance: zsale.createWapeSaleInstance({
+						web3Provider,
+						contractAddress: '0x14441C716b0C195Aaf2d2fF7401c17B81e101227',
+						merkleTreeFileUri:
+							'https://d3810nvssqir6b.cloudfront.net/kovan-test-merkleTree.json',
+						advanced: {
+							merkleTreeFileIPFSHash:
+								'Qmf8XuYT181zdvhNXSeYUhkptgezzK8QJnrAD16GGj8TrV',
+						},
+					}),
 					claimInstance: zsale.createClaimWithChildInstance({
 						web3Provider,
 						contractAddress: '0x0cda74723a9945977df45268394dff7989e0265b',
@@ -88,6 +109,16 @@ export function useZSaleSdk() {
 								'QmXQLJN49XRAgdgeJ8Hz6zf7izQGokPnQ5MZ6p79m2avpk',
 								'QmXn7C5GrzHU8tgdGRT1g25WQe1rrvrfy1rEWjw6Cjm5sL',
 							],
+						},
+					}),
+					wapesInstance: zsale.createWapeSaleInstance({
+						web3Provider,
+						contractAddress: '0xFEeDBd2b5c3Ae26fD534275bA68908100B107AF3',
+						merkleTreeFileUri:
+							'https://res.cloudinary.com/fact0ry/raw/upload/v1670283875/drops/wapes/wapes-dry-run-merkleTree.json',
+						advanced: {
+							merkleTreeFileIPFSHash:
+								'Qmf526r9ShRJp8hgfB64txgMMhop9JSy3QWgBhqq41ucVs',
 						},
 					}),
 					claimInstance: zsale.createClaimWithChildInstance({
