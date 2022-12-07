@@ -18,7 +18,7 @@ export const getBannerButtonText = (
 		return 'Mint Now';
 	}
 	if (dropStage === Stage.Sold || dropStage === Stage.Ended) {
-		return 'Kicks Secondary Market';
+		return 'See Wapes';
 	}
 
 	return 'Learn More';
@@ -66,7 +66,7 @@ export const getBannerLabel = (
 		return (
 			<div style={{ display: 'flex', flexDirection: 'column' }}>
 				<span>
-					AIR WILD Season Two Presale Minting is now Open! Ending in{' '}
+					The Migration to Wiami has Begun, Mint now to Secure your Wape!{' '}
 					{countdownDate && (
 						<Countdown to={countdownDate} onFinish={onFinish} />
 					)}{' '}
@@ -88,14 +88,14 @@ export const getBannerLabel = (
 		// }
 		return (
 			<>
-				AIR WILD Season Two Community Minting is now Open!{' '}
+				The Migration to Wiami has Begun, Mint now to Secure your Wape!{' '}
 				{totalLabel(wheelsMinted!, wheelsTotal!)}
 			</>
 		);
 	}
 
 	if (dropStage === Stage.Sold || dropStage === Stage.Ended) {
-		return <>AIR WILD Season Two Mintsale is Complete</>;
+		return <>The Wapes have Arrived to Wiami…</>;
 	}
 
 	return <>Loading drop data...</>;

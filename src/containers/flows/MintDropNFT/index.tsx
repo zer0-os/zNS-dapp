@@ -55,7 +55,7 @@ const MintDropNFTFlowContainer = ({
 	const saleContract = contracts?.wheelSale;
 	const wildTokenContract = contracts?.wildToken;
 
-	const { instance: zSaleInstance } = useZSaleSdk();
+	const { wapesInstance: zSaleInstance } = useZSaleSdk();
 
 	// Internal State
 	const [isWizardOpen, setIsWizardOpen] = useState<boolean>(false);
@@ -117,7 +117,7 @@ const MintDropNFTFlowContainer = ({
 		if (dropStage === Stage.Upcoming || !canOpenWizard || failedToLoad) {
 			window?.open('https://discord.gg/mb9fcFey8a', '_blank')?.focus();
 		} else if (dropStage === Stage.Sold || dropStage === Stage.Ended) {
-			history.push('market/kicks.airwild.season2');
+			history.push('market/beasts.wape');
 		} else {
 			setIsWizardOpen(true);
 		}
@@ -435,7 +435,7 @@ const MintDropNFTFlowContainer = ({
 		if (isSaleHalted) {
 			return (
 				<>
-					<span>Air Wild Season Two sale has been temporarily paused.</span>
+					<span>Wapes sale has been temporarily paused.</span>
 					<span style={{ display: 'block', marginTop: 4 }}>
 						Join our{' '}
 						<b>
@@ -473,6 +473,27 @@ const MintDropNFTFlowContainer = ({
 			: getBannerButtonText(dropStage, canOpenWizard);
 	};
 
+	const bannerTitle = () => {
+		let title = 'Wapes are Gathering…';
+		switch (dropStage) {
+			case Stage.Upcoming:
+				title = 'Wapes are Gathering…';
+				break;
+			case Stage.Whitelist:
+			case Stage.Public:
+				title = 'Wapes are Entering the Portal';
+				break;
+			case Stage.Ended:
+			case Stage.Sold:
+				title = 'The Drop is Sold out and the Portal has Closed!';
+				break;
+			default:
+				title = 'Wapes are Gathering…';
+				break;
+		}
+		return title;
+	};
+
 	////////////
 	// Render //
 	////////////
@@ -501,7 +522,7 @@ const MintDropNFTFlowContainer = ({
 			)}
 			<div className={styles.BannerContainer}>
 				<MintDropNFTBanner
-					title={'Get Your Kicks for the Metaverse'}
+					title={bannerTitle()}
 					label={bannerLabel()}
 					buttonText={buttonText()}
 					onClick={openWizard}

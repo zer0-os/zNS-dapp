@@ -8,7 +8,7 @@ import WaitlistRegistration from './WaitlistRegistration';
 import RaffleRegistration from './RaffleRegistration';
 
 //- Containers Imports
-import { ClaimNFTContainer } from 'containers';
+import { ClaimNFTContainer, MintDropNFT } from 'containers';
 
 //- Types Imports
 import { Stage } from '../MintDropNFT/types';
@@ -133,7 +133,7 @@ const RaffleContainer = ({ setClaimDropStage }: RaffleContainerProps) => {
 		if (hasRaffleEnded) {
 			return (
 				<>
-					Wilder Moto Claim Begins in{' '}
+					The Portal has not yet Opened. Mintlist Sale Begins in{' '}
 					<b>
 						<Countdown
 							to={SALE_START_TIME}
@@ -225,8 +225,8 @@ const RaffleContainer = ({ setClaimDropStage }: RaffleContainerProps) => {
 					<MintDropNFTBanner
 						title={
 							hasRaffleEnded
-								? 'Claim Your Moto Blessings'
-								: 'Claim Your Moto Blessings'
+								? 'The Wapes are Gathering…'
+								: 'The Wapes are Gathering…'
 						}
 						label={bannerLabel()}
 						buttonText={bannerButtonLabel()}
@@ -238,11 +238,9 @@ const RaffleContainer = ({ setClaimDropStage }: RaffleContainerProps) => {
 	}
 
 	return (
-		<ClaimNFTContainer
-			requireBanner
+		<MintDropNFT
 			privateSaleEndTime={PRIVATE_SALE_END_TIME}
-			onClose={closeModal}
-			setClaimDropStage={setClaimDropStage}
+			publicSaleStartTime={SALE_START_TIME}
 		/>
 	);
 };
