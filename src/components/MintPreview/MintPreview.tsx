@@ -58,7 +58,7 @@ const MintPreview = (props: MintPreviewProps) => {
 		const parsedLink = ROUTES.MARKET + '/' + getNetworkZNA(link);
 
 		// Check for Claim domain name
-		const claimDomainName = nft.zNA === ZNA.CLAIM_NFT_DOMAIN_ROOT;
+		const claimDomainName = nft.zNA === ZNA.MINT_NFT_DOMAIN_ROOT;
 
 		const statusStyle = {
 			color: isCompleted ? '#58c573' : '#808080',

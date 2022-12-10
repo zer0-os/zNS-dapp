@@ -109,10 +109,7 @@ const MintDropNFTFlowContainer = ({
 			return;
 		}
 		if (dropStage === Stage.Whitelist && !countdownDate) {
-			window?.open(
-				'https://zine.wilderworld.com/aws2-raffle-winners/',
-				'_blank',
-			);
+			window?.open('https://zine.wilderworld.com/intro-to-wapes/', '_blank');
 		}
 		if (dropStage === Stage.Upcoming || !canOpenWizard || failedToLoad) {
 			window?.open('https://discord.gg/mb9fcFey8a', '_blank')?.focus();
