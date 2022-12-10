@@ -11,9 +11,9 @@ import { ethers } from 'ethers';
 import { AppState } from 'store';
 import { useZSaleSdk } from 'lib/hooks/sdk';
 import useNotification from 'lib/hooks/useNotification';
-import { useBasicController } from 'lib/hooks/useBasicController';
+// import { useBasicController } from 'lib/hooks/useBasicController';
 import { Maybe, NftParams, NftStatusCard } from 'lib/types';
-import { createDomainMetadata, UploadedDomainMetadata } from 'lib/utils';
+// import { createDomainMetadata, UploadedDomainMetadata } from 'lib/utils';
 import { ClaimableDomain } from '@zero-tech/zsale-sdk';
 
 //- Store Imports
@@ -239,69 +239,69 @@ export const useMint = (): UseMintReturn => {
 	);
 
 	// TODO: Migrate this once zNS SDK supports minting
-	// const mint = useCallback(
-	// 	async (nft: NftParams, setStatus: (status: string) => void) => {
-	// 		// @todo better validation
-	// 		if (/[A-Z]/.test(nft.zna)) {
-	// 			throw Error(
-	// 				`${MINTING_FLOW_NOTIFICATIONS.INVALID_DOMAIN_NAME}Invalid domain name: ${nft.zna} ${MINTING_FLOW_NOTIFICATIONS.INVALID_DOMAIN_NAME}`,
-	// 			);
-	// 		}
+	const mint = useCallback(
+		async (nft: NftParams, setStatus: (status: string) => void) => {
+			Promise.resolve(123);
+			// @todo better validation
+			// if (/[A-Z]/.test(nft.zna)) {
+			// 	throw Error(
+			// 		`${MINTING_FLOW_NOTIFICATIONS.INVALID_DOMAIN_NAME}Invalid domain name: ${nft.zna} ${MINTING_FLOW_NOTIFICATIONS.INVALID_DOMAIN_NAME}`,
+			// 	);
+			// }
 
-	// 		let tx: Maybe<ethers.ContractTransaction>;
+			// let tx: Maybe<ethers.ContractTransaction>;
 
-	// 		// get metadata uri
-	// 		let metadata: Maybe<UploadedDomainMetadata>;
-	// 		setStatus(Status.UPLOADING_METADATA);
+			// // get metadata uri
+			// let metadata: Maybe<UploadedDomainMetadata>;
+			// setStatus(Status.UPLOADING_METADATA);
 
-	// 		try {
-	// 			metadata = await createDomainMetadata({
-	// 				previewImage: nft.previewImage,
-	// 				image: nft.image,
-	// 				name: nft.name,
-	// 				story: nft.story,
-	// 				additionalMetadata: nft.additionalMetadata,
-	// 			});
-	// 		} catch (e) {
-	// 			console.error(e);
-	// 			throw Error(Errors.FAILED_METADATA_UPLOAD);
-	// 		}
+			// try {
+			// 	metadata = await createDomainMetadata({
+			// 		previewImage: nft.previewImage,
+			// 		image: nft.image,
+			// 		name: nft.name,
+			// 		story: nft.story,
+			// 		additionalMetadata: nft.additionalMetadata,
+			// 	});
+			// } catch (e) {
+			// 	console.error(e);
+			// 	throw Error(Errors.FAILED_METADATA_UPLOAD);
+			// }
 
-	// 		setStatus(Status.PENDING_WALLET_APPROVAL);
+			// setStatus(Status.PENDING_WALLET_APPROVAL);
 
-	// 		tx = await basicController.registerSubdomain({
-	// 			parentId: nft.parent,
-	// 			label: nft.domain,
-	// 			owner: nft.owner,
-	// 			isLocked: nft.locked,
-	// 			metadataUri: metadata.url,
-	// 		});
+			// tx = await basicController.registerSubdomain({
+			// 	parentId: nft.parent,
+			// 	label: nft.domain,
+			// 	owner: nft.owner,
+			// 	isLocked: nft.locked,
+			// 	metadataUri: metadata.url,
+			// });
 
-	// 		addNotification(
-	// 			`${MINTING_FLOW_NOTIFICATIONS.STARTED_MINTING} ${nft.name}`,
-	// 		);
+			// addNotification(
+			// 	`${MINTING_FLOW_NOTIFICATIONS.STARTED_MINTING} ${nft.name}`,
+			// );
 
-	// 		const nftStatusCard: NftStatusCard = {
-	// 			zNA: nft.zna,
-	// 			title: nft.name,
-	// 			imageUri: metadata.contents.image,
-	// 			story: nft.story,
-	// 			transactionHash: tx.hash,
-	// 		};
+			// const nftStatusCard: NftStatusCard = {
+			// 	zNA: nft.zna,
+			// 	title: nft.name,
+			// 	imageUri: metadata.contents.image,
+			// 	story: nft.story,
+			// 	transactionHash: tx.hash,
+			// };
 
-	// 		reduxActions.setMinting(nftStatusCard);
+			// reduxActions.setMinting(nftStatusCard);
 
-	// 		await tx.wait();
+			// await tx.wait();
 
-	// 		addNotification(
-	// 			`${MINTING_FLOW_NOTIFICATIONS.FINISH_MINTING} ${nftStatusCard.title}.`,
-	// 		);
+			// addNotification(
+			// 	`${MINTING_FLOW_NOTIFICATIONS.FINISH_MINTING} ${nftStatusCard.title}.`,
+			// );
 
-	// 		reduxActions.setMinted(nftStatusCard);
-	// 	},
-	// 	[reduxActions, addNotification, basicController],
-	// );
-	const mint = {} as any;
+			// reduxActions.setMinted(nftStatusCard);
+		},
+		[],
+	);
 	return useMemo(
 		() => ({
 			minting: reduxState.minting,

@@ -8,7 +8,7 @@ import WaitlistRegistration from './WaitlistRegistration';
 import RaffleRegistration from './RaffleRegistration';
 
 //- Containers Imports
-import { ClaimNFTContainer, MintDropNFT } from 'containers';
+import { MintDropNFT } from 'containers';
 
 //- Types Imports
 import { Stage } from '../MintDropNFT/types';
