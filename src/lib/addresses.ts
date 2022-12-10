@@ -67,7 +67,7 @@ const addresses: { [network in NETWORK_TYPES]: ContractAddresses } = {
 		wildToken: '0x0e46c45f8aca3f89Ad06F4a20E2BED1A12e4658C',
 		zAuction: '0xdF0f9F007A38aD25E0c02959374f38719Af5fCf8',
 		lootToken: '0x196bc789E03761904E3d7266fa57f2001592D25A',
-		wheelSale: '0xFEeDBd2b5c3Ae26fD534275bA68908100B107AF3', // Wapes
+		wheelSale: '0x6080bB506Ea15C172462EF035B1A2515abEe2F8a', // Wapes
 		// Staking dApp contracts
 		stakeFactory: '0xAeEaC5F790dD98FD7166bBD50d9938Bf542AFeEf',
 		lpToken: '0x3Fa5ae3F31D38bCc2cf1dA2394c938dA8a1C9f69',
