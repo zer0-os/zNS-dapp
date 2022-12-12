@@ -27,6 +27,7 @@ import useAsyncEffect from 'use-async-effect';
 
 //- Style Imports
 import styles from './MintDropNFT.module.scss';
+import { ROUTES } from 'constants/routes';
 
 type MintDropNFTFlowContainerProps = {
 	privateSaleEndTime: number;
@@ -171,9 +172,13 @@ const MintDropNFTFlowContainer = ({
 
 		const params = new URLSearchParams(location.search);
 		params.set('profile', 'true');
+		// history.push({
+		// 	pathname: location.pathname,
+		// 	search: params.toString(),
+		// });
 		history.push({
-			pathname: location.pathname,
-			search: params.toString(),
+			pathname: ROUTES.PROFILE + ROUTES.OWNED_DOMAINS,
+			state: { previous: location.pathname },
 		});
 	};
 

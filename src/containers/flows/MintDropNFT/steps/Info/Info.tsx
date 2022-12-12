@@ -204,7 +204,10 @@ const Info = (props: InfoProps) => {
 				<div className={styles.Available}>
 					<span>Wapes Available</span>
 					<h2>{props.wheelsTotal - props.wheelsMinted} Wapes Remaining</h2>
-					<ArrowLink href="https://zine.wilderworld.com/intro-to-wapes/">
+					<ArrowLink
+						href="https://zine.wilderworld.com/intro-to-wapes/"
+						isLinkToExternalUrl
+					>
 						View Sale Details
 					</ArrowLink>
 				</div>
