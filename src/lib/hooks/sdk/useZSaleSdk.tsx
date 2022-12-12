@@ -77,7 +77,7 @@ export function useZSaleSdk() {
 							'https://res.cloudinary.com/fact0ry/raw/upload/v1670518628/drops/wapes/merkle/modified-dry-run-mintlist-merkleTree.json',
 						advanced: {
 							merkleTreeFileIPFSHash:
-								'Qmf526r9ShRJp8hgfB64txgMMhop9JSy3QWgBhqq41ucVs',
+								'QmdwqhJueoDg5HZYiVS5XiB24CogyFmbDCRZTS361jpUng',
 						},
 					}),
 					claimInstance: zsale.createClaimWithChildInstance({
@@ -94,6 +94,8 @@ export function useZSaleSdk() {
 			}
 		}
 	}, [chainId, library]);
+
+	(global as any).zsale = { ...instanceObject };
 
 	return {
 		...instanceObject,
