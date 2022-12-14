@@ -37,8 +37,8 @@ const RaffleContainer = ({ setClaimDropStage }: RaffleContainerProps) => {
 	const currentTime = new Date().getTime();
 
 	// // Temporary values
-	// const RAFFLE_START_TIME = currentTime - 10000;
-	// const RAFFLE_END_TIME = currentTime - 50000;
+	const RAFFLE_START_TIME = currentTime - 10000;
+	const RAFFLE_END_TIME = currentTime - 50000;
 	// const SALE_START_TIME = currentTime + 5000;
 	// const PRIVATE_SALE_END_TIME = currentTime + 10000;
 	// const PUBLIC_SALE_START_TIME = currentTime + 100000;
@@ -47,7 +47,7 @@ const RaffleContainer = ({ setClaimDropStage }: RaffleContainerProps) => {
 	// Hardcoded event times
 	// const RAFFLE_START_TIME = 1650589200000;
 	// const RAFFLE_END_TIME = 1650762000000;
-	// const SALE_START_TIME = 1655928000000;
+	const SALE_START_TIME = 1671652800632;
 	// const PRIVATE_SALE_END_TIME = 1651280400000;
 	// const PUBLIC_SALE_START_TIME = 1651280400000;
 
@@ -99,7 +99,7 @@ const RaffleContainer = ({ setClaimDropStage }: RaffleContainerProps) => {
 		if (!hasRaffleEnded) {
 			setIsModalOpen(true);
 		} else {
-			window.open(EXTERNAL_URL.CLAIM_ZINE, '_blank');
+			window.open(EXTERNAL_URL.DROP_ZINE, '_blank');
 		}
 	};
 
@@ -133,7 +133,7 @@ const RaffleContainer = ({ setClaimDropStage }: RaffleContainerProps) => {
 		if (hasRaffleEnded) {
 			return (
 				<>
-					Wilder Moto Claim Begins in{' '}
+					Fortify Yourself for a Wape Encounter. Mintlist Sale Begins in{' '}
 					<b>
 						<Countdown
 							to={SALE_START_TIME}
@@ -224,9 +224,7 @@ const RaffleContainer = ({ setClaimDropStage }: RaffleContainerProps) => {
 				<div className={styles.BannerContainer}>
 					<MintDropNFTBanner
 						title={
-							hasRaffleEnded
-								? 'Claim Your Moto Blessings'
-								: 'Claim Your Moto Blessings'
+							hasRaffleEnded ? 'The Wapes are coming…' : 'The Wapes are coming…'
 						}
 						label={bannerLabel()}
 						buttonText={bannerButtonLabel()}
