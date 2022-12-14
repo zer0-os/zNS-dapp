@@ -28,8 +28,8 @@
 	display: flex;
 	min-width: 100%;
 	min-height: 100%;
-	right: -150px;
-
+	// right: -150px;
+	right: -300px;
 	background-repeat: no-repeat;
 	background-size: contain;
 	background-position: 80%;
@@ -123,7 +123,8 @@
 
 	.Background {
 		opacity: 0.6;
-		right: 0;
+		// right: 0;
+		right: -300px;
 	}
 }
 
