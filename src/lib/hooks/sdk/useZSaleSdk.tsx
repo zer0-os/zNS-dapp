@@ -72,14 +72,15 @@ export function useZSaleSdk() {
 					wapesInstance: zsale.createWapeSaleInstance({
 						web3Provider,
 						publicSalePurchaseLimit: 9,
-						contractAddress: '0x6080bB506Ea15C172462EF035B1A2515abEe2F8a',
+						contractAddress: '0x42F0523f33A4C36d56e91FA7ce7407f36caf69A2',
 						merkleTreeFileUri:
-							'https://res.cloudinary.com/fact0ry/raw/upload/v1670518628/drops/wapes/merkle/modified-dry-run-mintlist-merkleTree.json',
+							'https://res.cloudinary.com/fact0ry/raw/upload/v1671045872/drops/wapes/merkle/modified-dry-run-mintlist-merkleTree.json',
 						advanced: {
 							merkleTreeFileIPFSHash:
-								'QmdwqhJueoDg5HZYiVS5XiB24CogyFmbDCRZTS361jpUng',
+								'Qmc9LFv4SvStGMg7KLDmyoqTzk1t6nMnpAcF5JpsUXkVPy',
 						},
 					}),
+
 					claimInstance: zsale.createClaimWithChildInstance({
 						web3Provider,
 						contractAddress: '0x0cda74723a9945977df45268394dff7989e0265b',
