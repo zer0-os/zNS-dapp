@@ -66,7 +66,7 @@ export const getBannerLabel = (
 		return (
 			<div style={{ display: 'flex', flexDirection: 'column' }}>
 				<span>
-					The Migration to Wiami has Begun, Mint now to Secure your Wape!{' '}
+					The Escape to Wiami has Begun, Mint now to Secure your Wape!{' '}
 					{countdownDate && (
 						<Countdown to={countdownDate} onFinish={onFinish} />
 					)}{' '}
@@ -88,7 +88,7 @@ export const getBannerLabel = (
 		// }
 		return (
 			<>
-				The Migration to Wiami has Begun, Mint now to Secure your Wape!{' '}
+				The Public Sale Has Begun, Mint now to Secure your Wape!{' '}
 				{totalLabel(wheelsMinted!, wheelsTotal!)}
 			</>
 		);

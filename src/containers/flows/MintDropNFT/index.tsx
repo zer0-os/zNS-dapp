@@ -482,8 +482,10 @@ const MintDropNFTFlowContainer = ({
 				title = 'Wapes are Gathering…';
 				break;
 			case Stage.Whitelist:
-			case Stage.Public:
 				title = 'Wapes are Entering the Portal';
+				break;
+			case Stage.Public:
+				title = 'There Are Still Wapes to Save';
 				break;
 			case Stage.Ended:
 			case Stage.Sold:
