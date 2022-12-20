@@ -47,7 +47,7 @@ const RaffleContainer = ({ setClaimDropStage }: RaffleContainerProps) => {
 	// Hardcoded event times
 	// const RAFFLE_START_TIME = 1650589200000;
 	// const RAFFLE_END_TIME = 1650762000000;
-	// const SALE_START_TIME = 1655928000000;
+	// const SALE_START_TIME = 1671652800632;
 	// const PRIVATE_SALE_END_TIME = 1651280400000;
 	// const PUBLIC_SALE_START_TIME = 1651280400000;
 
@@ -237,12 +237,7 @@ const RaffleContainer = ({ setClaimDropStage }: RaffleContainerProps) => {
 		);
 	}
 
-	return (
-		<MintDropNFT
-			privateSaleEndTime={PRIVATE_SALE_END_TIME}
-			publicSaleStartTime={SALE_START_TIME}
-		/>
-	);
+	return <MintDropNFT privateSaleEndTime={PRIVATE_SALE_END_TIME} />;
 };
 
 export default RaffleContainer;

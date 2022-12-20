@@ -31,12 +31,10 @@ import { ROUTES } from 'constants/routes';
 
 type MintDropNFTFlowContainerProps = {
 	privateSaleEndTime: number;
-	publicSaleStartTime: number;
 };
 
 const MintDropNFTFlowContainer = ({
 	privateSaleEndTime,
-	publicSaleStartTime,
 }: MintDropNFTFlowContainerProps) => {
 	const PRIVATE_SALE_END_TIME = privateSaleEndTime;
 

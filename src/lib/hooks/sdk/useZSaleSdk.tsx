@@ -30,10 +30,10 @@ export function useZSaleSdk() {
 						web3Provider,
 						contractAddress: '0x66cA971F1fE3d3d526cAbb0314633F6a7Ef3F887',
 						merkleTreeFileUri:
-							'https://d3810nvssqir6b.cloudfront.net/kovan-test-merkleTree.json',
+							'https://res.cloudinary.com/fact0ry/raw/upload/v1670283876/drops/wapes/merkle/wape-sale-mintlist-merkleTree.json',
 						advanced: {
 							merkleTreeFileIPFSHash:
-								'Qmf8XuYT181zdvhNXSeYUhkptgezzK8QJnrAD16GGj8TrV',
+								'QmdrXFrUwdXAycSwbJNBkRAG7ee8cqNpCqJDShSVWZwgCf',
 						},
 					}),
 					claimInstance: zsale.createClaimWithChildInstance({
@@ -72,7 +72,7 @@ export function useZSaleSdk() {
 					wapesInstance: zsale.createWapeSaleInstance({
 						web3Provider,
 						publicSalePurchaseLimit: 9,
-						contractAddress: '0x42F0523f33A4C36d56e91FA7ce7407f36caf69A2',
+						contractAddress: '0xB97Aa9C072dc3b67976dA1CC04E84D26525973BE',
 						merkleTreeFileUri:
 							'https://res.cloudinary.com/fact0ry/raw/upload/v1671045872/drops/wapes/merkle/modified-dry-run-mintlist-merkleTree.json',
 						advanced: {
