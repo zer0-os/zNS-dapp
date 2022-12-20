@@ -99,7 +99,7 @@ const RaffleContainer = ({ setClaimDropStage }: RaffleContainerProps) => {
 		if (!hasRaffleEnded) {
 			setIsModalOpen(true);
 		} else {
-			window.open(EXTERNAL_URL.CLAIM_ZINE, '_blank');
+			window.open(EXTERNAL_URL.DROP_ZINE, '_blank');
 		}
 	};
 
@@ -133,7 +133,7 @@ const RaffleContainer = ({ setClaimDropStage }: RaffleContainerProps) => {
 		if (hasRaffleEnded) {
 			return (
 				<>
-					The Portal has not yet Opened. Mintlist Sale Begins in{' '}
+					Fortify Yourself for a Wape Encounter. Mintlist Sale Begins in{' '}
 					<b>
 						<Countdown
 							to={SALE_START_TIME}
@@ -224,9 +224,7 @@ const RaffleContainer = ({ setClaimDropStage }: RaffleContainerProps) => {
 				<div className={styles.BannerContainer}>
 					<MintDropNFTBanner
 						title={
-							hasRaffleEnded
-								? 'The Wapes are Gathering…'
-								: 'The Wapes are Gathering…'
+							hasRaffleEnded ? 'The Wapes are coming…' : 'The Wapes are coming…'
 						}
 						label={bannerLabel()}
 						buttonText={bannerButtonLabel()}

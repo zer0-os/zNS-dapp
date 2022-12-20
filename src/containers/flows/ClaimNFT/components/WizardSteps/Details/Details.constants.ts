@@ -64,5 +64,6 @@ export const BUTTONS = {
 };
 
 export const EXTERNAL_URL = {
-	CLAIM_ZINE: 'https://zine.wilderworld.com/intro-to-wapes/',
+	CLAIM_ZINE: 'https://zine.wilderworld.com/moto-drop-details/',
+	DROP_ZINE: 'https://zine.wilderworld.com/intro-to-wapes/',
 };
