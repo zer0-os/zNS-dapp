@@ -10,7 +10,7 @@ const addresses: { [network in NETWORK_TYPES]: ContractAddresses } = {
 		wildToken: '0x2a3bFF78B79A009976EeA096a51A948a3dC00e34',
 		lootToken: '0x43b8219aC1883373C0428688eE1a76e19E6B6D9d',
 		zAuction: '0x411973Fa81158A4c7767a0D6F7dF62723fDd541F',
-		wheelSale: '0x6427CcA6CD4586ec7044Cc138158ba4Eb1633711', //  kicks
+		wheelSale: '0x82132726A4E757294731FBb1739b0E5957D158bE', //  Wapes
 		// wheelSale: '0x19a55608f360f6Df69B7932dC2F65EDEFAa88Dc2', //  wheels
 
 		stakeFactory: '0xF133faFd49f4671ac63EE3a3aE7E7C4C9B84cE4a',
@@ -67,7 +67,7 @@ const addresses: { [network in NETWORK_TYPES]: ContractAddresses } = {
 		wildToken: '0x0e46c45f8aca3f89Ad06F4a20E2BED1A12e4658C',
 		zAuction: '0xdF0f9F007A38aD25E0c02959374f38719Af5fCf8',
 		lootToken: '0x196bc789E03761904E3d7266fa57f2001592D25A',
-		wheelSale: '0x6080bB506Ea15C172462EF035B1A2515abEe2F8a', // Wapes
+		wheelSale: '0xB97Aa9C072dc3b67976dA1CC04E84D26525973BE', // Wapes
 		// Staking dApp contracts
 		stakeFactory: '0xAeEaC5F790dD98FD7166bBD50d9938Bf542AFeEf',
 		lpToken: '0x3Fa5ae3F31D38bCc2cf1dA2394c938dA8a1C9f69',
