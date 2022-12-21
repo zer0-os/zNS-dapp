@@ -1,12 +1,17 @@
 import { useRef } from 'react';
-import { OptionDropdown } from 'components';
-import { Artwork } from 'components';
-import styles from './DepositTableRow.module.scss';
 
-import { ethers } from 'ethers';
-import { WrappedDeposit } from './DepositTable';
 import { displayEther } from 'lib/currency';
 import { useStakingPoolSelector } from 'lib/providers/staking/PoolSelectProvider';
+import { WrappedDeposit } from './DepositTable';
+import {
+	compareTimestamp,
+	getDateFromTimestamp,
+	getTimestampLabel,
+} from './DepositTable.helpers';
+
+import { Artwork, OptionDropdown } from 'components';
+
+import styles from './DepositTableRow.module.scss';
 
 type Option = {
 	name: string;
@@ -33,7 +38,7 @@ const DepositTableRow = (props: any) => {
 		},
 	];
 
-	if (!deposit.isYield) {
+	if (compareTimestamp(deposit.lockedUntil, new Date())) {
 		OPTIONS.unshift({
 			name: 'Unstake Deposit',
 			callback: () => unstake(deposit),
@@ -47,21 +52,7 @@ const DepositTableRow = (props: any) => {
 		}
 	};
 
-	const timestampLabel = (timestamp: ethers.BigNumber) => {
-		if (timestamp.gt(0)) {
-			return new Date(timestamp.toNumber() * 1000)
-				.toLocaleString()
-				.split(',')[0];
-		}
-		// Only have flexible locking for now
-		return 'No Lock (Flexible)';
-	};
-
-	const dateFromTimestamp = (timestamp: ethers.BigNumber) => {
-		return new Date(timestamp.toNumber() * 1000);
-	};
-
-	const onClick = () => {
+	const handleRowClick = () => {
 		buttonRef.current?.click();
 	};
 
@@ -70,7 +61,7 @@ const DepositTableRow = (props: any) => {
 	}
 
 	return (
-		<tr className={styles.Row} onClick={onClick}>
+		<tr className={styles.Row} onClick={handleRowClick}>
 			<td>{props.rowNumber + 1}</td>
 			<td>
 				<Artwork
@@ -84,13 +75,17 @@ const DepositTableRow = (props: any) => {
 			</td>
 			<td className={styles.Right}>
 				{deposit.lockedFrom.gt('0')
-					? dateFromTimestamp(deposit.lockedFrom).toLocaleString().split(',')[0]
+					? getDateFromTimestamp(deposit.lockedFrom)
+							.toLocaleString()
+							.split(',')[0]
 					: '-'}
 			</td>
 			<td className={styles.Right}>
 				{displayEther(deposit.tokenAmount)} {deposit?.pool.content.tokenTicker}
 			</td>
-			<td className={styles.Right}>{timestampLabel(deposit?.lockedUntil)}</td>
+			<td className={styles.Right}>
+				{getTimestampLabel(deposit?.lockedUntil)}
+			</td>
 			<td>
 				<OptionDropdown
 					onSelect={onDropdownSelect}
