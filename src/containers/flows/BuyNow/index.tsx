@@ -14,6 +14,7 @@ import { Data } from './BuyNow';
 import useMetadata from 'lib/hooks/useMetadata';
 import { BuyNowParams } from '@zero-tech/zauction-sdk';
 import { ConvertedTokenInfo } from '@zero-tech/zns-sdk';
+import config from 'config';
 
 export type BuyNowContainerProps = {
 	domainId: string;
@@ -148,7 +149,7 @@ const BuyNowContainer = ({
 		}
 		try {
 			const [domain, balance] = await Promise.all([
-				sdk.getDomainById(domainId),
+				sdk.getDomainById(domainId, config.useDataStore),
 				sdk.zauction.getUserBalanceForPaymentToken(
 					account,
 					paymentTokenInfo.id,

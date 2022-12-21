@@ -8,7 +8,7 @@ import WaitlistRegistration from './WaitlistRegistration';
 import RaffleRegistration from './RaffleRegistration';
 
 //- Containers Imports
-import { ClaimNFTContainer } from 'containers';
+import { MintDropNFT } from 'containers';
 
 //- Types Imports
 import { Stage } from '../MintDropNFT/types';
@@ -37,8 +37,8 @@ const RaffleContainer = ({ setClaimDropStage }: RaffleContainerProps) => {
 	const currentTime = new Date().getTime();
 
 	// // Temporary values
-	const RAFFLE_START_TIME = currentTime - 10000;
-	const RAFFLE_END_TIME = currentTime - 50000;
+	// const RAFFLE_START_TIME = currentTime - 10000;
+	// const RAFFLE_END_TIME = currentTime - 50000;
 	// const SALE_START_TIME = currentTime + 5000;
 	// const PRIVATE_SALE_END_TIME = currentTime + 10000;
 	// const PUBLIC_SALE_START_TIME = currentTime + 100000;
@@ -47,7 +47,7 @@ const RaffleContainer = ({ setClaimDropStage }: RaffleContainerProps) => {
 	// Hardcoded event times
 	// const RAFFLE_START_TIME = 1650589200000;
 	// const RAFFLE_END_TIME = 1650762000000;
-	const SALE_START_TIME = 1671652800632;
+	// const SALE_START_TIME = 1671652800632;
 	// const PRIVATE_SALE_END_TIME = 1651280400000;
 	// const PUBLIC_SALE_START_TIME = 1651280400000;
 
@@ -235,14 +235,7 @@ const RaffleContainer = ({ setClaimDropStage }: RaffleContainerProps) => {
 		);
 	}
 
-	return (
-		<ClaimNFTContainer
-			requireBanner
-			privateSaleEndTime={PRIVATE_SALE_END_TIME}
-			onClose={closeModal}
-			setClaimDropStage={setClaimDropStage}
-		/>
-	);
+	return <MintDropNFT privateSaleEndTime={PRIVATE_SALE_END_TIME} />;
 };
 
 export default RaffleContainer;

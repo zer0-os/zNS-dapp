@@ -42,14 +42,14 @@ export const StakingUserDataProvider: React.FC<UserDataContextProviderType> = ({
 
 		let deposits: WrappedDeposit[] = [];
 		for (const pool of Object.values(staking.pools) as WrappedStakingPool[]) {
-			const wrappedDeposits = (await pool.instance.getAllDeposits(account)).map(
-				(e) => {
-					return {
-						pool,
-						...e,
-					} as WrappedDeposit;
-				},
-			);
+			const wrappedDeposits = (
+				await pool.instance.getAllDepositsLegacy(account)
+			).map((e) => {
+				return {
+					pool,
+					...e,
+				} as WrappedDeposit;
+			});
 			deposits = deposits.concat(wrappedDeposits);
 		}
 

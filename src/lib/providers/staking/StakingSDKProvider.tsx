@@ -11,7 +11,7 @@ import {
 } from './StakingProviderTypes';
 import { Web3Provider } from '@ethersproject/providers';
 import { ethers } from 'ethers';
-import { RPC_URLS } from 'lib/connectors';
+import { RPC_URLS, SUBGRAPH_URLS } from 'lib/connectors';
 import { defaultNetworkId } from 'lib/network';
 
 export const StakingContext = React.createContext({
@@ -100,6 +100,7 @@ export const StakingSDKProvider: React.FC<StakingProviderType> = ({
 		if (!contractAddresses) {
 			return;
 		}
+		const subgraphUri = SUBGRAPH_URLS[chainId || defaultNetworkId];
 
 		if (!library) {
 			const instance = zfi.createInstance({
@@ -109,6 +110,7 @@ export const StakingSDKProvider: React.FC<StakingProviderType> = ({
 				provider: new ethers.providers.JsonRpcProvider(
 					RPC_URLS[defaultNetworkId],
 				),
+				subgraphUri,
 			});
 
 			setInstance(instance);
@@ -118,6 +120,7 @@ export const StakingSDKProvider: React.FC<StakingProviderType> = ({
 				lpTokenPoolAddress: contractAddresses.lpStakingPool,
 				factoryAddress: contractAddresses.stakeFactory,
 				provider: library,
+				subgraphUri,
 			});
 
 			setInstance(instance);

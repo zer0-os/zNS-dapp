@@ -59,6 +59,8 @@ export const ProposalAttributes: React.FC<ProposalAttributesProps> = ({
 			return [];
 		}
 
+		const totalVotes = proposal.scores.reduce((a, b) => a + b, 0);
+
 		let parsedAttributes = [
 			{
 				label: 'Status',
@@ -86,7 +88,7 @@ export const ProposalAttributes: React.FC<ProposalAttributesProps> = ({
 			},
 			{
 				label: 'Votes Submitted',
-				value: proposal.votes.toString(),
+				value: totalVotes.toString(),
 			},
 			{
 				label: 'Creator',

@@ -18,7 +18,6 @@ import {
 } from '@zero-tech/zdao-sdk';
 import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 import { useDidMount } from 'lib/hooks/useDidMount';
-import addresses from 'lib/addresses';
 import { Web3Provider } from '@ethersproject/providers';
 
 export const zDaoContext = React.createContext({
@@ -46,10 +45,7 @@ export const ZdaoSdkProvider: React.FC<DaoSdkProviderProps> = ({
 		const provider =
 			library || new ethers.providers.JsonRpcProvider(RPC_URLS[selectedChain]);
 
-		if (
-			network !== NETWORK_TYPES.MAINNET &&
-			network !== NETWORK_TYPES.RINKEBY
-		) {
+		if (network !== NETWORK_TYPES.MAINNET && network !== NETWORK_TYPES.GOERLI) {
 			throw new Error('Network not supported');
 		}
 
@@ -69,11 +65,7 @@ export const ZdaoSdkProvider: React.FC<DaoSdkProviderProps> = ({
 				: developmentConfiguration;
 
 		// Create SDK configuration object
-		const config: Config = createConfig(
-			addresses[network].zDao,
-			provider,
-			'snapshot.mypinata.cloud',
-		);
+		const config: Config = createConfig(provider, 'snapshot.mypinata.cloud');
 
 		const sdk = createSDKInstance(config);
 
