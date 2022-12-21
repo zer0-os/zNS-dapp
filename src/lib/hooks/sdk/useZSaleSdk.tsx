@@ -23,12 +23,10 @@ export function useZSaleSdk() {
 
 		switch (network) {
 			case NETWORK_TYPES.MAINNET: {
-				// TODO: Modify with actual contractAddress for wapes
 				return {
-					//TODO: Update with mainnet address and proper merkleTree
 					wapesInstance: zsale.createWapeSaleInstance({
 						web3Provider,
-						contractAddress: '0x66cA971F1fE3d3d526cAbb0314633F6a7Ef3F887',
+						contractAddress: '0x82132726A4E757294731FBb1739b0E5957D158bE',
 						merkleTreeFileUri:
 							'https://res.cloudinary.com/fact0ry/raw/upload/v1670283876/drops/wapes/merkle/wape-sale-mintlist-merkleTree.json',
 						advanced: {
