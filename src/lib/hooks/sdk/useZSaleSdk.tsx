@@ -26,6 +26,7 @@ export function useZSaleSdk() {
 				return {
 					wapesInstance: zsale.createWapeSaleInstance({
 						web3Provider,
+						publicSalePurchaseLimit: 9,
 						contractAddress: '0x82132726A4E757294731FBb1739b0E5957D158bE',
 						merkleTreeFileUri:
 							'https://res.cloudinary.com/fact0ry/raw/upload/v1670283876/drops/wapes/merkle/wape-sale-mintlist-merkleTree.json',
