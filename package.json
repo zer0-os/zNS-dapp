@@ -42,7 +42,7 @@
 		"@zero-tech/zdao-sdk": "0.11.2",
 		"@zero-tech/zero-contracts": "^0.0.7",
 		"@zero-tech/zfi-sdk": "0.2.2",
-		"@zero-tech/zns-sdk": "0.9.2",
+		"@zero-tech/zns-sdk": "0.9.3",
 		"@zero-tech/zsale-sdk": "0.1.5",
 		"apollo": "^2.32.5",
 		"autosize": "^5.0.1",
