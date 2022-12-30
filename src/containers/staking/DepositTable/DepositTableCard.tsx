@@ -1,9 +1,12 @@
-import { Artwork, OptionDropdown } from 'components';
-import { ethers } from 'ethers';
+import { useRef } from 'react';
+
 import { displayEther, toFiat } from 'lib/currency';
 import { useStakingPoolSelector } from 'lib/providers/staking/PoolSelectProvider';
-import { useRef } from 'react';
 import { WrappedDeposit } from './DepositTable';
+import { compareTimestamp, getTimestampLabel } from './DepositTable.helpers';
+
+import { Artwork, OptionDropdown } from 'components';
+
 import styles from './DepositTableCard.module.scss';
 
 type Option = {
@@ -31,7 +34,7 @@ const DepositTableCard = (props: any) => {
 		},
 	];
 
-	if (!deposit.isYield) {
+	if (compareTimestamp(deposit.lockedUntil, new Date())) {
 		OPTIONS.unshift({
 			name: 'Unstake Deposit',
 			callback: () => unstake(deposit),
@@ -43,15 +46,6 @@ const DepositTableCard = (props: any) => {
 		if (filter.length) {
 			filter[0].callback();
 		}
-	};
-
-	const timestampLabel = (timestamp: ethers.BigNumber) => {
-		if (timestamp.gt(0)) {
-			return new Date(timestamp.toNumber() * 1000)
-				.toLocaleString()
-				.split(',')[0];
-		}
-		return '-';
 	};
 
 	return (
@@ -95,7 +89,7 @@ const DepositTableCard = (props: any) => {
 					</li>
 					<li>
 						<label>Unlock Date</label>
-						<span>{timestampLabel(deposit?.lockedUntil)}</span>
+						<span>{getTimestampLabel(deposit?.lockedUntil)}</span>
 					</li>
 				</ul>
 			</div>
