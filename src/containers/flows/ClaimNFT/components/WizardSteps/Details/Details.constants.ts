@@ -65,5 +65,6 @@ export const BUTTONS = {
 
 export const EXTERNAL_URL = {
 	CLAIM_ZINE: 'https://zine.wilderworld.com/moto-drop-details/',
-	DROP_ZINE: 'https://zine.wilderworld.com/intro-to-wapes/',
+	DROP_ZINE:
+		'https://zine.wilderworld.com/a-new-genesis-collection-is-born-introducing-wilder-gens/',
 };

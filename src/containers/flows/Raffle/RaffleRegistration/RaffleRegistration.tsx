@@ -170,7 +170,7 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 		return (
 			<>
 				<p>
-					Mintlisted members will have early access to the upcoming Wapes drop.
+					Mintlisted members will have early access to the upcoming GENs drop.
 					Sign up to the raffle with your wallet for a chance at joining the
 					mintlist! <br />
 					<br />

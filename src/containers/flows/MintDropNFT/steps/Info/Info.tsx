@@ -66,7 +66,7 @@ const Info = (props: InfoProps) => {
 				glow={props.isUserWhitelisted || props.dropStage === Stage.Public}
 				onClick={props.onContinue}
 			>
-				Mint Your Wapes
+				Mint Your GENs
 			</FutureButton>
 		);
 	};
@@ -92,11 +92,11 @@ const Info = (props: InfoProps) => {
 			return (
 				<>
 					<p>
-						You will be able to mint {props.maxPurchasesPerUser} Wapes if your
+						You will be able to mint {props.maxPurchasesPerUser} GENs if your
 						wallet was mintlisted in our raffle.
 						<br></br>
 						<br></br>
-						The cost for each Wape is <b>{props.pricePerNFT}</b> plus GAS.
+						The cost for each GEN is <b>{props.pricePerNFT}</b> plus GAS.
 					</p>
 					{connectWalletButton()}
 				</>
@@ -114,7 +114,7 @@ const Info = (props: InfoProps) => {
 					<>
 						<p>
 							You have minted {props.numberPurchasedByUser} /{' '}
-							{props.maxPurchasesPerUser} Wapes. The cost for each Wape is{' '}
+							{props.maxPurchasesPerUser} GENs. The cost for each GEN is{' '}
 							<b>{props.pricePerNFT} ETH</b> plus GAS.
 						</p>
 						{props.errorMessage !== undefined && (
@@ -128,7 +128,7 @@ const Info = (props: InfoProps) => {
 					<>
 						<p className={styles.Green}>
 							Congratulations, you have minted {props.numberPurchasedByUser}/
-							{props.maxPurchasesPerUser} of your Wapes.
+							{props.maxPurchasesPerUser} of your GENs.
 						</p>
 						{dismissButton()}
 					</>
@@ -137,8 +137,8 @@ const Info = (props: InfoProps) => {
 				return (
 					<>
 						<p>
-							You have minted {props.numberPurchasedByUser} Wapes. The cost for
-							each Wape is <b>{props.pricePerNFT} ETH</b> plus GAS.
+							You have minted {props.numberPurchasedByUser} GENs. The cost for
+							each GEN is <b>{props.pricePerNFT} ETH</b> plus GAS.
 						</p>
 
 						{mintButton()}
@@ -149,7 +149,7 @@ const Info = (props: InfoProps) => {
 			return (
 				<>
 					<p className={styles.Orange}>
-						Currently, Wapes are only available to mintlisted supporters of
+						Currently, GENs are only available to mintlisted supporters of
 						Wilder World. If supply lasts, you will be able to mint when the
 						mintlist sale ends.
 					</p>
@@ -175,25 +175,25 @@ const Info = (props: InfoProps) => {
 				disablePictureInPicture
 				controlsList="nodownload noremoteplayback noplaybackrate nofullscreen"
 				poster={
-					'https://res.cloudinary.com/fact0ry/video/upload/so_0/c_fit,h_426,w_672/v1670257740/zns/wapes-mint-main.jpg'
+					'https://res.cloudinary.com/fact0ry/video/upload/so_0/c_fit,h_426,w_672/v1678125632/zns/gens-mint-main.jpg'
 				}
 				preload="metadata"
 			>
 				<source
 					src={
-						'https://res.cloudinary.com/fact0ry/video/upload/q_100,c_fit,h_426,w_672/v1670257740/zns/wapes-mint-main.webm'
+						'https://res.cloudinary.com/fact0ry/video/upload/q_100,c_fit,h_426,w_672/v1678125632/zns/gens-mint-main.webm'
 					}
 					type="video/webm"
 				></source>
 				<source
 					src={
-						'https://res.cloudinary.com/fact0ry/video/upload/q_100,c_fit,h_426,w_672/v1670257740/zns/wapes-mint-main.mp4'
+						'https://res.cloudinary.com/fact0ry/video/upload/q_100,c_fit,h_426,w_672/v1678125632/zns/gens-mint-main.mp4'
 					}
 					type="video/mp4"
 				></source>
 				<source
 					src={
-						'https://res.cloudinary.com/fact0ry/video/upload/q_100,c_fit,h_426,w_672/v1670257740/zns/wapes-mint-main.ogv'
+						'https://res.cloudinary.com/fact0ry/video/upload/q_100,c_fit,h_426,w_672/v1678125632/zns/gens-mint-main.ogv'
 					}
 					type="video/ogg"
 				></source>
@@ -202,10 +202,10 @@ const Info = (props: InfoProps) => {
 			{/* Wheels Available */}
 			{!isAuctionDataLoading && (
 				<div className={styles.Available}>
-					<span>Wapes Available</span>
-					<h2>{props.wheelsTotal - props.wheelsMinted} Wapes Remaining</h2>
+					<span>GENs Available</span>
+					<h2>{props.wheelsTotal - props.wheelsMinted} GENs Remaining</h2>
 					<ArrowLink
-						href="https://zine.wilderworld.com/intro-to-wapes/"
+						href="https://zine.wilderworld.com/a-new-genesis-collection-is-born-introducing-wilder-gens/"
 						isLinkToExternalUrl
 					>
 						View Sale Details
