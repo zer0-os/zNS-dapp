@@ -160,6 +160,7 @@ const MintDropNFTWizard = (props: MintDropNFTWizardProps) => {
 		if (step === Step.SelectAmount) {
 			return (
 				<SelectAmount
+					dropStage={props.dropStage!}
 					balanceEth={props.balanceEth!}
 					error={transactionError}
 					pricePerNFT={props.pricePerNFT}

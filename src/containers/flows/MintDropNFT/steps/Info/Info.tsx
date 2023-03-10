@@ -43,17 +43,21 @@ const Info = (props: InfoProps) => {
 
 	// If all data is loaded, and it's the public release
 	// or it's the whitelist release and the user is whitelisted
+
+	// Added to handle GENs drop
 	const isUserEligible =
 		!isUserDataLoading &&
 		!isAuctionDataLoading &&
-		(props.dropStage === Stage.Public ||
-			(props.dropStage === Stage.Whitelist &&
-				props.isUserWhitelisted &&
-				props.maxPurchasesPerUser! > 0));
+		(props.dropStage === Stage.Public || props.dropStage === Stage.Whitelist) &&
+		props.isUserWhitelisted &&
+		props.maxPurchasesPerUser! > 0;
 
 	// If the user has any wheels left to mint
+	// If sale is public no limit on allowed purchases
 	const userHasWheelsRemaining =
-		isUserEligible && props.numberPurchasedByUser! < props.maxPurchasesPerUser!;
+		isUserEligible &&
+		(props.numberPurchasedByUser! < props.maxPurchasesPerUser! ||
+			props.dropStage === Stage.Public);
 
 	///////////////
 	// Fragments //
@@ -63,7 +67,7 @@ const Info = (props: InfoProps) => {
 		return (
 			<FutureButton
 				className={styles.Button}
-				glow={props.isUserWhitelisted || props.dropStage === Stage.Public}
+				glow={props.isUserWhitelisted}
 				onClick={props.onContinue}
 			>
 				Mint Your GENs
@@ -113,9 +117,12 @@ const Info = (props: InfoProps) => {
 				return (
 					<>
 						<p>
-							You have minted {props.numberPurchasedByUser} /{' '}
-							{props.maxPurchasesPerUser} GENs. The cost for each GEN is{' '}
-							<b>{props.pricePerNFT} ETH</b> plus GAS.
+							You have minted {props.numberPurchasedByUser}
+							{props.dropStage === Stage.Public
+								? ''
+								: `/ ${props.maxPurchasesPerUser}`}{' '}
+							GENs. The cost for each GEN is <b>{props.pricePerNFT} ETH</b> plus
+							GAS.
 						</p>
 						{props.errorMessage !== undefined && (
 							<p className="error-text text-center">{props.errorMessage}</p>
@@ -127,8 +134,11 @@ const Info = (props: InfoProps) => {
 				return (
 					<>
 						<p className={styles.Green}>
-							Congratulations, you have minted {props.numberPurchasedByUser}/
-							{props.maxPurchasesPerUser} of your GENs.
+							Congratulations, you have minted {props.numberPurchasedByUser}
+							{props.dropStage === Stage.Public
+								? ''
+								: `/ ${props.maxPurchasesPerUser} of`}{' '}
+							your GENs.
 						</p>
 						{dismissButton()}
 					</>

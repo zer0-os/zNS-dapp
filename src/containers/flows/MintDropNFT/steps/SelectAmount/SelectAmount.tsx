@@ -6,10 +6,12 @@ import { FutureButton, TextInput } from 'components';
 
 // Style Imports
 import styles from './SelectAmount.module.scss';
+import { Stage } from '../../types';
 
 // Library Imports
 
 type SelectAmountProps = {
+	dropStage: Stage;
 	balanceEth: number;
 	error?: string;
 	maxPurchasesPerUser?: number;
@@ -31,10 +33,11 @@ const SelectAmount = (props: SelectAmountProps) => {
 			: props.remainingWheels;
 	const maxUserCanAfford = Math.floor(props.balanceEth / props.pricePerNFT);
 
-	const maxWheelsRemaining = Math.min(
-		remainingUserWheels,
-		props.remainingWheels,
-	);
+	// If public, allow user to buy more than they are allowed
+	const maxWheelsRemaining =
+		props.dropStage !== Stage.Public
+			? Math.min(remainingUserWheels, props.remainingWheels)
+			: props.remainingWheels;
 	const maxUserCanBuy = Math.min(maxUserCanAfford, maxWheelsRemaining);
 	const [amount, setAmount] = useState<string | undefined>();
 
@@ -86,7 +89,9 @@ const SelectAmount = (props: SelectAmountProps) => {
 			} else if (numWheels * props.pricePerNFT > props.balanceEth) {
 				setInputError(`You do not have enough ETH to mint ${numWheels} GENs`);
 			} else if (
+				// If public, allow user to buy more than they are allowed
 				numWheels > remainingUserWheels &&
+				props.dropStage !== Stage.Public &&
 				Boolean(props.maxPurchasesPerUser)
 			) {
 				setInputError(
@@ -125,7 +130,8 @@ const SelectAmount = (props: SelectAmountProps) => {
 	return (
 		<section>
 			{(!props.maxPurchasesPerUser ||
-				props.numberPurchasedByUser < props.maxPurchasesPerUser) && (
+				props.numberPurchasedByUser < props.maxPurchasesPerUser ||
+				props.dropStage === Stage.Public) && (
 				<form onSubmit={formSubmit}>
 					<p>
 						How many GENs would you like to Mint? The number you enter will be
@@ -189,7 +195,8 @@ const SelectAmount = (props: SelectAmountProps) => {
 				</form>
 			)}
 			{props.maxPurchasesPerUser !== undefined &&
-				props.numberPurchasedByUser >= props.maxPurchasesPerUser && (
+				props.numberPurchasedByUser >= props.maxPurchasesPerUser &&
+				props.dropStage !== Stage.Public && (
 					<p className={styles.Green} style={{ textAlign: 'center' }}>
 						You have already minted {props.numberPurchasedByUser}/
 						{props.maxPurchasesPerUser} GENs
