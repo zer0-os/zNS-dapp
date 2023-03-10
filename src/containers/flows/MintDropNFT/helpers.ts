@@ -2,9 +2,10 @@
 import { ethers } from 'ethers';
 import {
 	ClaimWithChildInstance,
+	GenSaleData,
+	GenSaleInstance,
+	GenSaleStatus,
 	SaleStatus,
-	WapeSaleData,
-	WapeSaleInstance,
 } from '@zero-tech/zsale-sdk/';
 
 //- Types Improts
@@ -15,67 +16,51 @@ const TEST_MODE = false;
 const TEST_STATE: SaleStatus = SaleStatus.PrivateSale;
 const IS_ON_WHITELIST = true;
 
-const TEST: { [status in SaleStatus]: WapeSaleData } = {
-	[SaleStatus.NotStarted]: {
+const TEST: { [status in GenSaleStatus]: GenSaleData } = {
+	[GenSaleStatus.NotStarted]: {
 		amountSold: 0,
 		amountForSale: 50,
 		salePrice: '0.007',
 		started: false,
-		privateSaleDuration: 568,
 		paused: false,
 		startBlock: 10488021,
-		publicSaleStartBlock: 10488589,
-		advanced: {
-			amountForSalePrivate: 500,
-			amountForSalePublic: 50,
-		},
+		limitPerTransaction: 10,
+		saleStatus: GenSaleStatus.NotStarted,
 	},
-	[SaleStatus.PrivateSale]: {
+	[GenSaleStatus.ClaimSale]: {
 		amountSold: 10,
 		amountForSale: 50,
 		salePrice: '0.007',
 		started: true,
-		privateSaleDuration: 568,
 		paused: false,
 		startBlock: 10488021,
-		publicSaleStartBlock: 10488589,
-		advanced: {
-			amountForSalePrivate: 500,
-			amountForSalePublic: 50,
-		},
+		limitPerTransaction: 10,
+		saleStatus: GenSaleStatus.ClaimSale,
 	},
-	[SaleStatus.PublicSale]: {
+	[GenSaleStatus.PrivateSale]: {
 		amountSold: 40,
 		amountForSale: 50,
 		salePrice: '0.007',
 		started: true,
-		privateSaleDuration: 568,
 		paused: false,
 		startBlock: 10488021,
-		publicSaleStartBlock: 10488589,
-		advanced: {
-			amountForSalePrivate: 500,
-			amountForSalePublic: 50,
-		},
+		limitPerTransaction: 10,
+		saleStatus: GenSaleStatus.PrivateSale,
 	},
-	[SaleStatus.Ended]: {
+	[GenSaleStatus.Ended]: {
 		amountSold: 50,
 		amountForSale: 50,
 		salePrice: '0.007',
 		started: true,
-		privateSaleDuration: 568,
 		paused: true,
 		startBlock: 10488021,
-		publicSaleStartBlock: 10488589,
-		advanced: {
-			amountForSalePrivate: 500,
-			amountForSalePublic: 50,
-		},
+		limitPerTransaction: 10,
+		saleStatus: GenSaleStatus.Ended,
 	},
 };
 
 export const getDropData = (
-	zSaleInstance: WapeSaleInstance,
+	zSaleInstance: GenSaleInstance,
 ): Promise<DropData | undefined> => {
 	return new Promise(async (resolve, reject) => {
 		try {
@@ -93,7 +78,7 @@ export const getDropData = (
 			) {
 				throw Error('Failed to retrieve primary data');
 			}
-
+			console.log(saleData);
 			resolve({
 				dropStage,
 				wheelsTotal: saleData.amountForSale,
@@ -107,7 +92,7 @@ export const getDropData = (
 };
 
 export const getDropStage = async (
-	zSaleInstance: WapeSaleInstance | ClaimWithChildInstance,
+	zSaleInstance: ClaimWithChildInstance | GenSaleInstance,
 ): Promise<Stage | undefined> => {
 	let status, data;
 
@@ -119,35 +104,36 @@ export const getDropStage = async (
 		status = await zSaleInstance.getSaleStatus();
 		data = await zSaleInstance.getSaleData();
 	}
-	if ((status as unknown) === SaleStatus.NotStarted) {
+	if ((status as unknown) === GenSaleStatus.NotStarted) {
 		return Stage.Upcoming;
 	}
 	if (data.amountSold === data.amountForSale) {
 		return Stage.Sold;
 	}
-
-	if ((status as unknown) === SaleStatus.PrivateSale) {
+	// Added for matching with the old sale status
+	if ((status as unknown) === GenSaleStatus.ClaimSale) {
 		return Stage.Whitelist;
 	}
 
-	if ((status as unknown) === SaleStatus.Ended) {
+	if ((status as unknown) === GenSaleStatus.Ended) {
 		return Stage.Ended;
 	}
-	if ((status as unknown) === SaleStatus.PublicSale) {
+	if ((status as unknown) === GenSaleStatus.PrivateSale) {
 		return Stage.Public;
 	}
 };
 
 export const getNumberPurchasedByUser = async (
-	zSaleInstance: WapeSaleInstance,
+	zSaleInstance: GenSaleInstance,
 	account: string,
 ) => {
 	const number = await zSaleInstance.getDomainsPurchasedByAccount(account);
+	console.log('getNumberPurchasedByUser', number);
 	return number;
 };
 
 export const getMaxPurchasesPerUser = async (
-	zSaleInstance: WapeSaleInstance,
+	zSaleInstance: GenSaleInstance,
 	account: string,
 ) => {
 	const quantity = await zSaleInstance.numberPurchasableByAccount(account);
@@ -156,7 +142,7 @@ export const getMaxPurchasesPerUser = async (
 
 export const getUserEligibility = async (
 	account: string,
-	zSaleInstance: WapeSaleInstance,
+	zSaleInstance: GenSaleInstance,
 ): Promise<boolean | undefined> => {
 	if (TEST_MODE) {
 		return IS_ON_WHITELIST;
@@ -167,8 +153,8 @@ export const getUserEligibility = async (
 };
 
 const getWheelQuantities = async (
-	zSaleInstance: WapeSaleInstance,
-): Promise<WapeSaleData | undefined> => {
+	zSaleInstance: GenSaleInstance,
+): Promise<GenSaleData | undefined> => {
 	if (TEST_MODE) {
 		await new Promise((r) => setTimeout(r, 2000));
 		return TEST[TEST_STATE];

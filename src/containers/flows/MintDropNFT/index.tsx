@@ -54,7 +54,7 @@ const MintDropNFTFlowContainer = ({
 	const saleContract = contracts?.wheelSale;
 	const wildTokenContract = contracts?.wildToken;
 
-	const { wapesInstance: zSaleInstance } = useZSaleSdk();
+	const { gensInstance: zSaleInstance } = useZSaleSdk();
 
 	// Internal State
 	const [isWizardOpen, setIsWizardOpen] = useState<boolean>(false);
@@ -388,10 +388,10 @@ const MintDropNFTFlowContainer = ({
 			timer = setInterval(async () => {
 				const sold = await zSaleInstance.getNumberOfDomainsSold();
 				if (sold) {
-					if (wheelsTotal !== undefined && sold.toNumber() >= wheelsTotal) {
+					if (wheelsTotal !== undefined && sold >= wheelsTotal) {
 						setDropStage(Stage.Sold);
 					}
-					setWheelsMinted(sold.toNumber());
+					setWheelsMinted(sold);
 				}
 			}, 5000);
 		}
