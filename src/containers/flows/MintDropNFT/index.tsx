@@ -116,7 +116,7 @@ const MintDropNFTFlowContainer = ({
 		if (dropStage === Stage.Upcoming || !canOpenWizard || failedToLoad) {
 			window?.open('https://discord.gg/mb9fcFey8a', '_blank')?.focus();
 		} else if (dropStage === Stage.Sold || dropStage === Stage.Ended) {
-			history.push('market/beasts.wape');
+			history.push('market/pals.gen');
 		} else {
 			setIsWizardOpen(true);
 		}
@@ -408,7 +408,7 @@ const MintDropNFTFlowContainer = ({
 	useAsyncEffect(async () => {
 		const price = await zSaleInstance.getSalePrice();
 		setPricePerNFT(Number(price));
-	}, [zSaleInstance, library]);
+	}, [zSaleInstance, library, dropStage]);
 
 	// useAsyncEffect(async () => {
 	// 	const interval = setInterval(async () => {

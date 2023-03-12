@@ -197,8 +197,8 @@ const MintDropNFTWizard = (props: MintDropNFTWizardProps) => {
 
 	return (
 		<Wizard
-			header="Mint Your GENs"
-			subHeader="Your GENs in the Metaverse await"
+			header="Mint Your GEN"
+			subHeader="Your GEN in the Metaverse awaits!"
 			className={`${styles.Container} border-primary border-rounded`}
 		>
 			{props.dropStage === undefined && <Loading text={'Loading GENs Drop'} />}

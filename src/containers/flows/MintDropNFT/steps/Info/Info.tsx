@@ -70,7 +70,7 @@ const Info = (props: InfoProps) => {
 				glow={props.isUserWhitelisted}
 				onClick={props.onContinue}
 			>
-				Mint Your GENs
+				Mint Your GEN
 			</FutureButton>
 		);
 	};

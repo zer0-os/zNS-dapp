@@ -57,7 +57,7 @@ export const getBannerLabel = (
 			return (
 				<div style={{ display: 'flex', flexDirection: 'column' }}>
 					<span>
-						Community sale starting now - waiting for contract to begin
+						Mintlist sale starting now - waiting for contract to begin
 					</span>
 				</div>
 			);
