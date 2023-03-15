@@ -12,7 +12,7 @@ export const RAFFLE_END_TIME = currentTime - 50000;
 // Hardcoded event times
 // export const RAFFLE_START_TIME = 1650589200000;
 // export const RAFFLE_END_TIME = 1650762000000;
-export const SALE_START_TIME = 1671652800000;
-export const PRIVATE_SALE_END_TIME = 1671739200000;
+export const SALE_START_TIME = 1678995000000;
+export const PRIVATE_SALE_END_TIME = 1679945400000;
 // export const PUBLIC_SALE_START_TIME = 1651280400000;
 //

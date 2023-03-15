@@ -18,7 +18,7 @@ export const getBannerButtonText = (
 		return 'Mint Now';
 	}
 	if (dropStage === Stage.Sold || dropStage === Stage.Ended) {
-		return 'See Wapes';
+		return 'See GENs';
 	}
 
 	return 'Learn More';
@@ -57,7 +57,7 @@ export const getBannerLabel = (
 			return (
 				<div style={{ display: 'flex', flexDirection: 'column' }}>
 					<span>
-						Community sale starting now - waiting for contract to begin
+						Mintlist sale starting now - waiting for contract to begin
 					</span>
 				</div>
 			);
@@ -66,7 +66,7 @@ export const getBannerLabel = (
 		return (
 			<div style={{ display: 'flex', flexDirection: 'column' }}>
 				<span>
-					The Escape to Wiami has Begun, Mint now to Secure your Wape!{' '}
+					The Trinity Keeper claim is now live, secure your GENs!{' '}
 					{countdownDate && (
 						<Countdown to={countdownDate} onFinish={onFinish} />
 					)}{' '}
@@ -88,14 +88,14 @@ export const getBannerLabel = (
 		// }
 		return (
 			<>
-				The Public Sale Has Begun, Mint now to Secure your Wape!{' '}
-				{totalLabel(wheelsMinted!, wheelsTotal!)}
+				Mintlist sale is now open for Trinity Keepers, act now to secure your
+				GENs! {totalLabel(wheelsMinted!, wheelsTotal!)}
 			</>
 		);
 	}
 
 	if (dropStage === Stage.Sold || dropStage === Stage.Ended) {
-		return <>The Wapes have Arrived to Wiami…</>;
+		return <>Wilder GENs mint complete!</>;
 	}
 
 	return <>Loading drop data...</>;

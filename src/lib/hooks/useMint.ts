@@ -97,7 +97,7 @@ export const useMint = (): UseMintReturn => {
 	////////////////////////
 
 	const { addNotification } = useNotification();
-	const { wapesInstance: zSaleInstance, claimInstance } = useZSaleSdk();
+	const { gensInstance: zSaleInstance, claimInstance } = useZSaleSdk();
 	const { account, library } = useWeb3React<Web3Provider>();
 	// const basicController = useBasicController();
 	const { reduxState, reduxActions } = useMintRedux();

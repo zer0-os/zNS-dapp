@@ -160,6 +160,7 @@ const MintDropNFTWizard = (props: MintDropNFTWizardProps) => {
 		if (step === Step.SelectAmount) {
 			return (
 				<SelectAmount
+					dropStage={props.dropStage!}
 					balanceEth={props.balanceEth!}
 					error={transactionError}
 					pricePerNFT={props.pricePerNFT}
@@ -196,11 +197,11 @@ const MintDropNFTWizard = (props: MintDropNFTWizardProps) => {
 
 	return (
 		<Wizard
-			header="Mint Your Wapes"
-			subHeader="Your Wapes in the Metaverse await"
+			header="Mint Your GEN"
+			subHeader="Your GEN in the Metaverse awaits!"
 			className={`${styles.Container} border-primary border-rounded`}
 		>
-			{props.dropStage === undefined && <Loading text={'Loading Wapes Drop'} />}
+			{props.dropStage === undefined && <Loading text={'Loading GENs Drop'} />}
 			{getFlowSection()}
 		</Wizard>
 	);

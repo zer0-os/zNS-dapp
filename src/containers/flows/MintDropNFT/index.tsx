@@ -54,7 +54,7 @@ const MintDropNFTFlowContainer = ({
 	const saleContract = contracts?.wheelSale;
 	const wildTokenContract = contracts?.wildToken;
 
-	const { wapesInstance: zSaleInstance } = useZSaleSdk();
+	const { gensInstance: zSaleInstance } = useZSaleSdk();
 
 	// Internal State
 	const [isWizardOpen, setIsWizardOpen] = useState<boolean>(false);
@@ -108,12 +108,15 @@ const MintDropNFTFlowContainer = ({
 			return;
 		}
 		if (dropStage === Stage.Whitelist && !countdownDate) {
-			window?.open('https://zine.wilderworld.com/intro-to-wapes/', '_blank');
+			window?.open(
+				'https://zine.wilderworld.com/a-new-genesis-collection-is-born-introducing-wilder-gens/',
+				'_blank',
+			);
 		}
 		if (dropStage === Stage.Upcoming || !canOpenWizard || failedToLoad) {
 			window?.open('https://discord.gg/mb9fcFey8a', '_blank')?.focus();
 		} else if (dropStage === Stage.Sold || dropStage === Stage.Ended) {
-			history.push('market/beasts.wape');
+			history.push('market/pals.gen');
 		} else {
 			setIsWizardOpen(true);
 		}
@@ -385,10 +388,10 @@ const MintDropNFTFlowContainer = ({
 			timer = setInterval(async () => {
 				const sold = await zSaleInstance.getNumberOfDomainsSold();
 				if (sold) {
-					if (wheelsTotal !== undefined && sold.toNumber() >= wheelsTotal) {
+					if (wheelsTotal !== undefined && sold >= wheelsTotal) {
 						setDropStage(Stage.Sold);
 					}
-					setWheelsMinted(sold.toNumber());
+					setWheelsMinted(sold);
 				}
 			}, 5000);
 		}
@@ -405,7 +408,7 @@ const MintDropNFTFlowContainer = ({
 	useAsyncEffect(async () => {
 		const price = await zSaleInstance.getSalePrice();
 		setPricePerNFT(Number(price));
-	}, [zSaleInstance, library]);
+	}, [zSaleInstance, library, dropStage]);
 
 	// useAsyncEffect(async () => {
 	// 	const interval = setInterval(async () => {
@@ -435,7 +438,7 @@ const MintDropNFTFlowContainer = ({
 		if (isSaleHalted) {
 			return (
 				<>
-					<span>Wapes sale has been temporarily paused.</span>
+					<span>GENs sale has been temporarily paused.</span>
 					<span style={{ display: 'block', marginTop: 4 }}>
 						Join our{' '}
 						<b>
@@ -474,23 +477,23 @@ const MintDropNFTFlowContainer = ({
 	};
 
 	const bannerTitle = () => {
-		let title = 'Wapes are Gathering…';
+		let title = 'GENs are Materializing…';
 		switch (dropStage) {
 			case Stage.Upcoming:
-				title = 'Wapes are Gathering…';
+				title = 'GENs are Materializing…';
 				break;
 			case Stage.Whitelist:
-				title = 'Wapes are Entering the Portal';
+				title = 'Unlock the Power of GENs';
 				break;
 			case Stage.Public:
-				title = 'There Are Still Wapes to Save';
+				title = 'Unlock the Power of GENs';
 				break;
 			case Stage.Ended:
 			case Stage.Sold:
-				title = 'The Drop is Sold out and the Portal has Closed!';
+				title = 'GENs Materialization Complete';
 				break;
 			default:
-				title = 'Wapes are Gathering…';
+				title = 'GENs are Materializing…';
 				break;
 		}
 		return title;
