@@ -78,7 +78,6 @@ export const getDropData = (
 			) {
 				throw Error('Failed to retrieve primary data');
 			}
-			console.log(saleData);
 			resolve({
 				dropStage,
 				wheelsTotal: saleData.amountForSale,
@@ -128,7 +127,6 @@ export const getNumberPurchasedByUser = async (
 	account: string,
 ) => {
 	const number = await zSaleInstance.getDomainsPurchasedByAccount(account);
-	console.log('getNumberPurchasedByUser', number);
 	return number;
 };
 

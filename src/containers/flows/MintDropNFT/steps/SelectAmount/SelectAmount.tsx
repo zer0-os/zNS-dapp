@@ -99,7 +99,7 @@ const SelectAmount = (props: SelectAmountProps) => {
 				);
 			} else if (numWheels > props.remainingWheels) {
 				if (props.remainingWheels === 1) {
-					setInputError(`There is only 1 GENs left in this drop`);
+					setInputError(`There is only 1 GEN left in this drop`);
 				} else {
 					setInputError(
 						`There are only ${props.remainingWheels} GENs left in this drop`,
