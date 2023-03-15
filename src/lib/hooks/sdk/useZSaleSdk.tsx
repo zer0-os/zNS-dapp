@@ -35,32 +35,21 @@ export function useZSaleSdk() {
 								'QmdrXFrUwdXAycSwbJNBkRAG7ee8cqNpCqJDShSVWZwgCf',
 						},
 					}),
+					gensInstance: zsale.createGenSaleInstance({
+						web3Provider,
+						contractAddress: '0x96d19de086c207ec543f9975b37bc2008284222e',
+						merkleTreeFileUri:
+							'https://res.cloudinary.com/fact0ry/raw/upload/v1678453970/drops/gens/gens-goerli-dry-run-mintlist-merkleTree.json',
+						advanced: {
+							merkleTreeFileIPFSHash:
+								'Qmc9LFv4SvStGMg7KLDmyoqTzk1t6nMnpAcF5JpsUXkVPy',
+						},
+					}),
 					claimInstance: zsale.createClaimWithChildInstance({
 						web3Provider,
 						contractAddress: '0xF1c77209aEb972383b03Da16DAb7957AcE183CF5',
 						claimingRegistrarAddress:
 							'0xc2e9678A71e50E5AEd036e00e9c5caeb1aC5987D',
-					}),
-				};
-			}
-
-			case NETWORK_TYPES.RINKEBY: {
-				return {
-					wapesInstance: zsale.createWapeSaleInstance({
-						web3Provider,
-						contractAddress: '0x14441C716b0C195Aaf2d2fF7401c17B81e101227',
-						merkleTreeFileUri:
-							'https://d3810nvssqir6b.cloudfront.net/kovan-test-merkleTree.json',
-						advanced: {
-							merkleTreeFileIPFSHash:
-								'Qmf8XuYT181zdvhNXSeYUhkptgezzK8QJnrAD16GGj8TrV',
-						},
-					}),
-					claimInstance: zsale.createClaimWithChildInstance({
-						web3Provider,
-						contractAddress: '0x0cda74723a9945977df45268394dff7989e0265b',
-						claimingRegistrarAddress:
-							'0x06b3fb925b342411fc7420fdc7bd5433f7a7261b',
 					}),
 				};
 			}
@@ -77,6 +66,16 @@ export function useZSaleSdk() {
 						advanced: {
 							merkleTreeFileIPFSHash:
 								'Qmc9LFv4SvStGMg7KLDmyoqTzk1t6nMnpAcF5JpsUXkVPy',
+						},
+					}),
+					gensInstance: zsale.createGenSaleInstance({
+						web3Provider,
+						contractAddress: '0x96d19de086c207ec543f9975b37bc2008284222e',
+						merkleTreeFileUri:
+							'https://res.cloudinary.com/fact0ry/raw/upload/v1678453970/drops/gens/gens-goerli-dry-run-mintlist-merkleTree.json',
+						advanced: {
+							merkleTreeFileIPFSHash:
+								'QmU2Ut94aBKws5Y9MDmvaMEsJAJDznU2DS2Knz9h4nUqiQ',
 						},
 					}),
 

@@ -7,7 +7,7 @@ export enum WALLET_NOTIFICATIONS {
 
 export enum MINTING_FLOW_NOTIFICATIONS {
 	STARTED_MINTING = 'Started minting',
-	MINT_SUCCESSFUL = 'Successfully minted your Wapes. Open your Profile to view it',
+	MINT_SUCCESSFUL = 'Successfully minted your GENs. Open your Profile to view it',
 	FINISH_MINTING = 'Finished minting',
 	INVALID_DOMAIN_NAME = 'Invalid domain name:',
 	INVALID_PROMPT_LABEL = '(Uppercase characters)',

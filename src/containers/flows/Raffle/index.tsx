@@ -133,7 +133,7 @@ const RaffleContainer = ({ setClaimDropStage }: RaffleContainerProps) => {
 		if (hasRaffleEnded) {
 			return (
 				<>
-					Fortify Yourself for a Wape Encounter. Mintlist Sale Begins in{' '}
+					Trinity Keeper claim begins in{' '}
 					<b>
 						<Countdown
 							to={SALE_START_TIME}
@@ -224,7 +224,9 @@ const RaffleContainer = ({ setClaimDropStage }: RaffleContainerProps) => {
 				<div className={styles.BannerContainer}>
 					<MintDropNFTBanner
 						title={
-							hasRaffleEnded ? 'The Wapes are coming…' : 'The Wapes are coming…'
+							hasRaffleEnded
+								? 'GENs are Materializing…'
+								: 'GENs are Materializing…'
 						}
 						label={bannerLabel()}
 						buttonText={bannerButtonLabel()}
