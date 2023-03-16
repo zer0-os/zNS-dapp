@@ -37,12 +37,12 @@ export function useZSaleSdk() {
 					}),
 					gensInstance: zsale.createGenSaleInstance({
 						web3Provider,
-						contractAddress: '0x96d19de086c207ec543f9975b37bc2008284222e',
+						contractAddress: '0x78BC1D081Cb18Bf503B090201b2ef298Dea67F24',
 						merkleTreeFileUri:
-							'https://res.cloudinary.com/fact0ry/raw/upload/v1678453970/drops/gens/gens-goerli-dry-run-mintlist-merkleTree.json',
+							'https://res.cloudinary.com/fact0ry/raw/upload/v1678832583/drops/gens/gens-mintlist-merkleTree.json',
 						advanced: {
 							merkleTreeFileIPFSHash:
-								'Qmc9LFv4SvStGMg7KLDmyoqTzk1t6nMnpAcF5JpsUXkVPy',
+								'QmSnGc3Rk175PGodTVpnAMRF2jE9RVZYiqgjQErpCMBfsp',
 						},
 					}),
 					claimInstance: zsale.createClaimWithChildInstance({
