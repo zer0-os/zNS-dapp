@@ -3,14 +3,10 @@ import React, { useMemo } from 'react';
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-//- Library Imports
-import { formatNumber, formatEthers, isRootDomain } from 'lib/utils';
-
 //- Style Imports
 import styles from './ZNS.module.scss';
 
 //- Components & Containers
-import { StatsWidget } from 'components';
 import { NFTViewModalProvider } from 'containers/other/NFTView/providers/NFTViewModalProvider/NFTViewModalProvider';
 import { SubdomainTable, CurrentDomainPreview, Raffle } from 'containers';
 import { Stage } from 'containers/flows/MintDropNFT/types';
@@ -18,12 +14,8 @@ import { Stage } from 'containers/flows/MintDropNFT/types';
 //- Library Imports
 import { NFTView, TransferOwnership } from 'containers';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
-import { DomainMetrics } from '@zero-tech/zns-sdk/lib/types';
-import { ethers } from 'ethers';
-import useMatchMedia from 'lib/hooks/useMatchMedia';
 import { useDidMount } from 'lib/hooks/useDidMount';
 import { useNavbar } from 'lib/hooks/useNavbar';
-import { useZnsSdk } from 'lib/hooks/sdk';
 
 type ZNSProps = {
 	version?: number;
@@ -45,21 +37,9 @@ const ZNS: React.FC<ZNSProps> = () => {
 	///////////////////
 	// Web3 Handling //
 	///////////////////
-	const sdk = useZnsSdk();
 
 	//- Domain Data
-	const {
-		domain: znsDomain,
-		domainRaw: domain,
-		paymentTokenInfo: paymentToken,
-	} = useCurrentDomain();
-
-	////////////////////////
-	// Browser Navigation //
-	////////////////////////
-
-	const isMobile = useMatchMedia('phone');
-	const isMobilePortrait = useMatchMedia('(max-width: 569px)');
+	const { domain: znsDomain, domainRaw: domain } = useCurrentDomain();
 
 	const enableBanner = true;
 
@@ -76,8 +56,6 @@ const ZNS: React.FC<ZNSProps> = () => {
 
 	//- Overlay State
 	const [modal, setModal] = useState<Modal | undefined>();
-	const [tradeData, setTradeData] = useState<DomainMetrics | undefined>();
-	const [statsLoaded, setStatsLoaded] = useState(false);
 
 	//- Claim Drop Stage state
 	const [claimDropStage, setClaimDropStage] = useState<Stage>();
@@ -111,16 +89,6 @@ const ZNS: React.FC<ZNSProps> = () => {
 		setModal(Modal.Transfer);
 	};
 
-	const getTradeData = async () => {
-		if (znsDomain) {
-			const metricsData = await sdk.instance.getDomainMetrics([znsDomain.id]);
-			if (metricsData && metricsData[znsDomain.id]) {
-				setTradeData(metricsData[znsDomain.id]);
-			}
-			setStatsLoaded(true);
-		}
-	};
-
 	/////////////
 	// Effects //
 	/////////////
@@ -150,98 +118,9 @@ const ZNS: React.FC<ZNSProps> = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [znsDomain, hasLoaded]);
 
-	useEffect(() => {
-		setStatsLoaded(false);
-		if (znsDomain && znsDomain.id) {
-			getTradeData();
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [znsDomain]);
-
 	/////////////////////
 	// React Fragments //
 	/////////////////////
-
-	const nftStats = () => {
-		let width = '32%';
-		if (isMobilePortrait) {
-			width = '100%';
-		}
-
-		const data = [
-			{
-				fieldName: 'Items in Domain',
-				title: tradeData?.items ? formatNumber(tradeData.items) : 0,
-				isHidden: isMobilePortrait,
-			},
-			{
-				fieldName: 'Floor Price',
-				title: `${
-					tradeData?.lowestSale ? formatEthers(tradeData?.lowestSale) : 0
-				} ${paymentToken?.symbol}`,
-				subTitle:
-					Number(paymentToken?.priceInUsd) > 0
-						? `$${
-								tradeData?.lowestSale
-									? formatNumber(
-											Number(ethers.utils.formatEther(tradeData?.lowestSale)) *
-												Number(paymentToken?.priceInUsd),
-									  )
-									: 0
-						  }`
-						: '',
-			},
-			{
-				fieldName: 'Volume',
-				title: (tradeData?.volume as any)?.all
-					? `${formatEthers((tradeData?.volume as any)?.all)} ${
-							paymentToken?.symbol
-					  }`
-					: '',
-				subTitle:
-					Number(paymentToken?.priceInUsd) > 0
-						? `$${
-								(tradeData?.volume as any)?.all
-									? formatNumber(
-											Number(
-												ethers.utils.formatEther(
-													(tradeData?.volume as any)?.all,
-												),
-											) * Number(paymentToken?.priceInUsd),
-									  )
-									: 0
-						  }`
-						: '',
-			},
-		];
-
-		return (
-			<>
-				<div className={styles.Stats}>
-					{data.map(
-						(item, index) =>
-							!item.isHidden && (
-								<div
-									key={`stats-widget=${index}`}
-									className={styles.WidgetContainer}
-									style={{
-										width: width,
-									}}
-								>
-									<StatsWidget
-										className="normalView"
-										fieldName={item.fieldName}
-										isLoading={!statsLoaded}
-										title={item.title}
-										subTitle={item.subTitle}
-									></StatsWidget>
-								</div>
-							),
-					)}
-				</div>
-			</>
-		);
-	};
 
 	const previewCard = () => {
 		const isVisible = domain !== '' && !isNftView;
@@ -271,8 +150,6 @@ const ZNS: React.FC<ZNSProps> = () => {
 			{!isNftView && (
 				<div className="main">
 					{previewCard()}
-					{!(isMobile || isMobilePortrait || isRootDomain(znsDomain?.id)) &&
-						nftStats()}
 					{showDomainTable && (
 						<div className={styles.TableContainer}>
 							<SubdomainTable />
