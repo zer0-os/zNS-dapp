@@ -39,10 +39,10 @@ export function useZSaleSdk() {
 						web3Provider,
 						contractAddress: '0x78BC1D081Cb18Bf503B090201b2ef298Dea67F24',
 						merkleTreeFileUri:
-							'https://res.cloudinary.com/fact0ry/raw/upload/v1678832583/drops/gens/gens-mintlist-merkleTree.json',
+							'https://res.cloudinary.com/fact0ry/raw/upload/v1679937539/drops/gens/gens-mintlist-merkleTree-fix.json',
 						advanced: {
 							merkleTreeFileIPFSHash:
-								'QmSnGc3Rk175PGodTVpnAMRF2jE9RVZYiqgjQErpCMBfsp',
+								'QmXLtwfnxc8kHUCrf9KDzp9mtgFmM49yq1DRMd79qD5qN4',
 						},
 					}),
 					claimInstance: zsale.createClaimWithChildInstance({
