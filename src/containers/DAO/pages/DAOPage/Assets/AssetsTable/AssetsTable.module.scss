@@ -1,0 +1,6 @@
+@use 'styles/variables/typography';
+
+.Link {
+	margin-top: 8px;
+	font-size: #{typography.$size-small};
+}

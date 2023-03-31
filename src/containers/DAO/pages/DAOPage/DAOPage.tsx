@@ -179,7 +179,11 @@ const DAOPage: React.FC = () => {
 							exact
 							path={to(ROUTES.ZDAO_ASSETS)}
 							component={() => (
-								<Assets assets={assets} isLoading={isLoadingAssets} />
+								<Assets
+									assets={assets}
+									safeAddress={dao?.safeAddress}
+									isLoading={isLoadingAssets}
+								/>
 							)}
 						/>
 						<Route

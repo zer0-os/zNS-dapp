@@ -45,6 +45,11 @@ export const VoteHistories: React.FC<VoteHistoriesProps> = ({
 		});
 	}, [dao, proposal, votes]);
 
+	const emptyVoteText =
+		proposal && proposal.scores.reduce((a, b) => a + b) > 0
+			? 'Having trouble retrieving vote history. Please try again later.'
+			: 'No votes yet...';
+
 	return (
 		<div className={styles.Container}>
 			<div className={styles.Title}>Vote History</div>
@@ -54,7 +59,7 @@ export const VoteHistories: React.FC<VoteHistoriesProps> = ({
 				{!isLoading && (
 					<>
 						{histories.length === 0 && (
-							<div className={styles.Empty}>No votes yet...</div>
+							<div className={styles.Empty}>{emptyVoteText}</div>
 						)}
 
 						{histories.length > 0 && (

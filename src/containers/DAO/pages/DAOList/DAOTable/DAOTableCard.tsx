@@ -41,7 +41,7 @@ const DAOTableCard: React.FC<DAOTableCardProps> = ({ data }) => {
 		if (totalUsd) {
 			add({ zna: zna, total: totalUsd });
 		}
-	}, [totalUsd]);
+	}, [add, data.zna, totalUsd]);
 
 	return (
 		<ImageCard
