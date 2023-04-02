@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { Asset } from 'lib/types/dao';
-import { ArrowLink, GenericTable } from 'components';
+import { GenericTable, TextButton } from 'components';
 import AssetsTableRow from './AssetsTableRow';
 import AssetsTableCard from './AssetsTableCard';
 import { AssetTableDataItem } from './AssetsTable.type';
@@ -45,14 +45,6 @@ const AssetsTable: React.FC<AssetsTableProps> = ({
 
 	return (
 		<>
-			<ArrowLink
-				className={styles.Link}
-				isLinkToExternalUrl
-				href={`https://etherscan.io/address/${safeAddress}`}
-			>
-				View Full Asset Collection
-			</ArrowLink>
-
 			<GenericTable
 				alignments={[0, 1, 1, 1, 1, 1, 1]}
 				data={tableData}
@@ -68,6 +60,19 @@ const AssetsTable: React.FC<AssetsTableProps> = ({
 				emptyText={'This DAO has no assets.'}
 				notSearchable={true}
 			/>
+
+			<div className={styles.Message}>
+				Not all DAO assets may show in the list above
+			</div>
+			<TextButton className={styles.Link}>
+				<a
+					href={`https://etherscan.io/tokenholdings?a=${safeAddress}`}
+					target="_blank"
+					rel="noreferrer"
+				>
+					View full asset collection
+				</a>
+			</TextButton>
 		</>
 	);
 };
