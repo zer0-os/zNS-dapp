@@ -62,7 +62,7 @@ const AssetsTable: React.FC<AssetsTableProps> = ({
 			/>
 
 			<div className={styles.Message}>
-				Not all DAO assets may show in the list above
+				Not all DAO collectibles may show in the list above
 			</div>
 			<TextButton className={styles.Link}>
 				<a

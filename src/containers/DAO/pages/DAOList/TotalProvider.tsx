@@ -9,7 +9,7 @@ type Total = {
 export const TotalsContext = React.createContext({
 	totals: [] as Total[],
 	add: (total: Total) => {},
-	isLoading: true as boolean | undefined,
+	isLoading: true as boolean,
 });
 
 type TotalsProviderProps = {
@@ -23,7 +23,6 @@ export const TotalsProvider = ({ children }: TotalsProviderProps) => {
 	const add = (total: Total) => {
 		if (!totals.map((t) => t.zna).includes(total.zna)) {
 			setTotals([...totals, total]);
-			setIsLoading(false);
 		}
 		setIsLoading(false);
 	};
