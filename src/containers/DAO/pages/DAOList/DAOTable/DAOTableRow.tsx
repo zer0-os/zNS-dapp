@@ -52,7 +52,7 @@ const DAOTableRow: React.FC<DAOTableRowProps> = ({ data }) => {
 		if (totalUsd) {
 			add({ zna: data.zna, total: totalUsd });
 		}
-	}, [totalUsd]);
+	}, [add, data.zna, totalUsd]);
 
 	return (
 		<tr className={styles.Container} onClick={onClickRow}>
