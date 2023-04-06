@@ -111,26 +111,7 @@ export const Stats: React.FC<StatsProps> = ({
 					: '',
 		};
 
-		const volumeStat: Stat = {
-			fieldName: 'Volume',
-			title:
-				(domainMetrics?.volume as any)?.all > 0
-					? `${Number(
-							ethers.utils.formatEther((domainMetrics?.volume as any)?.all),
-					  ).toLocaleString()} ${paymentTokenInfo.symbol}`
-					: '0',
-			subTitle:
-				(domainMetrics?.volume as any)?.all > 0 &&
-				Number(paymentTokenInfo.priceInUsd) > 0
-					? toFiat(
-							Number(
-								ethers.utils.formatEther((domainMetrics?.volume as any)?.all),
-							) * Number(paymentTokenInfo.priceInUsd),
-					  )
-					: '',
-		};
-
-		return [bidsStat, lastSaleStat, volumeStat];
+		return [bidsStat, lastSaleStat];
 	}, [domainMetrics, paymentTokenInfo, bids]);
 
 	return (

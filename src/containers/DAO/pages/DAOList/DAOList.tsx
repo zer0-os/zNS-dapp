@@ -26,7 +26,7 @@ const DAOList: React.FC = () => {
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [daoZnas, setDaoZnas] = useState<string[] | undefined>();
 
-	const { totals } = useTotals(); // totals from table rows
+	const { totals, isLoading: isTotalsDataLoading } = useTotals(); // totals from table rows
 
 	useEffect(() => {
 		let isMounted = true;
@@ -71,6 +71,7 @@ const DAOList: React.FC = () => {
 				<StatsWidget
 					className="normalView"
 					fieldName={'Total Value'}
+					isLoading={isTotalsDataLoading}
 					title={
 						'$' + toFiat(totals.map((t) => t.total).reduce((a, b) => a + b, 0))
 					}
