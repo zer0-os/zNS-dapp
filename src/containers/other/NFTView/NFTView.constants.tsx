@@ -34,17 +34,17 @@ export const NFT_ATTRIBUTES_VISIBLE_COUNTS_BY_VIEWPORT = {
 
 export enum NFT_DOWNLOAD_ACTIONS_TITLE {
 	DOWNLOAD_IMAGE = 'Static Image (PFP)',
+	DOWNLOAD_IMAGE_2 = 'Static Image 2 (PFP)',
+	DOWNLOAD_IMAGE_3 = 'Static Image 3 (PFP)',
 	DOWNLOAD_VIDEO = 'Full Animation',
 }
 
 export const NFT_DOWNLOAD_ACTIONS = {
 	[MediaType.Image]: {
 		icon: downloadImageIcon,
-		title: NFT_DOWNLOAD_ACTIONS_TITLE.DOWNLOAD_IMAGE,
 	},
 	[MediaType.Video]: {
 		icon: downloadVideoIcon,
-		title: NFT_DOWNLOAD_ACTIONS_TITLE.DOWNLOAD_VIDEO,
 	},
 };
 
