@@ -42,6 +42,8 @@ export const parseDomainMetadata = (
 		title: domainMetadata.name || domainMetadata.title,
 		description: domainMetadata.description,
 		image: domainMetadata.image,
+		image_2: domainMetadata.image_2,
+		image_3: domainMetadata.image_3,
 		image_full: domainMetadata.image_full,
 		previewImage: domainMetadata.previewImage,
 		animation_url: domainMetadata.animation_url,

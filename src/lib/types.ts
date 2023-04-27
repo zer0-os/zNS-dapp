@@ -97,6 +97,8 @@ export type DomainData = {
 export interface DisplayDomain extends Domain {
 	attributes: Maybe<Attribute[]>;
 	image: Maybe<string>;
+	image_2?: Maybe<string>;
+	image_3?: Maybe<string>;
 	description: Maybe<string>;
 	title: Maybe<string>;
 	image_full?: Maybe<string>;
