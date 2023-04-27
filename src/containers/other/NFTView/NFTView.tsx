@@ -39,6 +39,7 @@ import {
 	getActionFeatures,
 	NFT_MORE_ACTIONS_TITLE,
 	NFT_DOWNLOAD_ACTIONS,
+	NFT_DOWNLOAD_ACTIONS_TITLE,
 } from './NFTView.constants';
 import { PRIVATE_SALE_END_TIME } from 'containers/flows/Raffle/Drop.constants';
 
@@ -117,7 +118,11 @@ const NFTView: React.FC<NFTViewProps> = ({
 		const isBiddable =
 			(isRootDomain && !isOwnedByYou) || Boolean(domainMetadata?.isBiddable);
 		const assetUrl =
-			znsDomain?.animation_url || znsDomain?.image_full || znsDomain?.image;
+			znsDomain?.animation_url ||
+			znsDomain?.image_full ||
+			znsDomain?.image ||
+			znsDomain?.image_2 ||
+			znsDomain?.image_3;
 		const nftMoreOptions = isOwnedByYou
 			? getActionFeatures(Boolean(buyNowPrice), allBids?.length !== 0)
 			: [];
@@ -127,12 +132,28 @@ const NFTView: React.FC<NFTViewProps> = ({
 			nftDownloadOptions.push({
 				...NFT_DOWNLOAD_ACTIONS[MediaType.Image],
 				assetUrl: mediaAsset.imageAsset.url!,
+				title: NFT_DOWNLOAD_ACTIONS_TITLE.DOWNLOAD_IMAGE,
+			});
+		}
+		if (mediaAsset.image2Asset.isAvailable) {
+			nftDownloadOptions.push({
+				...NFT_DOWNLOAD_ACTIONS[MediaType.Image],
+				assetUrl: mediaAsset.image2Asset.url!,
+				title: NFT_DOWNLOAD_ACTIONS_TITLE.DOWNLOAD_IMAGE_2,
+			});
+		}
+		if (mediaAsset.image3Asset.isAvailable) {
+			nftDownloadOptions.push({
+				...NFT_DOWNLOAD_ACTIONS[MediaType.Image],
+				assetUrl: mediaAsset.image3Asset.url!,
+				title: NFT_DOWNLOAD_ACTIONS_TITLE.DOWNLOAD_IMAGE_3,
 			});
 		}
 		if (mediaAsset.videoAsset.isAvailable) {
 			nftDownloadOptions.push({
 				...NFT_DOWNLOAD_ACTIONS[MediaType.Video],
 				assetUrl: mediaAsset.videoAsset.url!,
+				title: NFT_DOWNLOAD_ACTIONS_TITLE.DOWNLOAD_VIDEO,
 			});
 		}
 
