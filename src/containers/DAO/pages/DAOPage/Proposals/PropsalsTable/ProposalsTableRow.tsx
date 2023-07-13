@@ -19,7 +19,7 @@ import {
 } from '../Proposals.helpers';
 
 // Styles
-import classNames from 'classnames/bind';
+import classNames from 'classnames';
 import styles from './ProposalsTableRow.module.scss';
 
 // Types

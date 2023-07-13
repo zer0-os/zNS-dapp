@@ -1,5 +1,5 @@
 import React from 'react';
-import classNames from 'classnames/bind';
+import classNames from 'classnames';
 import TextInput, { TextInputProps } from './TextInput';
 import styles from './TextInput.module.scss';
 

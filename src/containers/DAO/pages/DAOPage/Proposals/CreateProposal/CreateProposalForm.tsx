@@ -2,7 +2,7 @@ import React from 'react';
 
 // - Library
 import type { zDAO } from '@zero-tech/zdao-sdk';
-import classNames from 'classnames/bind';
+import classNames from 'classnames';
 
 // - Hooks
 import { useCreateProposalForm } from './hooks';

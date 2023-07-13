@@ -1,5 +1,5 @@
 import React from 'react';
-import classnames from 'classnames/bind';
+import classnames from 'classnames';
 import MDEditor, { ICommand } from '@uiw/react-md-editor';
 import {
 	MARKDOWN_EDITOR_MODES,

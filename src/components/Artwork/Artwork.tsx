@@ -35,7 +35,7 @@ type ArtworkProps = {
 	shouldUseCloudinary?: boolean;
 };
 
-const cx = classNames.bind(styles);
+const cx = classNames.bind(styles) as (...args: any) => string;
 
 const Artwork: React.FC<ArtworkProps> = ({
 	circleIcon,
