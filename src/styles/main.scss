@@ -426,3 +426,13 @@ button {
 		overflow: visible !important;
 	}
 }
+
+[class*="ConnectWallet_Container"] {
+	p {
+		padding: 0 !important;
+	}
+
+	button {
+		display: none !important;
+	}
+}
