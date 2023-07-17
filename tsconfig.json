@@ -18,10 +18,5 @@
 		"noEmit": true,
 		"jsx": "react-jsx"
 	},
-	"include": ["src"],
-	"watchOptions": {
-		"watchFile": "useFsEvents",
-		"watchDirectory": "useFsEvents",
-		"fallbackPolling": "dynamicPriority"
-	}
+	"include": ["src"]
 }

@@ -402,3 +402,27 @@ button {
 .glow-text-blue {
 	text-shadow: #{colors.$text-glow-primary};
 }
+
+/*
+ *
+ * Resets
+ *
+ */
+
+.zapp-reset {
+	main {
+		padding: 0;
+		margin: 0;
+		max-width: 100%;
+	}
+
+	[class*="ZAppContent_Container"] {
+		overflow-y: visible !important;
+		overflow: visible !important;
+	}
+
+	[class*="ZAppContent_Scroll"] {
+		overflow-y: visible !important;
+		overflow: visible !important;
+	}
+}
