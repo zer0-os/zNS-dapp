@@ -5,11 +5,11 @@ jobs:
       - image: circleci/node
     steps:
       - checkout
-      - run: echo "//npm.pkg.github.com/:_authToken=${GIT_PACKAGE_READ}" > ~/.npmrc
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "package.json" }}
             - v1-dependencies-
+      - run: echo "//npm.pkg.github.com/:_authToken=${GIT_PACKAGE_READ}" > ~/.npmrc
       - run: npm install
       - save_cache:
           paths:
