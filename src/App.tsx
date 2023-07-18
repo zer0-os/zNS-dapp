@@ -56,7 +56,7 @@ function App() {
 				<Switch>
 					<CurrentDomainProvider>
 						<PageContainer>
-							<Suspense fallback={<div>Loading...</div>}>
+							<Suspense fallback={<div></div>}>
 								<Route path={ROUTES.MARKET} component={ZNS} />
 								<Route path={ROUTES.STAKING} component={Staking} />
 								<Route path={ROUTES.ZDAO} component={DAO} />
