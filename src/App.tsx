@@ -1,7 +1,7 @@
 import { version } from '../package.json';
 
 //- React Imports
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Provider as ReduxProvider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 
@@ -32,8 +32,11 @@ import { ThemeEngine } from '@zero-tech/zui/components';
 import { Themes } from '@zero-tech/zui/components/ThemeEngine';
 import { ZUIProvider } from '@zero-tech/zui/ZUIProvider';
 import { ROUTES } from './constants/routes';
-import { Profile, Staking, ZNS } from './pages';
-import DAO from './pages/DAO/DAO';
+
+const Staking = React.lazy(() => import('./pages/Staking/Staking'));
+const DAO = React.lazy(() => import('./pages/DAO/DAO'));
+const ZNS = React.lazy(() => import('./pages/ZNS/ZNS'));
+const Profile = React.lazy(() => import('./pages/Profile/Profile'));
 
 function getLibrary(provider: any): Web3Provider {
 	const library = new Web3Provider(provider);
@@ -53,13 +56,15 @@ function App() {
 				<Switch>
 					<CurrentDomainProvider>
 						<PageContainer>
-							<Route path={ROUTES.MARKET} component={ZNS} />
-							<Route path={ROUTES.STAKING} component={Staking} />
-							<Route path={ROUTES.ZDAO} component={DAO} />
-							<Route path={ROUTES.PROFILE} component={Profile} />
-							<Route exact path="/">
-								<Redirect to="/market" />
-							</Route>
+							<Suspense fallback={<div>Loading...</div>}>
+								<Route path={ROUTES.MARKET} component={ZNS} />
+								<Route path={ROUTES.STAKING} component={Staking} />
+								<Route path={ROUTES.ZDAO} component={DAO} />
+								<Route path={ROUTES.PROFILE} component={Profile} />
+								<Route exact path="/">
+									<Redirect to="/market" />
+								</Route>
+							</Suspense>
 						</PageContainer>
 					</CurrentDomainProvider>
 				</Switch>
