@@ -16,3 +16,7 @@ declare global {
 }
 
 window.ethereum = window.ethereum || undefined;
+
+declare module '@zero-tech/zapp-staking' {
+	const ZAppStaking: () => JSX.Element;
+}

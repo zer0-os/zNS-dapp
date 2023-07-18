@@ -1,6 +1,7 @@
 version: 2
 jobs:
   build:
+    context: zApp
     docker:
       - image: circleci/node
     steps:
@@ -9,6 +10,7 @@ jobs:
           keys:
             - v1-dependencies-{{ checksum "package.json" }}
             - v1-dependencies-
+      - run: echo "//npm.pkg.github.com/:_authToken=${GIT_PACKAGE_READ}" > ~/.npmrc
       - run: npm install
       - save_cache:
           paths:

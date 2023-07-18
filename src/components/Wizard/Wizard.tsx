@@ -1,6 +1,6 @@
 // Style Imports
 import styles from './Wizard.module.scss';
-import classNames from 'classnames/bind';
+import classNames from 'classnames';
 
 // Preset Screens
 import Loading from './Presets/Loading';

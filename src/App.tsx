@@ -24,13 +24,16 @@ import CacheBuster from 'react-cache-buster';
 import EnlistProvider from 'lib/providers/EnlistProvider';
 import CurrentDomainProvider from 'lib/providers/CurrentDomainProvider';
 import MvpVersionProvider from 'lib/providers/MvpVersionProvider';
-import { ROUTES } from 'constants/routes';
 
 //- Page Imports
-import { ZNS, Staking, Profile } from 'pages';
 import PageContainer from 'containers/PageContainer';
-import DAO from 'pages/DAO/DAO';
 import { ZnsSdkProvider } from 'lib/providers/ZnsSdkProvider';
+import { ThemeEngine } from '@zero-tech/zui/components';
+import { Themes } from '@zero-tech/zui/components/ThemeEngine';
+import { ZUIProvider } from '@zero-tech/zui/ZUIProvider';
+import { ROUTES } from './constants/routes';
+import { Profile, Staking, ZNS } from './pages';
+import DAO from './pages/DAO/DAO';
 
 function getLibrary(provider: any): Web3Provider {
 	const library = new Web3Provider(provider);
@@ -80,7 +83,10 @@ function wrappedApp() {
 						{/* Our Hooks  */}
 						<MvpVersionProvider>
 							<EnlistProvider>
-								<App />
+								<ZUIProvider>
+									<ThemeEngine theme={Themes.Dark} />
+									<App />
+								</ZUIProvider>
 							</EnlistProvider>
 						</MvpVersionProvider>
 					</ZnsSdkProvider>
