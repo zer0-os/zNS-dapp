@@ -41,7 +41,7 @@ const ZNS: React.FC<ZNSProps> = () => {
 	//- Domain Data
 	const { domain: znsDomain, domainRaw: domain } = useCurrentDomain();
 
-	const enableBanner = true;
+	const enableBanner = false;
 
 	const location = useLocation();
 	const nftView = useMemo(
