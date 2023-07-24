@@ -129,7 +129,6 @@ textarea {
 html,
 body {
 	height: 100%;
-	overflow: hidden;
 	touch-action: pan-x pan-y;
 }
 
@@ -419,6 +418,7 @@ button {
 	[class*="ZAppContent_Container"] {
 		overflow-y: visible !important;
 		overflow: visible !important;
+		height: unset;
 	}
 
 	[class*="ZAppContent_Scroll"] {
