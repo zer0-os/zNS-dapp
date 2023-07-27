@@ -57,6 +57,9 @@ function App() {
 							<Route path={ROUTES.STAKING} component={Staking} />
 							<Route path={ROUTES.ZDAO} component={DAO} />
 							<Route path={ROUTES.PROFILE} component={Profile} />
+							<Route exact path="/wilder/staking/pools">
+								<Redirect to={ROUTES.STAKING} />
+							</Route>
 							<Route exact path="/">
 								<Redirect to="/market" />
 							</Route>
