@@ -10,7 +10,7 @@ import BidTableCard from './BidTableCard/BidTableCard';
 import useBidTableData from './hooks/useBidTableData';
 
 //- Constants Imports
-import { Messages, Headers } from './BidTable.constants';
+import { Headers, Messages } from './BidTable.constants';
 
 const BidTable = () => {
 	const { isLoading, bidData, refetch } = useBidTableData();

@@ -3,8 +3,8 @@ import React, { useMemo } from 'react';
 
 //- Type Imports
 import {
-	TokenInformationType,
 	TokenDynamicType,
+	TokenInformationType,
 	TokenStakeType,
 } from '../types';
 

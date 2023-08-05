@@ -2,7 +2,7 @@
 import { useCallback, useMemo } from 'react';
 
 //- Library Imports
-import { Domain, Bid } from 'lib/types';
+import { Bid, Domain } from 'lib/types';
 import { ethers } from 'ethers';
 import { tryFunction } from 'lib/utils';
 
@@ -11,7 +11,6 @@ import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import { useZnsSdk } from 'lib/hooks/sdk';
 import { Bid as zAuctionBid } from '@zero-tech/zauction-sdk/lib/api/types';
 import { PlaceBidStatus } from '@zero-tech/zauction-sdk';
-import { Web3Provider } from '@ethersproject/providers';
 
 /////////////////////
 // Mock data stuff //

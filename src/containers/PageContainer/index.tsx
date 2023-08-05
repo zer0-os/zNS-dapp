@@ -5,7 +5,6 @@ import { useHistory } from 'react-router-dom';
 //- Library Imports
 import classnames from 'classnames';
 import { useWeb3 } from 'lib/web3-connection/useWeb3';
-import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 // import { useEagerConnect } from 'lib/hooks/provider-hooks';
 import { usePageWidth } from 'lib/hooks/usePageWidth';
@@ -16,8 +15,8 @@ import { useStaking } from 'lib/hooks/useStaking';
 import useScrollDetection from 'lib/hooks/useScrollDetection';
 
 //- Components Imports
-import { SideBar, ScrollToTop, NotificationDrawer } from 'components';
-import { Header, Modals, useModal, Actions, Touchbar } from './elements';
+import { NotificationDrawer, ScrollToTop, SideBar } from 'components';
+import { Actions, Header, Modals, Touchbar, useModal } from './elements';
 
 //- Constants Imports
 import { LOCAL_STORAGE_KEYS } from 'constants/localStorage';

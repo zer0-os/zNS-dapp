@@ -1,6 +1,5 @@
 import RaffleRegistration from './RaffleRegistration';
 import { useWeb3 } from 'lib/web3-connection/useWeb3';
-import { Web3Provider } from '@ethersproject/providers';
 import { Maybe } from 'lib/types';
 
 type RegistrationContainerProps = {

@@ -1,8 +1,8 @@
 //- React Imports
-import React, { useState, useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 
 //- Type Imports
-import { Maybe, DisplayParentDomain, Attribute } from 'lib/types';
+import { Attribute, DisplayParentDomain, Maybe } from 'lib/types';
 
 //- Constant Imports
 import { NFT_ATTRIBUTES_VISIBLE_COUNTS_BY_VIEWPORT } from '../../NFTView.constants';

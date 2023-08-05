@@ -1,27 +1,27 @@
 import {
+	ADD_NOTIFICATION_ERROR,
 	ADD_NOTIFICATION_REQUEST,
 	ADD_NOTIFICATION_SUCCESS,
-	ADD_NOTIFICATION_ERROR,
+	REMOVE_NOTIFICATION_ERROR,
 	REMOVE_NOTIFICATION_REQUEST,
 	REMOVE_NOTIFICATION_SUCCESS,
-	REMOVE_NOTIFICATION_ERROR,
 } from './actionTypes';
 import {
-	Notification,
+	AddNotificationError,
 	AddNotificationRequest,
 	AddNotificationSuccess,
-	AddNotificationError,
+	Notification,
+	RemoveNotificationError,
 	RemoveNotificationRequest,
 	RemoveNotificationSuccess,
-	RemoveNotificationError,
 } from './types';
 import {
+	addNotificationError,
 	addNotificationRequest,
 	addNotificationSuccess,
-	addNotificationError,
+	removeNotificationError,
 	removeNotificationRequest,
 	removeNotificationSuccess,
-	removeNotificationError,
 } from './actions';
 import { notificationsReady } from './notifications.mockData';
 

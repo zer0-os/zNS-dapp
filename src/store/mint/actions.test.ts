@@ -1,6 +1,6 @@
-import { SET_MINTING_REQUEST, SET_MINTED_REQUEST } from './actionTypes';
-import { SetMintingRequest, SetMintedRequest } from './types';
-import { setMintingRequest, setMintedRequest } from './actions';
+import { SET_MINTED_REQUEST, SET_MINTING_REQUEST } from './actionTypes';
+import { SetMintedRequest, SetMintingRequest } from './types';
+import { setMintedRequest, setMintingRequest } from './actions';
 import { mintReady } from './mint.mockData';
 
 describe('mint.actions', () => {

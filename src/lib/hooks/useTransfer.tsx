@@ -1,5 +1,5 @@
 //- React Import
-import { useMemo, useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 
 //- Web3 Imports
 import { useWeb3 } from 'lib/web3-connection/useWeb3';

@@ -1,9 +1,8 @@
 //- React Imports
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 //- Web3 Imports
 import { useWeb3 } from 'lib/web3-connection/useWeb3'; // Wallet data
-
 //- Library Imports
 import { useZnsSdk } from 'lib/hooks/sdk';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';

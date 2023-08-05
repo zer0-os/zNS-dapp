@@ -1,6 +1,6 @@
 //- React Imports
-import { useMemo, useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useCallback, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 //- Web3 Imports
 import { useWeb3 } from 'lib/web3-connection/useWeb3';
@@ -16,10 +16,10 @@ import { Maybe, NftParams, NftStatusCard } from 'lib/types';
 import { ClaimableDomain } from '@zero-tech/zsale-sdk';
 
 //- Store Imports
-import { getMinting, getMinted } from 'store/mint/selectors';
+import { getMinted, getMinting } from 'store/mint/selectors';
 import {
-	setMintingRequest as reduxSetMintingRequest,
 	setMintedRequest as reduxSetMintedRequest,
+	setMintingRequest as reduxSetMintingRequest,
 } from 'store/mint/actions';
 
 //- Constants Imports
@@ -28,8 +28,8 @@ import { ImageUri } from 'constants/uris';
 import { Errors } from 'constants/errors';
 import { Status } from 'constants/status';
 import {
-	MINTING_FLOW_NOTIFICATIONS,
 	CLAIM_FLOW_NOTIFICATIONS,
+	MINTING_FLOW_NOTIFICATIONS,
 } from 'constants/notifications';
 import { ZNA } from 'constants/zna';
 

@@ -1,14 +1,14 @@
-import React, { useState, useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 
 // - Library
 import moment from 'moment';
 import _, { isEmpty } from 'lodash';
-import type { zDAO, Proposal } from '@zero-tech/zdao-sdk';
-import { secondsToDhms, formatDateTime } from 'lib/utils/datetime';
+import type { Proposal, zDAO } from '@zero-tech/zdao-sdk';
+import { formatDateTime, secondsToDhms } from 'lib/utils/datetime';
 import {
-	isFromSnapshotWithMultipleChoices,
 	formatProposalStatus,
 	formatTotalAmountOfTokenMetadata,
+	isFromSnapshotWithMultipleChoices,
 } from '../../Proposals.helpers';
 import useTimer from 'lib/hooks/useTimer';
 import { usePageWidth } from 'lib/hooks/usePageWidth';

@@ -1,5 +1,5 @@
 import * as actionType from './actionTypes';
-import { CurrencyState, CurrencyActions } from './types';
+import { CurrencyActions, CurrencyState } from './types';
 
 export const REDUCER_NAME = 'currency';
 

@@ -9,14 +9,14 @@ import { useCreateProposalForm } from './hooks';
 
 // - Component
 import {
-	MarkDownEditor,
-	OptionDropdown,
-	TextInputWithTopPlaceHolder,
-	Tooltip,
-	QuestionButton,
 	EtherscanLink,
 	FutureButton,
+	MarkDownEditor,
+	OptionDropdown,
 	Overlay,
+	QuestionButton,
+	TextInputWithTopPlaceHolder,
+	Tooltip,
 	Wizard,
 } from 'components';
 
@@ -27,9 +27,9 @@ import { VotingDetailItem } from './CreateProposal.types';
 // - Constants
 import {
 	ProposalCreateSections,
+	ProposalFormConfirmModalText,
 	ProposalInputFieldKeys,
 	ProposalInputFields,
-	ProposalFormConfirmModalText,
 } from './CreateProposal.constants';
 
 // - Helpers

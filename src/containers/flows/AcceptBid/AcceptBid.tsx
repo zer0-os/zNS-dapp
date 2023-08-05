@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 //- Global Component Imports
-import { Overlay, Wizard, StepBar } from 'components';
+import { Overlay, StepBar, Wizard } from 'components';
 
 //- Components Imports
 import Details from './components/Details/Details';
@@ -18,7 +18,7 @@ import { Bid } from '@zero-tech/zauction-sdk';
 import { useZnsSdk } from 'lib/hooks/sdk';
 
 //- Types Imports
-import { StepContent, Step } from './AcceptBid.types';
+import { Step, StepContent } from './AcceptBid.types';
 
 //- Constants Imports
 import {

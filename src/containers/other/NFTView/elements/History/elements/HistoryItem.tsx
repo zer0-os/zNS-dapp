@@ -1,12 +1,12 @@
 import moment from 'moment';
 import {
-	DomainEventType,
-	DomainTransferEvent,
-	DomainMintEvent,
-	DomainBidEvent,
-	DomainSaleEvent,
-	DomainBuyNowSaleEvent,
 	ConvertedTokenInfo,
+	DomainBidEvent,
+	DomainBuyNowSaleEvent,
+	DomainEventType,
+	DomainMintEvent,
+	DomainSaleEvent,
+	DomainTransferEvent,
 } from '@zero-tech/zns-sdk';
 import { URLS } from 'constants/urls';
 import { ethers } from 'ethers';

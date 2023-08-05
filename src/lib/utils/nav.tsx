@@ -1,6 +1,6 @@
 //- Routes Imports
 import { ROUTES } from '../../constants/routes';
-import { MarketIcon, DAOIcon, StakingIcon, ProfileIcon } from 'components';
+import { DAOIcon, MarketIcon, ProfileIcon, StakingIcon } from 'components';
 
 export const TITLES = {
 	MARKET: 'MARKET',

@@ -1,18 +1,18 @@
-import { useMemo, useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useCallback, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from 'store';
 import {
-	setNavbarTitle as reduxSetNavbarTitle,
 	setNavbarSearchingStatus as reduxSetNavbarSearchingStatus,
+	setNavbarTitle as reduxSetNavbarTitle,
 } from 'store/navbar/actions';
 import {
-	getNavbarTitle,
 	getNavbarSearchingStatus,
+	getNavbarTitle,
 } from 'store/navbar/selectors';
 import {
 	NavbarState,
-	SetNavbarTitlePayload,
 	SetNavbarSearchingStatusPayload,
+	SetNavbarTitlePayload,
 } from '../types';
 
 export type UseNavbarReduxReturn = {

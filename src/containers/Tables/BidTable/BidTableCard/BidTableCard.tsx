@@ -22,7 +22,7 @@ import { ActionKeys, BidTableData } from '../BidTable.types';
 import usePageWidth from 'lib/hooks/usePageWidth';
 
 //- Utils Imports
-import { handleDomainNameWidth, getTableActions } from '../BidTable.utils';
+import { getTableActions, handleDomainNameWidth } from '../BidTable.utils';
 
 //- Styles Imports
 import styles from './BidTableCard.module.scss';

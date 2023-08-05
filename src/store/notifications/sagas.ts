@@ -1,10 +1,10 @@
 import { put, takeEvery } from '@redux-saga/core/effects';
 import {
-	addNotificationSuccess,
 	addNotificationError,
+	addNotificationSuccess,
+	removeNotificationError,
 	removeNotificationRequest,
 	removeNotificationSuccess,
-	removeNotificationError,
 } from './actions';
 import {
 	ADD_NOTIFICATION_REQUEST,

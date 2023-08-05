@@ -1,5 +1,5 @@
 //- React Imports
-import React, { useMemo, useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 
 //- Web3 Imports
@@ -9,9 +9,9 @@ import { BigNumber } from 'ethers';
 import {
 	ArrowLink,
 	QuestionButton,
+	Spinner,
 	TextButton,
 	Tooltip,
-	Spinner,
 } from 'components';
 
 //- Constant Imports
@@ -28,7 +28,7 @@ import { truncateWalletAddress, zNAFromPathname } from 'lib/utils';
 import classNames from 'classnames/bind';
 
 //- Type Imports
-import { Maybe, DisplayParentDomain } from 'lib/types';
+import { DisplayParentDomain, Maybe } from 'lib/types';
 import { Stage } from 'containers/flows/MintDropNFT/types';
 
 //- Helper Imports

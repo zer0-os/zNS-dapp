@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 //- React Imports
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 //- Local Imports
 import { TokenInformationType } from '../types';
@@ -9,7 +9,7 @@ import { TokenInformationType } from '../types';
 import styles from '../MintNewNFT.module.scss';
 
 //- Component Imports
-import { TextInput, FutureButton } from 'components';
+import { FutureButton, TextInput } from 'components';
 
 type TokenInformationProps = {
 	existingSubdomains: string[];

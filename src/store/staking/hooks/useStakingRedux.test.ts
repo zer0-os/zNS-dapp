@@ -1,27 +1,27 @@
 import { useSelector } from 'react-redux';
 import {
-	setStakingRequestingRequest as reduxSetStakingRequestingRequest,
-	setStakingRequestedRequest as reduxSetStakingRequestedRequest,
-	setStakingApprovingRequest as reduxSetStakingApprovingRequest,
 	setStakingApprovedRequest as reduxSetStakingApprovedRequest,
-	setStakingFulfillingRequest as reduxSetStakingFulfillingRequest,
+	setStakingApprovingRequest as reduxSetStakingApprovingRequest,
 	setStakingFulfilledRequest as reduxSetStakingFulfilledRequest,
+	setStakingFulfillingRequest as reduxSetStakingFulfillingRequest,
+	setStakingRequestedRequest as reduxSetStakingRequestedRequest,
+	setStakingRequestingRequest as reduxSetStakingRequestingRequest,
 } from 'store/staking/actions';
 import {
-	getStakingRequesting,
-	getStakingRequested,
-	getStakingApproving,
 	getStakingApproved,
-	getStakingFulfilling,
+	getStakingApproving,
 	getStakingFulfilled,
+	getStakingFulfilling,
+	getStakingRequested,
+	getStakingRequesting,
 } from 'store/staking/selectors';
 import { storeReady } from 'store/store.mockData';
 import { renderHook } from 'lib/testUtils';
 import {
-	NFT_STATUS_CARD_1,
-	NFT_STATUS_CARD_2,
 	DOMAIN_REQUEST_AND_CONTENTS_1,
 	DOMAIN_REQUEST_AND_CONTENTS_2,
+	NFT_STATUS_CARD_1,
+	NFT_STATUS_CARD_2,
 } from '../staking.mockData';
 import { useStakingRedux, UseStakingReduxReturn } from './useStakingRedux';
 

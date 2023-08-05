@@ -1,6 +1,6 @@
 //- Constants Imports
-import { MESSAGES, LABELS } from 'containers/flows/ClaimNFT/ClaimNFT.constants';
-import { BUTTONS, TOOLTIP, TEXT_INPUT } from './Details.constants';
+import { LABELS, MESSAGES } from 'containers/flows/ClaimNFT/ClaimNFT.constants';
+import { BUTTONS, TEXT_INPUT, TOOLTIP } from './Details.constants';
 import { BigNumber } from 'ethers';
 
 // Validation

@@ -1,25 +1,25 @@
 import {
-	SET_STAKING_REQUESTING_REQUEST,
-	SET_STAKING_REQUESTED_REQUEST,
-	SET_STAKING_APPROVING_REQUEST,
 	SET_STAKING_APPROVED_REQUEST,
-	SET_STAKING_FULFILLING_REQUEST,
+	SET_STAKING_APPROVING_REQUEST,
 	SET_STAKING_FULFILLED_REQUEST,
+	SET_STAKING_FULFILLING_REQUEST,
+	SET_STAKING_REQUESTED_REQUEST,
+	SET_STAKING_REQUESTING_REQUEST,
 } from './actionTypes';
 import {
-	SetStakingRequestingRequest,
-	SetStakingRequestedRequest,
-	SetStakingApprovingRequest,
 	SetStakingApprovedRequest,
-	SetStakingFulfillingRequest,
+	SetStakingApprovingRequest,
 	SetStakingFulfilledRequest,
+	SetStakingFulfillingRequest,
+	SetStakingRequestedRequest,
+	SetStakingRequestingRequest,
 } from './types';
 import reducer, { INITIAL_STATE } from './reducer';
 import {
-	NFT_STATUS_CARD_1,
-	NFT_STATUS_CARD_2,
 	DOMAIN_REQUEST_AND_CONTENTS_1,
 	DOMAIN_REQUEST_AND_CONTENTS_2,
+	NFT_STATUS_CARD_1,
+	NFT_STATUS_CARD_2,
 } from './staking.mockData';
 
 describe('staking.reducer', () => {

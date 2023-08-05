@@ -1,18 +1,16 @@
 //- React Imports
-import React, { useCallback, useMemo, useEffect } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 
 //- Web3 Imports
 import { useWeb3 } from 'lib/web3-connection/useWeb3'; // Wallet data
-import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wallet data
-
 //- Component Imports
 import {
 	Actions,
+	Attributes,
+	History,
 	NFT,
 	Stats,
 	TokenHashBoxes,
-	Attributes,
-	History,
 } from './elements';
 
 //- Library Imports
@@ -27,19 +25,19 @@ import { NFTViewModalType } from './providers/NFTViewModalProvider/NFTViewModalP
 
 //- Hooks
 import {
-	useNftData,
-	useViewBidsData,
 	useAsset,
-	useNFTViewModal,
+	useNftData,
 	useNftMediaAsset,
+	useNFTViewModal,
+	useViewBidsData,
 } from './hooks';
 
 //- Constants Imports
 import {
 	getActionFeatures,
-	NFT_MORE_ACTIONS_TITLE,
 	NFT_DOWNLOAD_ACTIONS,
 	NFT_DOWNLOAD_ACTIONS_TITLE,
+	NFT_MORE_ACTIONS_TITLE,
 } from './NFTView.constants';
 import { PRIVATE_SALE_END_TIME } from 'containers/flows/Raffle/Drop.constants';
 

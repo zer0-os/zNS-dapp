@@ -10,7 +10,6 @@ import { FutureButton, Overlay, TextButton } from 'components';
 
 //- Library Imports
 import { useWeb3 } from 'lib/web3-connection/useWeb3';
-import { Web3Provider } from '@ethersproject/providers';
 
 //- Constants Imports
 import { LABELS } from './BuyNowButton.constants';

@@ -1,7 +1,7 @@
-import { SET_NAVBAR_TITLE, SET_NAVBAR_SEARCHING_STATUS } from './actionTypes';
-import { SetNavbarTitle, SetNavbarSearchingStatus } from './types';
-import { setNavbarTitle, setNavbarSearchingStatus } from './actions';
-import { NAVBAR_TITLE, NAVBAR_IS_SEARCHING } from './navbar.mockData';
+import { SET_NAVBAR_SEARCHING_STATUS, SET_NAVBAR_TITLE } from './actionTypes';
+import { SetNavbarSearchingStatus, SetNavbarTitle } from './types';
+import { setNavbarSearchingStatus, setNavbarTitle } from './actions';
+import { NAVBAR_IS_SEARCHING, NAVBAR_TITLE } from './navbar.mockData';
 
 describe('navbar.actions', () => {
 	it('setNavbarTitle', () => {

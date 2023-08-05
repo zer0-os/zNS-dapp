@@ -1,5 +1,5 @@
 // React-Imports
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 
 // Container-Imports
 import { MintNewNFT } from 'containers';

@@ -1,14 +1,13 @@
-import { useState, useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useWeb3 } from 'lib/web3-connection/useWeb3';
-import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 import { DomainMetadata } from '@zero-tech/zns-sdk/lib/types';
 import { useZnsDomain } from 'lib/hooks/useZnsDomain';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 import { getRelativeDomainPath } from 'lib/utils/domains';
 import { Maybe } from 'lib/types';
 import {
-	DomainSettingsWarning,
 	DomainSettingsSuccess,
+	DomainSettingsWarning,
 } from '../DomainSettings.constants';
 import { defaultNetworkId } from 'lib/network';
 

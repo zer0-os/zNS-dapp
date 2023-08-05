@@ -7,9 +7,9 @@ import { formatDateTime } from 'lib/utils/datetime';
 import type { VotingDetailItem } from './CreateProposal.types';
 import {
 	DEFAULT_VOTE_DURATION_DAYS,
-	ProposalInputFieldKeys,
-	ProposalFormDefaultValues,
 	ProposalFormDefaultErrors,
+	ProposalFormDefaultValues,
+	ProposalInputFieldKeys,
 } from './CreateProposal.constants';
 
 export const getTokenOption = (options: Option[], value?: string) => {

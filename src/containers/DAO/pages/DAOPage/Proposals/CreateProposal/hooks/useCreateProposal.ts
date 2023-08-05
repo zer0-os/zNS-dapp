@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import type { zDAO } from '@zero-tech/zdao-sdk';

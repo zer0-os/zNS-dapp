@@ -3,7 +3,7 @@ import { DisplayParentDomain, Maybe, Metadata } from 'lib/types';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useZnsSdk } from 'lib/hooks/sdk';
 import { getMetadata } from 'lib/metadata';
-import { Domain, ConvertedTokenInfo } from '@zero-tech/zns-sdk';
+import { ConvertedTokenInfo, Domain } from '@zero-tech/zns-sdk';
 import { isRootDomain } from 'lib/utils';
 import getPaymentTokenInfo from 'lib/paymentToken';
 import config from 'config';

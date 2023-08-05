@@ -16,7 +16,7 @@ import { ethers } from 'ethers';
 
 //- Constants Imports
 import { Currency } from 'constants/currency';
-import { TestId, Headers } from '../BidTable.constants';
+import { Headers, TestId } from '../BidTable.constants';
 
 //- Mock Imports
 import { mockData, mockOptionDropdown } from '../mocks';

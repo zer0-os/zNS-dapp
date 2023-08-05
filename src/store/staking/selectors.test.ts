@@ -1,12 +1,12 @@
 import { AppState } from 'store';
 import { REDUCER_NAME } from './reducer';
 import {
-	getStakingRequesting,
-	getStakingRequested,
-	getStakingApproving,
 	getStakingApproved,
-	getStakingFulfilling,
+	getStakingApproving,
 	getStakingFulfilled,
+	getStakingFulfilling,
+	getStakingRequested,
+	getStakingRequesting,
 } from './selectors';
 import { stakingReady } from './staking.mockData';
 

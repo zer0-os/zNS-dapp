@@ -1,5 +1,5 @@
 //- React Imports
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 //- Web3 Imports
 import { useWeb3 } from 'lib/web3-connection/useWeb3'; // Wallet data
@@ -8,7 +8,7 @@ import { ethers } from 'ethers';
 //- Library Imports
 import { useZnsSdk } from 'lib/hooks/sdk';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
-import { DomainEventType, DomainBidEvent } from '@zero-tech/zns-sdk/lib/types';
+import { DomainBidEvent, DomainEventType } from '@zero-tech/zns-sdk/lib/types';
 import { Bid } from '@zero-tech/zauction-sdk';
 
 //- Type Imports

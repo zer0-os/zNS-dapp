@@ -1,7 +1,6 @@
 import React from 'react';
 
 import AssetCard from '../AssetCard'; // Parent component
-
 import styles from './AssetPriceCard.module.scss';
 
 type AssetPriceCardProps = {

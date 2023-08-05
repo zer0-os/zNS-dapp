@@ -1,9 +1,9 @@
 import {
-	SET_TRANSFERRING_REQUEST,
 	SET_TRANSFERRED_REQUEST,
+	SET_TRANSFERRING_REQUEST,
 } from './actionTypes';
 import { TransferSubmitParams } from 'lib/types';
-import { TransferState, TransferActions } from './types';
+import { TransferActions, TransferState } from './types';
 
 export const REDUCER_NAME = 'transfer';
 

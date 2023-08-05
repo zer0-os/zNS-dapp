@@ -1,20 +1,20 @@
 // React
-import React, { useEffect, useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import {
 	Link,
 	Redirect,
 	Route,
 	Switch,
+	useHistory,
 	useLocation,
 	useRouteMatch,
-	useHistory,
 } from 'react-router-dom';
 
 // Components
 import Assets from './Assets/Assets';
 import Transactions from './Transactions/Transactions';
-import { Proposals, ProposalDetail, CreateProposal } from './Proposals';
-import { LoadingIndicator, StatsWidget, FutureButton } from 'components';
+import { CreateProposal, ProposalDetail, Proposals } from './Proposals';
+import { FutureButton, LoadingIndicator, StatsWidget } from 'components';
 
 // Hooks
 import { useNavbar } from 'lib/hooks/useNavbar';
@@ -41,6 +41,7 @@ import classNames from 'classnames/bind';
 
 // Constants
 import { DAO_CREATE_PROPOSAL } from './Proposals/Proposals.constants';
+
 const cx = classNames.bind(genericStyles);
 
 const MILLIFY_THRESHOLD = 1000000;

@@ -1,20 +1,20 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { Column, useTable, useGlobalFilter, useFilters } from 'react-table';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { Column, useFilters, useGlobalFilter, useTable } from 'react-table';
 
 //- Component Imports
 import {
 	Artwork,
-	SearchBar,
-	IconButton,
-	Member,
+	Confirmation,
 	FilterButton,
 	FutureButton,
+	IconButton,
+	Member,
+	NFTCard,
 	OptionDropdown,
 	Overlay,
-	NFTCard,
+	SearchBar,
 	Spinner,
-	Confirmation,
 } from 'components';
 import RequestActions from './components/RequestActions';
 import { Request } from 'containers';
@@ -22,8 +22,8 @@ import { Request } from 'containers';
 //- Library Imports
 import { getRequestData } from './data';
 import {
-	useRequestsMadeByAccount,
 	useRequestsForOwnedDomains,
+	useRequestsMadeByAccount,
 } from 'lib/hooks/useDomainRequestsSubgraph';
 import { ethers } from 'ethers';
 import { useStaking } from 'lib/hooks/useStaking';

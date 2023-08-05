@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react';
 
 // - Library
-import type { zDAO, Proposal, Vote } from '@zero-tech/zdao-sdk';
+import type { Proposal, Vote, zDAO } from '@zero-tech/zdao-sdk';
 import { formatVotingPowerAmount } from '../../Proposals.helpers';
 
 // - Component
-import { LoadingIndicator, EtherscanLink } from 'components';
+import { EtherscanLink, LoadingIndicator } from 'components';
 
 //- Style Imports
 import styles from './VoteHistories.module.scss';

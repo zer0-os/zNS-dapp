@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import useAsyncEffect from 'use-async-effect';
 
 //- Components Imports
-import { MintDropNFTBanner, Overlay, Countdown } from 'components';
+import { Countdown, MintDropNFTBanner, Overlay } from 'components';
 import WaitlistRegistration from './WaitlistRegistration';
 import RaffleRegistration from './RaffleRegistration';
 

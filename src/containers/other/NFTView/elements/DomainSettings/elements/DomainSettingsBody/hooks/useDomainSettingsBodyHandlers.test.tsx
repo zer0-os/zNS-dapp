@@ -2,15 +2,15 @@ import { cleanup } from '@testing-library/react';
 import { renderHook } from 'lib/testUtils';
 import { useDomainSettingsBodyHandlers } from './useDomainSettingsBodyHandlers';
 import {
-	mockMetadata,
-	mockLocalState,
-	mockLocalActions,
 	mockFormattedData,
+	mockLocalActions,
+	mockLocalState,
+	mockMetadata,
 } from './useDomainSettingsBodyData.test';
 import {
 	ERROR_KEYS,
-	ERROR_TYPES,
 	ERROR_MESSAGES,
+	ERROR_TYPES,
 } from '../DomainSettingsBody.constants';
 
 const mockProps = {

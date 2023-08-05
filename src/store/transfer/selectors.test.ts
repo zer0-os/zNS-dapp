@@ -1,6 +1,6 @@
 import { AppState } from 'store';
 import { REDUCER_NAME } from './reducer';
-import { getTransferring, getTransferred } from './selectors';
+import { getTransferred, getTransferring } from './selectors';
 import { transferReady } from './transfer.mockData';
 
 describe('transfer.selectors', () => {

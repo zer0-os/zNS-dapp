@@ -4,7 +4,6 @@ import { useHistory } from 'react-router-dom';
 
 //-Library Imports
 import { useWeb3 } from 'lib/web3-connection/useWeb3';
-import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 import {
 	ConvertedTokenInfo,
 	DomainMetrics,
@@ -13,15 +12,15 @@ import { ethers } from 'ethers';
 import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
 import useSubdomainData from './hooks/useSubdomainData';
 import {
-	formatNumber,
 	formatEthers,
-	getParentZna,
+	formatNumber,
 	getAspectRatioForZna,
 	getNetworkZNA,
+	getParentZna,
 } from 'lib/utils';
 
 //-Component Imports
-import { Spinner, ImageCard, Overlay } from 'components';
+import { ImageCard, Overlay, Spinner } from 'components';
 
 //-Containers Imports
 import { BidButton, BuyNowButton, MakeABid } from 'containers';

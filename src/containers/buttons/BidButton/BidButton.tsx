@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 // Component Imports
 import { FutureButton, TextButton } from 'components';
 import { useWeb3 } from 'lib/web3-connection/useWeb3';
-import { Web3Provider } from '@ethersproject/providers';
 import { ConnectWalletPrompt } from 'containers';
 
 //- Constants Imports

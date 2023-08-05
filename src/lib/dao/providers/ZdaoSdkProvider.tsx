@@ -18,7 +18,6 @@ import {
 } from '@zero-tech/zdao-sdk';
 import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 import { useDidMount } from 'lib/hooks/useDidMount';
-import { Web3Provider } from '@ethersproject/providers';
 
 export const zDaoContext = React.createContext({
 	instance: undefined as SDKInstance | undefined,

@@ -2,8 +2,8 @@
 import React from 'react';
 
 // Library Imports
-import { useLayer, useHover, Arrow } from 'react-laag';
-import { motion, AnimatePresence, MotionProps } from 'framer-motion';
+import { Arrow, useHover, useLayer } from 'react-laag';
+import { AnimatePresence, motion, MotionProps } from 'framer-motion';
 import classNames from 'classnames/bind';
 
 //- Style Imports

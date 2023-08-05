@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 //- Component Imports
-import { MintDropNFTBanner, Overlay, ConnectToWallet } from 'components';
+import { ConnectToWallet, MintDropNFTBanner, Overlay } from 'components';
 import ClaimNFT from '../ClaimNFT/ClaimNFT';
 
 //- Types Imports
@@ -22,7 +22,6 @@ import { getDropStage } from '../MintDropNFT/helpers';
 import useAsyncEffect from 'use-async-effect';
 import { useZSaleSdk } from 'lib/hooks/sdk';
 import { useWeb3 } from 'lib/web3-connection/useWeb3';
-import { Web3Provider } from '@ethersproject/providers';
 import { ClaimableDomain } from '@zero-tech/zsale-sdk';
 import useMint from 'lib/hooks/useMint';
 

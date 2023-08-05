@@ -1,11 +1,11 @@
-import { useMemo, useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { DomainMetadata } from '@zero-tech/zns-sdk';
 import { DisplayParentDomain, Maybe, Metadata } from 'lib/types';
 import { parseDomainMetadata } from 'lib/metadata';
 import { useZnsSdk } from 'lib/hooks/sdk';
 import {
-	DomainSettingsWarning,
 	DomainSettingsSuccess,
+	DomainSettingsWarning,
 } from '../DomainSettings.constants';
 import { Web3Provider } from '@ethersproject/providers';
 

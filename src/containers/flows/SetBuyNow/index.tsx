@@ -2,15 +2,13 @@
 import { useEffect, useRef, useState } from 'react';
 
 // Component Imports
-import SetBuyNow, { Step } from './SetBuyNow';
+// Type Imports
+import SetBuyNow, { DomainData, Step } from './SetBuyNow';
 
 // Library Imports
 import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import useNotification from 'lib/hooks/useNotification';
 import { useZnsSdk } from 'lib/hooks/sdk';
-
-// Type Imports
-import { DomainData } from './SetBuyNow';
 import { ethers } from 'ethers';
 import useMetadata from 'lib/hooks/useMetadata';
 import { BuyNowParams } from '@zero-tech/zns-sdk/lib/zAuction';

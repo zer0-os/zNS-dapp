@@ -6,7 +6,7 @@ import { render, waitFor } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 
 //- Constants Imports
-import { MESSAGES, ERRORS } from '../AcceptBid.constants';
+import { ERRORS, MESSAGES } from '../AcceptBid.constants';
 
 //- Hooks Imports
 import useAcceptBid, { UseAcceptBidReturn } from './useAcceptBid';

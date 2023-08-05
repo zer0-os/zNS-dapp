@@ -3,19 +3,19 @@ import { Link } from 'react-router-dom';
 import type { Choice, Proposal } from '@zero-tech/zdao-sdk';
 import { ProposalState } from '@zero-tech/zdao-sdk';
 import {
+	Countdown,
 	LoadingIndicator,
-	Tooltip,
 	QuestionButton,
 	TextButton,
-	Countdown,
+	Tooltip,
 } from 'components';
 import { ConnectWalletButton } from 'containers';
 import { useCurrentDao } from 'lib/dao/providers/CurrentDaoProvider';
 import VoteButtons, { Approve, Deny } from './VoteButtons';
 import { VoteStatus } from './Vote.constants';
 import {
-	isFromSnapshotWithMultipleChoices,
 	getSnpashotProposalLink,
+	isFromSnapshotWithMultipleChoices,
 } from '../../Proposals.helpers';
 import styles from './Vote.module.scss';
 

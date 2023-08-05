@@ -16,7 +16,7 @@ import { LABELS } from './constants';
 import { URLS } from 'constants/urls';
 
 //- Utils Imports
-import { WildUrlRowData, ZeroUrlRowData, Size, TokenType } from './utils';
+import { Size, TokenType, WildUrlRowData, ZeroUrlRowData } from './utils';
 
 //- Global Utils Imports
 import { formatByDecimalPlace } from 'lib/utils/number';

@@ -1,15 +1,15 @@
 //- React Imports
 import React, { useRef } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Spring, animated } from 'react-spring';
+import { animated, Spring } from 'react-spring';
 
 //- Library Imports
 import { useDomainSearch } from 'lib/hooks/useDomainSearch';
 
 //- Constants Imports
 import {
-	SEARCH_NOT_FOUND,
 	IS_EXACT_MATCH_ENABLED,
+	SEARCH_NOT_FOUND,
 } from './SearchDomains.constants';
 
 //- Hooks Imports

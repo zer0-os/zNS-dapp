@@ -12,7 +12,6 @@ import { AcceptBid } from 'containers';
 
 // Type Imports
 import { useWeb3 } from 'lib/web3-connection/useWeb3';
-import { Web3Provider } from '@ethersproject/providers';
 import { Bid } from '@zero-tech/zauction-sdk';
 import { ConvertedTokenInfo, Domain } from '@zero-tech/zns-sdk';
 import { ethers } from 'ethers';

@@ -1,10 +1,10 @@
 //- React Imports
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Spring, animated } from 'react-spring';
+import { animated, Spring } from 'react-spring';
 
 //- Component Imports
-import { NFTMedia, Image } from 'components';
+import { Image, NFTMedia } from 'components';
 
 //- Library Imports
 import { getMetadata } from 'lib/metadata';

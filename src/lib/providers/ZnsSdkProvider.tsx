@@ -8,7 +8,6 @@ import {
 	NETWORK_TYPES,
 } from 'lib/network';
 import { RPC_URLS } from 'lib/connectors';
-import { Web3Provider } from '@ethersproject/providers';
 
 type ZnsSdkProviderProps = {
 	children: React.ReactNode;

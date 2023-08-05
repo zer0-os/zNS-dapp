@@ -4,11 +4,11 @@ import {
 	removeNotificationSaga,
 } from './notifications/sagas';
 import {
-	getWildPriceUsdSaga,
 	getLootPriceUsdSaga,
-	getZeroPriceUsdSaga,
 	getWildPricePercentageChangeSaga,
+	getWildPriceUsdSaga,
 	getZeroPricePercentageChangeSaga,
+	getZeroPriceUsdSaga,
 } from './currency/sagas';
 
 /**

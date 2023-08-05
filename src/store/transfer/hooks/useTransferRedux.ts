@@ -1,11 +1,11 @@
-import { useMemo, useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useCallback, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from 'store';
 import {
-	setTransferringRequest as reduxSetTransferringRequest,
 	setTransferredRequest as reduxSetTransferredRequest,
+	setTransferringRequest as reduxSetTransferringRequest,
 } from 'store/transfer/actions';
-import { getTransferring, getTransferred } from 'store/transfer/selectors';
+import { getTransferred, getTransferring } from 'store/transfer/selectors';
 import { TransferSubmitParams } from 'lib/types';
 import { TransferState } from '../types';
 

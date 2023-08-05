@@ -1,9 +1,8 @@
 //- React Imports
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 //- Web3 Imports
 import { useWeb3 } from 'lib/web3-connection/useWeb3';
-import { Web3Provider } from '@ethersproject/providers';
 import { ethers } from 'ethers';
 
 //- Providers
@@ -13,11 +12,7 @@ import useMint from 'lib/hooks/useMint';
 
 //- Type Imports
 import { ERC20 } from 'types';
-import {
-	TokenInformationType,
-	// TokenDynamicType,
-	TokenStakeType,
-} from './types';
+import { TokenInformationType, TokenStakeType } from './types';
 
 //- Component Imports
 import { StepBar, Wizard } from 'components';

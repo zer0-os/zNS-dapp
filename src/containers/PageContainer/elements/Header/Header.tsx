@@ -6,11 +6,11 @@ import { useHistory, useLocation } from 'react-router-dom';
 import classnames from 'classnames';
 import { useNavbar } from 'lib/hooks/useNavbar';
 import useMvpVersion from 'lib/hooks/useMvpVersion';
-import { Maybe, DisplayParentDomain, Metadata } from 'lib/types';
+import { DisplayParentDomain, Maybe, Metadata } from 'lib/types';
 
 //- Components Imports
 import { ZNALink } from 'components';
-import { SearchDomains, HistoryButtons, ConnectWalletButton } from './elements';
+import { ConnectWalletButton, HistoryButtons, SearchDomains } from './elements';
 import { Actions } from '../Actions';
 
 //- Hooks Imports

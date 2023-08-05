@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { isEqual } from 'lodash';
 import { useWeb3 } from 'lib/web3-connection/useWeb3';
@@ -11,12 +11,12 @@ import { useValidateRouteChanges } from 'lib/hooks/useValidateRouteChanges';
 import { useProposals } from 'lib/dao/providers/ProposalsProvider';
 import config from 'config';
 import {
-	ProposalInputFieldKeys,
-	ProposalFormDefaultValues,
-	ProposalFormDefaultErrors,
-	DEFAULT_VOTE_DURATION_SECONDS,
 	DEFAULT_VOTE_CHOICES,
+	DEFAULT_VOTE_DURATION_SECONDS,
 	NEW_PROPOSAL_TWEET_OPTION,
+	ProposalFormDefaultErrors,
+	ProposalFormDefaultValues,
+	ProposalInputFieldKeys,
 } from '../CreateProposal.constants';
 import {
 	getTokenOption,

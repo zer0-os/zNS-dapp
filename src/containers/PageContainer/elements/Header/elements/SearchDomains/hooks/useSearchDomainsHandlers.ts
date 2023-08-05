@@ -9,9 +9,9 @@ import { getNetworkZNA, getRelativeDomainPath } from 'lib/utils/domains';
 //- Constants Imports
 import { ROUTES } from 'constants/routes';
 import {
-	MIN_SEARCH_QUERY_LENGTH,
-	DEFAULT_SEARCH_CONTAINER_PADDING,
 	DEFAULT_SEARCH_CONTAINER_HEIGHT,
+	DEFAULT_SEARCH_CONTAINER_PADDING,
+	MIN_SEARCH_QUERY_LENGTH,
 } from '../SearchDomains.constants';
 
 type UseSearchDomainsHandlersProps = {

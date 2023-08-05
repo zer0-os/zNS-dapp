@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { get, uniq } from 'lodash';
 import { DisplayParentDomain, Maybe } from 'lib/types';
 import { getHashFromIPFSUrl } from 'lib/ipfs';

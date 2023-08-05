@@ -2,8 +2,7 @@
 import { Domain } from '@zero-tech/zns-sdk';
 
 //- Assets Imports
-import { Box } from 'react-feather';
-import { DollarSign } from 'react-feather';
+import { Box, DollarSign } from 'react-feather';
 
 //- Constants Imports
 import { ACTION_KEYS } from './OwnedDomainsTable.constants';

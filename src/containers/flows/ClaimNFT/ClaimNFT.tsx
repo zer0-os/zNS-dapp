@@ -1,13 +1,12 @@
 //- React Imports
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 //- Web3 Imports
 import { useWeb3 } from 'lib/web3-connection/useWeb3';
-import { Web3Provider } from '@ethersproject/providers';
 
 //- Global Component Imports
-import { Wizard, StepBar } from 'components';
+import { StepBar, Wizard } from 'components';
 
 //- Library Imports
 import { ClaimableDomain } from '@zero-tech/zsale-sdk';
@@ -17,14 +16,14 @@ import Details from './components/WizardSteps/Details/Details';
 import Claiming from './components/WizardSteps/Claiming/Claiming';
 
 //- Types Imports
-import { StepContent, Step, ClaimData } from './ClaimNFT.types';
+import { ClaimData, Step, StepContent } from './ClaimNFT.types';
 
 //- Constants Imports
 import {
+	DOMAINS,
+	LOADING_TEXT,
 	STEP_BAR_HEADING,
 	STEP_CONTENT_TITLES,
-	LOADING_TEXT,
-	DOMAINS,
 } from './ClaimNFT.constants';
 import { ROUTES } from 'constants/routes';
 

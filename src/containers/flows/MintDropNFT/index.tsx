@@ -5,22 +5,21 @@ import { useHistory, useLocation } from 'react-router-dom';
 // Web3 Imports
 import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import { useZnsContracts } from 'lib/contracts';
-import { Web3Provider } from '@ethersproject/providers';
 
 // Component Imports
 import { MintDropNFTBanner, Overlay } from 'components';
 import MintDropNFTWizard from './MintDropNFTWizard';
 
 // Library Imports
-import { Stage, DropData, TransactionData } from './types';
-import { getBannerLabel, getBannerButtonText } from './labels';
+import { DropData, Stage, TransactionData } from './types';
+import { getBannerButtonText, getBannerLabel } from './labels';
 import useMint from 'lib/hooks/useMint';
 import {
-	getDropData,
-	getUserEligibility,
-	getNumberPurchasedByUser,
 	getBalanceEth,
+	getDropData,
 	getMaxPurchasesPerUser,
+	getNumberPurchasedByUser,
+	getUserEligibility,
 } from './helpers';
 import { useZSaleSdk } from 'lib/hooks/sdk';
 import useAsyncEffect from 'use-async-effect';
