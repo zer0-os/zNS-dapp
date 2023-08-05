@@ -4,7 +4,6 @@ import { useState, useCallback, useEffect, useRef } from 'react';
 //- Library Imports
 import { useZSaleSdk } from 'lib/hooks/sdk';
 import { useWeb3 } from 'lib/web3-connection/useWeb3';
-import { Web3Provider } from '@ethersproject/providers';
 import { defaultNetworkId } from 'lib/network';
 import { useZnsDomain } from 'lib/hooks/useZnsDomain';
 

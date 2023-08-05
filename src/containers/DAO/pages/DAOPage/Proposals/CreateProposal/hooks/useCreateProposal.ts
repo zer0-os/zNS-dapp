@@ -1,7 +1,6 @@
 import { useState, useMemo, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useWeb3 } from 'lib/web3-connection/useWeb3';
-import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 import type { zDAO } from '@zero-tech/zdao-sdk';
 import { getTokenOptionsFromAssets } from '../CreateProposal.helpers';
 import { DAO_CREATE_PROPOSAL } from '../../Proposals.constants';

@@ -1,4 +1,3 @@
-import { Web3Provider } from '@ethersproject/providers';
 import { Registrar__factory } from '../types/factories/Registrar__factory';
 import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import { useMemo } from 'react';

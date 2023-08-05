@@ -3,7 +3,6 @@ import { useMemo, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 //- Web3 Imports
-import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3 } from 'lib/web3-connection/useWeb3';
 
 //- Library Imports

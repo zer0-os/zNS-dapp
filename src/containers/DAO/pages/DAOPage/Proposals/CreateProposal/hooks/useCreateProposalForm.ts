@@ -2,7 +2,6 @@ import { useState, useMemo, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import { isEqual } from 'lodash';
 import { useWeb3 } from 'lib/web3-connection/useWeb3';
-import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 import type { Proposal, zDAO } from '@zero-tech/zdao-sdk';
 import type { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
 import { parseUnits } from 'ethers/lib/utils';

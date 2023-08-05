@@ -3,7 +3,6 @@ import { useState, useEffect, useCallback } from 'react';
 
 //- Web3 Imports
 import { useWeb3 } from 'lib/web3-connection/useWeb3'; // Wallet data
-import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wallet data
 
 //- Library Imports
 import { useZnsSdk } from 'lib/hooks/sdk';
