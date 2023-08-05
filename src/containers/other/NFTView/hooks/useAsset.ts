@@ -10,8 +10,8 @@ import { MESSAGES } from '../NFTView.constants';
 
 //- Helper Imports
 import {
-	getDomainAsset,
 	downloadDomainAsset,
+	getDomainAsset,
 	shareDomainAsset,
 } from '../NFTView.helpers';
 

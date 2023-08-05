@@ -8,7 +8,7 @@ import { TokenDynamicType } from '../types';
 import styles from '../MintNewNFT.module.scss';
 
 //- Component Imports
-import { ToggleButton, TextInput, FutureButton } from 'components';
+import { FutureButton, TextInput, ToggleButton } from 'components';
 
 type TokenDynamicsProps = {
 	token: TokenDynamicType | null;

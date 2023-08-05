@@ -1,15 +1,14 @@
 //- React Imports
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 //- Web3 Imports
-import { useWeb3React } from '@web3-react/core'; // Wallet data
-import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wallet data
+import { useWeb3 } from 'lib/web3-connection/useWeb3'; // Wallet data
 import { ethers } from 'ethers';
 
 //- Library Imports
 import { useZnsSdk } from 'lib/hooks/sdk';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
-import { DomainEventType, DomainBidEvent } from '@zero-tech/zns-sdk/lib/types';
+import { DomainBidEvent, DomainEventType } from '@zero-tech/zns-sdk/lib/types';
 import { Bid } from '@zero-tech/zauction-sdk';
 
 //- Type Imports
@@ -37,7 +36,7 @@ interface UseNftDataReturn {
 
 export const useNftData = (): UseNftDataReturn => {
 	//- Web3 Wallet Data
-	const { account } = useWeb3React<Web3Provider>();
+	const { account } = useWeb3();
 
 	//- SDK
 	const { instance: sdk } = useZnsSdk();

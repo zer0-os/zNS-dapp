@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 //- Component Imports
-import { MintDropNFTBanner, Overlay, ConnectToWallet } from 'components';
+import { ConnectToWallet, MintDropNFTBanner, Overlay } from 'components';
 import ClaimNFT from '../ClaimNFT/ClaimNFT';
 
 //- Types Imports
@@ -21,8 +21,7 @@ import { getDropStage } from '../MintDropNFT/helpers';
 //- Library Imports
 import useAsyncEffect from 'use-async-effect';
 import { useZSaleSdk } from 'lib/hooks/sdk';
-import { useWeb3React } from '@web3-react/core';
-import { Web3Provider } from '@ethersproject/providers';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import { ClaimableDomain } from '@zero-tech/zsale-sdk';
 import useMint from 'lib/hooks/useMint';
 
@@ -49,7 +48,7 @@ const ClaimNFTContainer = ({
 	const { push: goTo } = useHistory();
 	const { claimNFT } = useMint();
 	const { claimInstance } = useZSaleSdk();
-	const { account, library } = useWeb3React<Web3Provider>();
+	const { account, provider } = useWeb3();
 	const [isWizardOpen, setIsWizardOpen] = useState<boolean>(false);
 	const [isConnectPromptOpen, setIsConnectPromptOpen] =
 		useState<boolean>(false);
@@ -192,7 +191,7 @@ const ClaimNFTContainer = ({
 
 			// eslint-disable-next-line react-hooks/exhaustive-deps
 		},
-		[library, claimInstance],
+		[provider, claimInstance],
 	);
 
 	/**
@@ -200,11 +199,11 @@ const ClaimNFTContainer = ({
 	 */
 	useAsyncEffect(
 		async (isActive) => {
-			if (!claimInstance || !library || !account) {
+			if (!claimInstance || !provider || !account) {
 				return;
 			}
 			// Get user data if wallet connected
-			if (account && library) {
+			if (account && provider) {
 				try {
 					setIsClaimDataLoading(true);
 					const claimingIDs = await claimInstance.getClaimingIDsForUser(
@@ -221,7 +220,7 @@ const ClaimNFTContainer = ({
 				setIsClaimDataLoading(false);
 			}
 		},
-		[account, library, claimInstance, dropStage],
+		[account, provider, claimInstance, dropStage],
 	);
 
 	/**
@@ -229,7 +228,7 @@ const ClaimNFTContainer = ({
 	 */
 	useAsyncEffect(
 		async (isActive) => {
-			if (!claimInstance || !library) {
+			if (!claimInstance || !provider) {
 				return;
 			}
 
@@ -283,7 +282,7 @@ const ClaimNFTContainer = ({
 
 			// eslint-disable-next-line react-hooks/exhaustive-deps
 		},
-		[hasCountdownFinished, refetch, library, claimInstance],
+		[hasCountdownFinished, refetch, provider, claimInstance],
 	);
 
 	/**
@@ -295,7 +294,7 @@ const ClaimNFTContainer = ({
 			claimInstance &&
 			(dropStage === Stage.Public || dropStage === Stage.Whitelist) &&
 			account &&
-			library
+			provider
 		) {
 			// Fetch minted count periodically
 			timer = setInterval(async () => {
@@ -314,7 +313,7 @@ const ClaimNFTContainer = ({
 			timer && clearInterval(timer);
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [dropStage, claimInstance, account, library]);
+	}, [dropStage, claimInstance, account, provider]);
 
 	const bannerLabel = () => {
 		return failedToLoad

@@ -15,10 +15,6 @@ import 'styles/main.scss';
 //- React Imports
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 
-//- Web3 Imports
-import { Web3ReactProvider } from '@web3-react/core';
-import { Web3Provider } from '@ethersproject/providers';
-
 //- Library Imports
 import CacheBuster from 'react-cache-buster';
 import EnlistProvider from 'lib/providers/EnlistProvider';
@@ -35,11 +31,7 @@ import { ROUTES } from './constants/routes';
 import { Profile, Staking, ZNS } from './pages';
 import DAO from './pages/DAO/DAO';
 
-function getLibrary(provider: any): Web3Provider {
-	const library = new Web3Provider(provider);
-	library.pollingInterval = 12000;
-	return library;
-}
+import { Web3ContextProvider } from 'lib/web3-connection/Web3ContextProvider';
 
 function App() {
 	console.log(
@@ -81,7 +73,7 @@ function wrappedApp() {
 			isVerboseMode={true}
 		>
 			<ReduxProvider store={store}>
-				<Web3ReactProvider getLibrary={getLibrary}>
+				<Web3ContextProvider>
 					<ZnsSdkProvider>
 						{/* Our Hooks  */}
 						<MvpVersionProvider>
@@ -93,7 +85,7 @@ function wrappedApp() {
 							</EnlistProvider>
 						</MvpVersionProvider>
 					</ZnsSdkProvider>
-				</Web3ReactProvider>
+				</Web3ContextProvider>
 			</ReduxProvider>
 		</CacheBuster>
 	);

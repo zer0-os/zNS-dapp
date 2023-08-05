@@ -1,10 +1,10 @@
-import { useState, useRef, useMemo } from 'react';
-import { Maybe, DisplayParentDomain, Metadata } from 'lib/types';
+import { useMemo, useRef, useState } from 'react';
+import { DisplayParentDomain, Maybe, Metadata } from 'lib/types';
 import { LOCAL_STORAGE_KEYS } from 'constants/localStorage';
 import { MVP_VERSION } from 'constants/mvp';
 import {
-	REQUEST_TO_MINT,
 	MINT_NFT,
+	REQUEST_TO_MINT,
 } from '../elements/MintButton/MintButton.constants';
 
 type UseHeaderDataProps = {

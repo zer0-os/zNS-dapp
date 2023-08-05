@@ -1,11 +1,11 @@
-import { useMemo, useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { DomainMetadata } from '@zero-tech/zns-sdk/lib/types';
 import { Maybe } from 'lib/types';
 import {
 	DomainSettingsError,
 	ERROR_KEYS,
-	ERROR_TYPES,
 	ERROR_MESSAGES,
+	ERROR_TYPES,
 } from '../DomainSettingsBody.constants';
 
 type UseDomainSettingsBodyHandlersProps = {

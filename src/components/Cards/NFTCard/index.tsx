@@ -9,8 +9,7 @@ import { getMetadata } from 'lib/metadata';
 import { Metadata } from 'lib/types';
 
 // Local Imports
-import NFTCard from './NFTCard';
-import { NFTCardProps } from './NFTCard';
+import NFTCard, { NFTCardProps } from './NFTCard';
 
 interface NFTCardContainerProps extends NFTCardProps {
 	metadataUrl?: string;

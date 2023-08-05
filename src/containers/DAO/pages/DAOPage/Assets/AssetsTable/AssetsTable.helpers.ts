@@ -4,7 +4,7 @@ import { Asset } from 'lib/types/dao';
 import { toFiat } from 'lib/currency';
 import { randomUUID } from 'lib/random';
 import { AssetTableDataItem } from './AssetsTable.type';
-import { MILLIFY_PRECISION, MILLIFY_LOWERCASE } from './AssetsTable.constants';
+import { MILLIFY_LOWERCASE, MILLIFY_PRECISION } from './AssetsTable.constants';
 import defaultAssetIcon from 'assets/default_asset.png';
 import wildIcon from 'assets/WWLogo-Padded.svg';
 

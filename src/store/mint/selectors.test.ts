@@ -1,6 +1,6 @@
 import { AppState } from 'store';
 import { REDUCER_NAME } from './reducer';
-import { getMinting, getMinted } from './selectors';
+import { getMinted, getMinting } from './selectors';
 import { mintReady } from './mint.mockData';
 
 describe('mint.selectors', () => {

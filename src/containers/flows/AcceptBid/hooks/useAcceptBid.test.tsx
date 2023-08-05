@@ -6,7 +6,7 @@ import { render, waitFor } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 
 //- Constants Imports
-import { MESSAGES, ERRORS } from '../AcceptBid.constants';
+import { ERRORS, MESSAGES } from '../AcceptBid.constants';
 
 //- Hooks Imports
 import useAcceptBid, { UseAcceptBidReturn } from './useAcceptBid';
@@ -31,8 +31,8 @@ jest.mock('lib/hooks/sdk', () => ({
 	}),
 }));
 
-jest.mock('@web3-react/core', () => ({
-	useWeb3React: () => ({
+jest.mock('lib/web3-connection/useWeb3', () => ({
+	useWeb3: () => ({
 		library: {
 			getSigner: () => ({ isSigner: true }),
 		},

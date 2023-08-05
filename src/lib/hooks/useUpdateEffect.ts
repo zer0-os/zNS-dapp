@@ -1,4 +1,4 @@
-import { useEffect, useRef, EffectCallback, DependencyList } from 'react';
+import { DependencyList, EffectCallback, useEffect, useRef } from 'react';
 
 /**
  * A custom useEffect hook that only triggers on updates, not on initial mount

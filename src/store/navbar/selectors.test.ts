@@ -1,6 +1,6 @@
 import { AppState } from 'store';
 import { REDUCER_NAME } from './reducer';
-import { getNavbarTitle, getNavbarSearchingStatus } from './selectors';
+import { getNavbarSearchingStatus, getNavbarTitle } from './selectors';
 import { navbarReady } from './navbar.mockData';
 
 describe('navbar.selectors', () => {

@@ -1,20 +1,20 @@
 import {
+	ADD_NOTIFICATION_ERROR,
 	ADD_NOTIFICATION_REQUEST,
 	ADD_NOTIFICATION_SUCCESS,
-	ADD_NOTIFICATION_ERROR,
+	REMOVE_NOTIFICATION_ERROR,
 	REMOVE_NOTIFICATION_REQUEST,
 	REMOVE_NOTIFICATION_SUCCESS,
-	REMOVE_NOTIFICATION_ERROR,
 } from './actionTypes';
 import {
-	AddNotificationRequestPayload,
-	AddNotificationRequest,
-	AddNotificationSuccess,
 	AddNotificationError,
-	RemoveNotificationRequestPayload,
-	RemoveNotificationRequest,
-	RemoveNotificationSuccess,
+	AddNotificationRequest,
+	AddNotificationRequestPayload,
+	AddNotificationSuccess,
 	RemoveNotificationError,
+	RemoveNotificationRequest,
+	RemoveNotificationRequestPayload,
+	RemoveNotificationSuccess,
 } from './types';
 
 /**

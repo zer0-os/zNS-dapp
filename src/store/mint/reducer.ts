@@ -1,6 +1,6 @@
-import { SET_MINTING_REQUEST, SET_MINTED_REQUEST } from './actionTypes';
+import { SET_MINTED_REQUEST, SET_MINTING_REQUEST } from './actionTypes';
 import { NftStatusCard } from 'lib/types';
-import { MintState, MintActions } from './types';
+import { MintActions, MintState } from './types';
 
 export const REDUCER_NAME = 'mint';
 

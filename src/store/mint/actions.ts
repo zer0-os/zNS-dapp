@@ -1,8 +1,8 @@
-import { SET_MINTING_REQUEST, SET_MINTED_REQUEST } from './actionTypes';
+import { SET_MINTED_REQUEST, SET_MINTING_REQUEST } from './actionTypes';
 import {
 	MintRequestPayload,
-	SetMintingRequest,
 	SetMintedRequest,
+	SetMintingRequest,
 } from './types';
 
 /**

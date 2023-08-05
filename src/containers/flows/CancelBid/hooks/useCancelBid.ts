@@ -7,7 +7,7 @@
 import { useState } from 'react';
 
 //- Library Imports
-import { useWeb3React } from '@web3-react/core';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import { Bid } from '@zero-tech/zauction-sdk';
 import { useZnsSdk } from 'lib/hooks/sdk';
 
@@ -21,7 +21,7 @@ export type UseCancelBidReturn = {
 };
 
 const useCancelBid = (): UseCancelBidReturn => {
-	const { library } = useWeb3React();
+	const { provider } = useWeb3();
 	const { instance: sdk } = useZnsSdk();
 
 	const [status, setStatus] = useState<string | undefined>();
@@ -35,7 +35,7 @@ const useCancelBid = (): UseCancelBidReturn => {
 		const cancelBidOnChain =
 			bid.version === ZAuctionVersionType.V1 ? false : true;
 
-		if (!library) {
+		if (!provider) {
 			console.error(constants.ERRORS.CONSOLE);
 			throw new Error(constants.ERRORS.LIBRARY);
 		}
@@ -48,7 +48,7 @@ const useCancelBid = (): UseCancelBidReturn => {
 				tx = await sdk.zauction.cancelBid(
 					bid,
 					cancelBidOnChain,
-					library.getSigner(),
+					provider.getSigner(),
 				);
 			} catch (e) {
 				console.error(e);

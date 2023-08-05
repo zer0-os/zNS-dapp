@@ -1,6 +1,5 @@
 //- React Imports
-import React, { useMemo } from 'react';
-import { useState, useEffect } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 //- Style Imports
@@ -8,11 +7,15 @@ import styles from './ZNS.module.scss';
 
 //- Components & Containers
 import { NFTViewModalProvider } from 'containers/other/NFTView/providers/NFTViewModalProvider/NFTViewModalProvider';
-import { SubdomainTable, CurrentDomainPreview, Raffle } from 'containers';
-import { Stage } from 'containers/flows/MintDropNFT/types';
-
 //- Library Imports
-import { NFTView, TransferOwnership } from 'containers';
+import {
+	CurrentDomainPreview,
+	NFTView,
+	Raffle,
+	SubdomainTable,
+	TransferOwnership,
+} from 'containers';
+import { Stage } from 'containers/flows/MintDropNFT/types';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 import { useDidMount } from 'lib/hooks/useDidMount';
 import { useNavbar } from 'lib/hooks/useNavbar';

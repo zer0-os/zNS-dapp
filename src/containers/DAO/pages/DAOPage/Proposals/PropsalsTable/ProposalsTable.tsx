@@ -6,8 +6,8 @@ import { GenericTable } from 'components';
 import ProposalsTableRow from './ProposalsTableRow';
 import ProposalsTableCard from './ProposalsTableCard';
 import {
-	PROPOSAL_TABLE_LOCATION_STATE_KEY,
 	PROPOSAL_TABLE_LOCATION_STATE,
+	PROPOSAL_TABLE_LOCATION_STATE_KEY,
 } from '../Proposals.constants';
 import styles from './ProposalsTable.module.scss';
 

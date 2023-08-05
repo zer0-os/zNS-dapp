@@ -1,5 +1,5 @@
-import { SET_MINTING_REQUEST, SET_MINTED_REQUEST } from './actionTypes';
-import { SetMintingRequest, SetMintedRequest } from './types';
+import { SET_MINTED_REQUEST, SET_MINTING_REQUEST } from './actionTypes';
+import { SetMintedRequest, SetMintingRequest } from './types';
 import reducer, { INITIAL_STATE } from './reducer';
 import { mintReady } from './mint.mockData';
 

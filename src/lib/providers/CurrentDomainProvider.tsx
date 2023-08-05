@@ -3,8 +3,7 @@ import React, { useContext } from 'react';
 import { useLocation } from 'react-router-dom';
 
 // Web3 Imports
-import { useWeb3React } from '@web3-react/core';
-import { Web3Provider } from '@ethersproject/providers';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import { ConvertedTokenInfo } from '@zero-tech/zns-sdk';
 
 //- Library Imports
@@ -18,6 +17,7 @@ import { DisplayParentDomain, Maybe, Metadata } from 'lib/types';
 // Constants Imports
 import { IS_DEFAULT_NETWORK, ROOT_DOMAIN } from '../../constants/domains';
 import { ROUTES } from 'constants/routes';
+
 export const CurrentDomainContext = React.createContext({
 	domain: undefined as Maybe<DisplayParentDomain>,
 	domainId: '',
@@ -34,7 +34,7 @@ const CurrentDomainProvider: React.FC = ({ children }) => {
 	//////////////////////////
 	// Hooks & State & Data //
 	//////////////////////////
-	const { chainId } = useWeb3React<Web3Provider>(); // get provider for connected wallet
+	const { chainId } = useWeb3(); // get provider for connected wallet
 
 	// Get current domain from react-router-dom
 	const { pathname } = useLocation();

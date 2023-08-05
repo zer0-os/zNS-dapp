@@ -1,8 +1,8 @@
-import { useMemo, useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useNavbarRedux } from 'store/navbar/hooks';
 import {
-	SetNavbarTitlePayload,
 	SetNavbarSearchingStatusPayload,
+	SetNavbarTitlePayload,
 } from 'store/navbar/types';
 
 export type UseNavbarReturn = {

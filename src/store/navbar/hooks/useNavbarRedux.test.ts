@@ -1,11 +1,11 @@
 import { useSelector } from 'react-redux';
 import {
-	setNavbarTitle as reduxSetNavbarTitle,
 	setNavbarSearchingStatus as reduxSetNavbarSearchingStatus,
+	setNavbarTitle as reduxSetNavbarTitle,
 } from 'store/navbar/actions';
 import {
-	getNavbarTitle,
 	getNavbarSearchingStatus,
+	getNavbarTitle,
 } from 'store/navbar/selectors';
 import { storeReady } from 'store/store.mockData';
 import { renderHook } from 'lib/testUtils';

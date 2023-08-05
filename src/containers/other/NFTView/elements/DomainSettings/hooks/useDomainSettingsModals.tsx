@@ -1,7 +1,7 @@
-import { useState, useMemo, useCallback } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import {
-	DomainSettingsModalType,
 	DomainSettingsModalStatus,
+	DomainSettingsModalType,
 } from '../DomainSettings.constants';
 
 type DomainSettingsModalState = {

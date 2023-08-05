@@ -2,23 +2,11 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import {
-  ethers,
-  EventFilter,
-  Signer,
-  BigNumber,
-  BigNumberish,
-  PopulatedTransaction,
-} from "ethers";
-import {
-  Contract,
-  ContractTransaction,
-  Overrides,
-  CallOverrides,
-} from "@ethersproject/contracts";
+import { BigNumber, BigNumberish, ethers, EventFilter, PopulatedTransaction, Signer } from "ethers";
+import { CallOverrides, Contract, ContractTransaction, Overrides } from "@ethersproject/contracts";
 import { BytesLike } from "@ethersproject/bytes";
 import { Listener, Provider } from "@ethersproject/providers";
-import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
+import { EventFragment, FunctionFragment, Result } from "@ethersproject/abi";
 
 interface ERC20Interface extends ethers.utils.Interface {
   functions: {

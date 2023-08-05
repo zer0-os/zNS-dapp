@@ -1,10 +1,9 @@
 //- React Imports
-import { useMemo, useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useCallback, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 //- Web3 Imports
-import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 
 //- Library Imports
 import { ethers } from 'ethers';
@@ -17,10 +16,10 @@ import { Maybe, NftParams, NftStatusCard } from 'lib/types';
 import { ClaimableDomain } from '@zero-tech/zsale-sdk';
 
 //- Store Imports
-import { getMinting, getMinted } from 'store/mint/selectors';
+import { getMinted, getMinting } from 'store/mint/selectors';
 import {
-	setMintingRequest as reduxSetMintingRequest,
 	setMintedRequest as reduxSetMintedRequest,
+	setMintingRequest as reduxSetMintingRequest,
 } from 'store/mint/actions';
 
 //- Constants Imports
@@ -29,8 +28,8 @@ import { ImageUri } from 'constants/uris';
 import { Errors } from 'constants/errors';
 import { Status } from 'constants/status';
 import {
-	MINTING_FLOW_NOTIFICATIONS,
 	CLAIM_FLOW_NOTIFICATIONS,
+	MINTING_FLOW_NOTIFICATIONS,
 } from 'constants/notifications';
 import { ZNA } from 'constants/zna';
 
@@ -98,7 +97,7 @@ export const useMint = (): UseMintReturn => {
 
 	const { addNotification } = useNotification();
 	const { gensInstance: zSaleInstance, claimInstance } = useZSaleSdk();
-	const { account, library } = useWeb3React<Web3Provider>();
+	const { account, provider } = useWeb3();
 	// const basicController = useBasicController();
 	const { reduxState, reduxActions } = useMintRedux();
 
@@ -121,7 +120,7 @@ export const useMint = (): UseMintReturn => {
 				transactionHash: '',
 			};
 
-			if (!zSaleInstance || !library) {
+			if (!zSaleInstance || !provider) {
 				return;
 			}
 
@@ -135,7 +134,7 @@ export const useMint = (): UseMintReturn => {
 			try {
 				tx = await zSaleInstance.purchaseDomains(
 					ethers.BigNumber.from(numWheels),
-					library.getSigner(),
+					provider.getSigner(),
 				);
 			} catch (e) {
 				console.error(e);
@@ -163,7 +162,7 @@ export const useMint = (): UseMintReturn => {
 
 			onFinish();
 		},
-		[reduxActions, addNotification, zSaleInstance, library],
+		[reduxActions, addNotification, zSaleInstance, provider],
 	);
 
 	const claimNFT = useCallback(
@@ -188,7 +187,7 @@ export const useMint = (): UseMintReturn => {
 			};
 
 			try {
-				if (!library) {
+				if (!provider) {
 					return;
 				}
 				let tx: Maybe<ethers.ContractTransaction>;
@@ -202,7 +201,7 @@ export const useMint = (): UseMintReturn => {
 
 				tx = await claimInstance.claimDomains(
 					domainsForClaiming,
-					library?.getSigner(),
+					provider?.getSigner(),
 				);
 
 				setStatus(CLAIM_FLOW_NOTIFICATIONS.MINTING_MOTO);
@@ -221,7 +220,7 @@ export const useMint = (): UseMintReturn => {
 				console.log(err);
 
 				// Reset claimable total if error
-				if (account && library) {
+				if (account && provider) {
 					try {
 						const claimingIDs = await claimInstance.getClaimingIDsForUser(
 							account,
@@ -235,7 +234,7 @@ export const useMint = (): UseMintReturn => {
 			setStatus('');
 			setIsClaimingInProgress(false);
 		},
-		[account, addNotification, claimInstance, library, reduxActions],
+		[account, addNotification, claimInstance, provider, reduxActions],
 	);
 
 	// TODO: Migrate this once zNS SDK supports minting

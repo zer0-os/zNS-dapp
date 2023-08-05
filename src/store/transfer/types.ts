@@ -1,7 +1,7 @@
 import { TransferSubmitParams } from 'lib/types';
 import {
-	SET_TRANSFERRING_REQUEST,
 	SET_TRANSFERRED_REQUEST,
+	SET_TRANSFERRING_REQUEST,
 } from './actionTypes';
 
 /**

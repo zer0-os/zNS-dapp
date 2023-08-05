@@ -1,4 +1,4 @@
-import { TOOLTIP, STATUS, STATUS_TEXT } from './TokenHashBoxes.constants';
+import { STATUS, STATUS_TEXT, TOOLTIP } from './TokenHashBoxes.constants';
 
 export const getTooltipText = (isClaimable?: boolean) =>
 	isClaimable ? TOOLTIP[STATUS.CLAIM] : TOOLTIP[STATUS.CLAIMED];

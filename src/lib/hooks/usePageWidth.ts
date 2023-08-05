@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useDidMount } from 'lib/hooks/useDidMount';
 import { useWillUnmount } from 'lib/hooks/useWillUnmount';
 

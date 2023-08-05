@@ -12,11 +12,11 @@ import { Step } from 'containers/flows/ClaimNFT/ClaimNFT.types';
 
 // Component Imports
 import {
-	Wizard,
-	QuestionButton,
-	Tooltip,
 	ArrowLink,
+	QuestionButton,
 	Spinner,
+	Tooltip,
+	Wizard,
 } from 'components';
 
 // Utils Imports
@@ -28,13 +28,13 @@ import {
 
 // Constants Imports
 import {
+	BUTTONS,
+	EXTERNAL_URL,
+	MESSAGES,
+	TOOLTIP,
 	VIDEO_FORMAT_SRC,
 	VIDEO_FORMAT_TYPE,
 	VIDEO_SETTINGS,
-	MESSAGES,
-	TOOLTIP,
-	BUTTONS,
-	EXTERNAL_URL,
 } from './Details.constants';
 import { ROUTES } from 'constants/routes';
 import { CLAIM_FLOW_NOTIFICATIONS } from 'constants/notifications';

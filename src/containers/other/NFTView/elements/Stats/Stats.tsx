@@ -1,10 +1,10 @@
 //- React Imports
 import React, {
-	useState,
 	useCallback,
 	useEffect,
 	useMemo,
 	useRef,
+	useState,
 } from 'react';
 
 //- Web3 Imports
@@ -24,7 +24,7 @@ import {
 } from '@zero-tech/zns-sdk';
 
 //- Type Imports
-import { Maybe, DisplayParentDomain } from 'lib/types';
+import { DisplayParentDomain, Maybe } from 'lib/types';
 
 //- Style Imports
 import styles from '../../NFTView.module.scss';

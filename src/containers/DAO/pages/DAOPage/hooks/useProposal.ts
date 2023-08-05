@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import type { zDAO, Proposal, ProposalId, Vote } from '@zero-tech/zdao-sdk';
+import { useEffect, useState } from 'react';
+import type { Proposal, ProposalId, Vote, zDAO } from '@zero-tech/zdao-sdk';
 import { DAO_CREATE_PROPOSAL } from '../Proposals/Proposals.constants';
 
 type UseProposalReturn = {

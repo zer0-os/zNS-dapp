@@ -21,7 +21,7 @@ import {
 } from './MakeABid.constants';
 
 //- Library Imports
-import { useWeb3React } from '@web3-react/core';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import { useZnsSdk } from 'lib/hooks/sdk';
 import { Domain } from 'lib/types';
 import { useBidProvider } from 'lib/hooks/useBidProvider';
@@ -68,7 +68,7 @@ const MakeABid = ({
 
 	// Hooks
 	const { instance: sdk } = useZnsSdk();
-	const { account, library } = useWeb3React();
+	const { account, provider } = useWeb3();
 	const { placeBid } = useBidProvider();
 	const { bidData, isLoading } = useBidData(domain.id);
 	const { addNotification } = useNotification();
@@ -104,7 +104,7 @@ const MakeABid = ({
 	 * @returns void
 	 */
 	const checkZAuctionApproval = () => {
-		if (!sdk || !library || !account) {
+		if (!sdk || !provider || !account) {
 			return;
 		}
 		setError(undefined);
@@ -140,7 +140,7 @@ const MakeABid = ({
 	 * @returns void
 	 */
 	const approveZAuction = () => {
-		if (!sdk || !library || !account) {
+		if (!sdk || !provider || !account) {
 			return;
 		}
 		setError(undefined);
@@ -149,7 +149,7 @@ const MakeABid = ({
 			try {
 				const tx = await sdk.zauction.approveZAuctionToSpendPaymentToken(
 					paymentTokenInfo.id,
-					library.getSigner(),
+					provider.getSigner(),
 				);
 				try {
 					setStepContent(StepContent.ApprovingZAuction);

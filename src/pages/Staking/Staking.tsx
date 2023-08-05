@@ -3,7 +3,7 @@ import { ethers } from 'ethers';
 import { RPC_URLS } from '../../lib/connectors';
 import { defaultNetworkId } from '../../lib/network';
 import React from 'react';
-import { useWeb3React } from '@web3-react/core';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import { StakingZApp } from '@zero-tech/zapp-staking';
 import { useNavbar } from '../../lib/hooks/useNavbar';
 
@@ -15,13 +15,13 @@ const Staking: React.FC = () => {
 		setNavbarTitle('Staking');
 	});
 
-	const { library, account, chainId } = useWeb3React();
+	const { provider, account, chainId } = useWeb3();
 
 	return (
 		<div className={'zapp-reset'}>
 			<StakingZApp
 				provider={
-					library ??
+					provider ??
 					new ethers.providers.JsonRpcProvider(RPC_URLS[defaultNetworkId])
 				}
 				route={'wilder'}

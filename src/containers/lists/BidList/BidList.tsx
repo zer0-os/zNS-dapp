@@ -11,8 +11,7 @@ import { FutureButton } from 'components';
 import { AcceptBid } from 'containers';
 
 // Type Imports
-import { useWeb3React } from '@web3-react/core';
-import { Web3Provider } from '@ethersproject/providers';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import { Bid } from '@zero-tech/zauction-sdk';
 import { ConvertedTokenInfo, Domain } from '@zero-tech/zns-sdk';
 import { ethers } from 'ethers';
@@ -55,7 +54,7 @@ const BidList: React.FC<BidListProps> = ({
 	const [blockNumber, setBlockNumber] = useState<number>();
 	const [isAcceptBidModal, setIsAcceptBidModal] = useState(false);
 	const [acceptingBid, setAcceptingBid] = useState<Bid | undefined>(undefined);
-	const { library, account } = useWeb3React<Web3Provider>();
+	const { provider, account } = useWeb3();
 
 	// Sort bids by date
 	const sortedBids = sortBidsByTime(bids);
@@ -66,17 +65,17 @@ const BidList: React.FC<BidListProps> = ({
 		: sortedBids;
 
 	useEffect(() => {
-		if (library) {
-			library.getBlockNumber().then((bn) => {
+		if (provider) {
+			provider.getBlockNumber().then((bn) => {
 				setBlockNumber(bn);
 			});
-			library.on('block', setBlockNumber);
+			provider.on('block', setBlockNumber);
 			return () => {
-				library.removeListener('block', setBlockNumber);
+				provider.removeListener('block', setBlockNumber);
 				setBlockNumber(undefined);
 			};
 		}
-	}, [library]);
+	}, [provider]);
 
 	///////////////
 	// Functions //

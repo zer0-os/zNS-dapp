@@ -3,10 +3,10 @@ import { DomainMetadata } from '@zero-tech/zns-sdk/lib/types';
 import { DisplayDomain, Maybe } from 'lib/types';
 import {
 	NFTMedia,
+	QuestionButton,
 	TextInputWithTopPlaceHolder,
 	ToggleSwitch,
 	Tooltip,
-	QuestionButton,
 } from 'components';
 import {
 	useDomainSettingsBodyData,
@@ -15,8 +15,8 @@ import {
 } from './hooks';
 import { ERROR_KEYS } from './DomainSettingsBody.constants';
 import {
-	DomainSettingsTooltipType,
 	DOMAIN_SETTINGS_TOOLTIPS,
+	DomainSettingsTooltipType,
 } from '../../DomainSettings.constants';
 import './_domain-settings-body.scss';
 

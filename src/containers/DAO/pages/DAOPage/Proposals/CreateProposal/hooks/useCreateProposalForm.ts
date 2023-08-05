@@ -1,8 +1,7 @@
-import { useState, useMemo, useCallback } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { isEqual } from 'lodash';
-import { useWeb3React } from '@web3-react/core';
-import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import type { Proposal, zDAO } from '@zero-tech/zdao-sdk';
 import type { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
 import { parseUnits } from 'ethers/lib/utils';
@@ -12,12 +11,12 @@ import { useValidateRouteChanges } from 'lib/hooks/useValidateRouteChanges';
 import { useProposals } from 'lib/dao/providers/ProposalsProvider';
 import config from 'config';
 import {
-	ProposalInputFieldKeys,
-	ProposalFormDefaultValues,
-	ProposalFormDefaultErrors,
-	DEFAULT_VOTE_DURATION_SECONDS,
 	DEFAULT_VOTE_CHOICES,
+	DEFAULT_VOTE_DURATION_SECONDS,
 	NEW_PROPOSAL_TWEET_OPTION,
+	ProposalFormDefaultErrors,
+	ProposalFormDefaultValues,
+	ProposalInputFieldKeys,
 } from '../CreateProposal.constants';
 import {
 	getTokenOption,
@@ -37,7 +36,7 @@ export const useCreateProposalForm = ({
 	tokenDropdownOptions: Option[];
 }) => {
 	// Web3
-	const { active, account, library } = useWeb3React<Web3Provider>();
+	const { isActive, account, provider } = useWeb3();
 
 	// Proposals
 	const { fetch: refetchProposals } = useProposals();
@@ -167,11 +166,11 @@ export const useCreateProposalForm = ({
 	};
 
 	const handlePublishConfirm = useCallback(async () => {
-		if (!dao || !active || !account || !library) {
+		if (!dao || !isActive || !account || !provider) {
 			return;
 		}
 
-		const snapshot = await library.getBlockNumber();
+		const snapshot = await provider.getBlockNumber();
 
 		if (!snapshot) return;
 
@@ -179,7 +178,7 @@ export const useCreateProposalForm = ({
 		setFormSubmitErrorMessage(undefined);
 
 		try {
-			const newProposalId = await dao.createProposal(library, account, {
+			const newProposalId = await dao.createProposal(provider, account, {
 				title: formValues.title!,
 				body: formValues.body!,
 				choices: DEFAULT_VOTE_CHOICES,
@@ -212,9 +211,9 @@ export const useCreateProposalForm = ({
 		}
 	}, [
 		dao,
-		active,
+		isActive,
 		account,
-		library,
+		provider,
 		formValues,
 		refetchProposals,
 		setIsFormSubmitting,

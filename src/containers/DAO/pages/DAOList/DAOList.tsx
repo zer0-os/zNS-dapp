@@ -7,7 +7,7 @@ import DAOTable from './DAOTable/DAOTable';
 
 // Hooks
 import { useZdaoSdk } from 'lib/dao/providers/ZdaoSdkProvider';
-import { useTotals, TotalsProvider } from './TotalProvider';
+import { TotalsProvider, useTotals } from './TotalProvider';
 
 // Lib
 import { toFiat } from 'lib/currency';

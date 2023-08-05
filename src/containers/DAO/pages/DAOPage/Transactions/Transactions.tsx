@@ -11,7 +11,7 @@ import { chainIdToNetworkType, getEtherscanUri } from 'lib/network';
 // Styles
 import styles from './Transactions.module.scss';
 import classNames from 'classnames';
-import { useWeb3React } from '@web3-react/core';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 
 type TransactionsProps = {
 	isLoading: boolean;
@@ -22,7 +22,7 @@ const Transactions: React.FC<TransactionsProps> = ({
 	isLoading,
 	transactions,
 }) => {
-	const { chainId } = useWeb3React();
+	const { chainId } = useWeb3();
 	const networkType = chainIdToNetworkType(chainId);
 	const etherscanUri = getEtherscanUri(networkType);
 

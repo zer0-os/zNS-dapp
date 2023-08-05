@@ -2,29 +2,29 @@
 import React, { useMemo } from 'react';
 
 //- Library Improts
-import { Maybe, DisplayDomain } from 'lib/types';
+import { DisplayDomain, Maybe } from 'lib/types';
 import classnames from 'classnames';
 
 //-Component Imports
 import {
 	FutureButton,
-	QuestionButton,
-	Tooltip,
 	IconButton,
 	Member,
+	QuestionButton,
+	Tooltip,
 } from 'components';
 import './_domain-settings-footer.scss';
 
 //- Constants Imports
 import {
-	DomainSettingsWarning,
-	DomainSettingsSuccess,
-	DOMAIN_SETTINGS_WARNING_MESSAGES,
+	DOMAIN_SETTINGS_INITIAL_BUTTON_LABELS,
 	DOMAIN_SETTINGS_SUCCESS_MESSAGES,
-	DomainSettingsTooltipType,
 	DOMAIN_SETTINGS_TOOLTIPS,
 	DOMAIN_SETTINGS_UNLOCKABLE_PROMPT,
-	DOMAIN_SETTINGS_INITIAL_BUTTON_LABELS,
+	DOMAIN_SETTINGS_WARNING_MESSAGES,
+	DomainSettingsSuccess,
+	DomainSettingsTooltipType,
+	DomainSettingsWarning,
 } from '../../DomainSettings.constants';
 
 //- Assets Imports

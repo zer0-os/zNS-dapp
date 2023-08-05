@@ -1,5 +1,5 @@
 //- React Imports
-import { FormEvent, useState, useEffect } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 
 //- Library Imports
 import classNames from 'classnames/bind';
@@ -7,16 +7,16 @@ import { ClaimableDomain } from '@zero-tech/zsale-sdk';
 
 //- Component Imports
 import {
-	TextInput,
-	QuestionButton,
-	Tooltip,
 	FutureButton,
+	QuestionButton,
 	Spinner,
+	TextInput,
+	Tooltip,
 } from 'components';
 
 //- Constants Imports
 import { LABELS, MESSAGES } from 'containers/flows/ClaimNFT/ClaimNFT.constants';
-import { TOOLTIP, INPUT, BUTTON_TEXT, WARNINGS } from './Claiming.constants';
+import { BUTTON_TEXT, INPUT, TOOLTIP, WARNINGS } from './Claiming.constants';
 
 //- Utils Imports
 import {

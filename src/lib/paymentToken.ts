@@ -1,5 +1,5 @@
-import { ConvertedTokenInfo } from '@zero-tech/zns-sdk';
 import * as ZNS from '@zero-tech/zns-sdk';
+import { ConvertedTokenInfo } from '@zero-tech/zns-sdk';
 import * as ZContracts from '@zero-tech/zero-contracts';
 
 interface PaymentTokenCache {

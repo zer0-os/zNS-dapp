@@ -1,16 +1,16 @@
 import React from 'react';
 import { Overlay } from 'components';
 import {
-	DomainSettingsHeader,
 	DomainSettingsBody,
 	DomainSettingsFooter,
+	DomainSettingsHeader,
 	DomainSettingsModal,
 } from './elements';
 import {
 	useDomainSettingsData,
-	useDomainSettingsModals,
 	useDomainSettingsHandlers,
 	useDomainSettingsLifecycle,
+	useDomainSettingsModals,
 } from './hooks';
 import './_domain-settings.scss';
 

@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 //- React Imports
-import React, { useRef, useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 //- Library Imports
 import autoHeight from 'autosize';

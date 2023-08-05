@@ -1,5 +1,5 @@
 //- Components Imports
-import { Wizard, FutureButton } from 'components';
+import { FutureButton, Wizard } from 'components';
 
 //- Types Imports
 import { ethers } from 'ethers';
@@ -8,10 +8,10 @@ import { StepContent } from '../../AcceptBid.types';
 //- Constants
 import { Labels } from 'constants/labels';
 import {
-	MESSAGES,
 	BUTTONS,
-	getConfirmNFTPriceDetails,
 	getConfirmNFTDomainDetails,
+	getConfirmNFTPriceDetails,
+	MESSAGES,
 } from '../../AcceptBid.constants';
 
 //- Styles Imports

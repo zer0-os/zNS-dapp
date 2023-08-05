@@ -1,9 +1,9 @@
 import { useSelector } from 'react-redux';
 import {
-	setTransferringRequest as reduxSetTransferringRequest,
 	setTransferredRequest as reduxSetTransferredRequest,
+	setTransferringRequest as reduxSetTransferringRequest,
 } from 'store/transfer/actions';
-import { getTransferring, getTransferred } from 'store/transfer/selectors';
+import { getTransferred, getTransferring } from 'store/transfer/selectors';
 import { storeReady } from 'store/store.mockData';
 import { renderHook } from 'lib/testUtils';
 import {

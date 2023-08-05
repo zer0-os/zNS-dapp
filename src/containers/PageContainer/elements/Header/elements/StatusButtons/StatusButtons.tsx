@@ -3,10 +3,10 @@ import React, { useMemo } from 'react';
 
 //- Component Imports
 import {
-	MintPreview,
-	TransferPreview,
-	NumberButton,
 	HoverDropdown,
+	MintPreview,
+	NumberButton,
+	TransferPreview,
 } from 'components';
 
 type StatusButtonsProps = {

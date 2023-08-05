@@ -10,9 +10,9 @@ import { DomainEvents } from './NFTView.types';
 
 //- Constants Imports
 import {
-	NFT_ASSET_URLS,
 	NFT_ASSET_SHARE_KEYS,
 	NFT_ASSET_SHARE_OPTIONS,
+	NFT_ASSET_URLS,
 } from './NFTView.constants';
 
 /**

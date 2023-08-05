@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 //- Global Component Imports
-import { Overlay, Wizard, StepBar } from 'components';
+import { Overlay, StepBar, Wizard } from 'components';
 
 //- Components Imports
 import Details from './components/Details/Details';
@@ -13,12 +13,12 @@ import useAcceptBid from './hooks/useAcceptBid';
 import { Metadata } from 'lib/types';
 import { formatBidAmount } from 'lib/utils';
 import useNotification from 'lib/hooks/useNotification';
-import { useWeb3React } from '@web3-react/core';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import { Bid } from '@zero-tech/zauction-sdk';
 import { useZnsSdk } from 'lib/hooks/sdk';
 
 //- Types Imports
-import { StepContent, Step } from './AcceptBid.types';
+import { Step, StepContent } from './AcceptBid.types';
 
 //- Constants Imports
 import {
@@ -72,7 +72,7 @@ const AcceptBid = ({
 	// Hooks
 	const { accept, status } = useAcceptBid();
 	const { instance: sdk } = useZnsSdk();
-	const { account, library } = useWeb3React();
+	const { account, provider } = useWeb3();
 
 	//- Notification State
 	const { addNotification } = useNotification();
@@ -94,7 +94,7 @@ const AcceptBid = ({
 
 	// Check zAuction Approval
 	const checkZAuctionApproval = () => {
-		if (!sdk || !library || !account || !acceptingBid) {
+		if (!sdk || !provider || !account || !acceptingBid) {
 			return;
 		}
 		setError(undefined);
@@ -123,7 +123,7 @@ const AcceptBid = ({
 
 	// Approve zAuction Flow
 	const approveZAuction = () => {
-		if (!sdk || !library || !account || !acceptingBid) {
+		if (!sdk || !provider || !account || !acceptingBid) {
 			return;
 		}
 		setError(undefined);
@@ -132,7 +132,7 @@ const AcceptBid = ({
 			try {
 				const tx = await sdk.zauction.approveZAuctionToTransferNftsByBid(
 					acceptingBid,
-					library.getSigner(),
+					provider.getSigner(),
 				);
 				try {
 					setStepContent(StepContent.ApprovingZAuction);

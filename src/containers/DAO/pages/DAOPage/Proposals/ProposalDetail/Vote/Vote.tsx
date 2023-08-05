@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useWeb3React } from '@web3-react/core';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import type { Choice, Proposal } from '@zero-tech/zdao-sdk';
 import VoteModal from './VoteModal';
 import VoteAction from './VoteAction';
@@ -16,7 +16,7 @@ type VoteProps = {
  * Grabs relevant data and pipes it into a component
  */
 const Vote: React.FC<VoteProps> = ({ proposal, onCompleteVoting }) => {
-	const { account, library } = useWeb3React();
+	const { account, provider } = useWeb3();
 	const { isLoading, userVote, userVotingPower } = useVoteData(
 		proposal,
 		account as string | undefined,
@@ -27,11 +27,11 @@ const Vote: React.FC<VoteProps> = ({ proposal, onCompleteVoting }) => {
 	const [completedVote, setCompletedVote] = useState<Choice | undefined>();
 
 	const onVote = async () => {
-		if (choice && library && account) {
+		if (choice && provider && account) {
 			setStatus(VoteStatus.PENDING);
 
 			try {
-				await proposal.vote(library.getSigner(), account, choice);
+				await proposal.vote(provider, account, choice);
 				setStatus(VoteStatus.COMPLETE);
 				onCompleteVoting();
 			} catch (e) {

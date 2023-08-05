@@ -1,4 +1,4 @@
-import { render, cleanup } from '@testing-library/react';
+import { cleanup, render } from '@testing-library/react';
 import PreviewCard, { TEST_IDS } from './PreviewCard';
 import '@testing-library/jest-dom/extend-expect';
 

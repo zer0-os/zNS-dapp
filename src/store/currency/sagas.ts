@@ -1,6 +1,6 @@
 import {
-	wildTokenPrice,
 	lootTokenPrice,
+	wildTokenPrice,
 	zeroTokenPrice,
 } from 'lib/tokenPrices';
 import {

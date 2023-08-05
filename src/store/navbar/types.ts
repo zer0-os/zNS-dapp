@@ -1,4 +1,4 @@
-import { SET_NAVBAR_TITLE, SET_NAVBAR_SEARCHING_STATUS } from './actionTypes';
+import { SET_NAVBAR_SEARCHING_STATUS, SET_NAVBAR_TITLE } from './actionTypes';
 
 /**
  * Navbar state definition

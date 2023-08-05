@@ -2,11 +2,11 @@ import React, { useMemo, useState } from 'react';
 import { Link, useHistory, useParams } from 'react-router-dom';
 
 // - Library
-import type { zDAO, Proposal, ProposalId } from '@zero-tech/zdao-sdk';
+import type { Proposal, ProposalId, zDAO } from '@zero-tech/zdao-sdk';
 import { cloneDeep, isEqual } from 'lodash';
 import {
-	isFromSnapshotWithMultipleChoices,
 	formatProposalBody,
+	isFromSnapshotWithMultipleChoices,
 } from '../Proposals.helpers';
 
 // - Hooks

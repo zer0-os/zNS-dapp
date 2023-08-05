@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 import TransferOwnership from './TransferOwnership';
 
 //- LibraryImports
-
 import { getMetadata } from 'lib/metadata';
 import { Metadata } from 'lib/types';
 

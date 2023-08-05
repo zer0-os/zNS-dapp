@@ -9,8 +9,7 @@ import BuyNow from '.';
 import { FutureButton, Overlay, TextButton } from 'components';
 
 //- Library Imports
-import { useWeb3React } from '@web3-react/core';
-import { Web3Provider } from '@ethersproject/providers';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 
 //- Constants Imports
 import { LABELS } from './BuyNowButton.constants';
@@ -40,7 +39,7 @@ const BuyNowButton = ({
 	isLoading,
 }: BuyNowButtonProps) => {
 	//- Wallet Data
-	const walletContext = useWeb3React<Web3Provider>();
+	const walletContext = useWeb3();
 	const { account } = walletContext;
 
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);

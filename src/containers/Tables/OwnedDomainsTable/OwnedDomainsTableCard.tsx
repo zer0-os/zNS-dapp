@@ -8,12 +8,11 @@ import { Spinner } from 'components';
 
 //- Library Imports
 import { useHistory } from 'react-router-dom';
-import { BigNumber } from 'ethers';
+import { BigNumber, ethers } from 'ethers';
 import { ConvertedTokenInfo, Domain } from '@zero-tech/zns-sdk';
 import useBidData from 'lib/hooks/useBidData';
 import { formatEther } from '@ethersproject/units';
 import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
-import { ethers } from 'ethers';
 import { formatNumber, getNetworkZNA } from 'lib/utils';
 
 //- Styles Imports

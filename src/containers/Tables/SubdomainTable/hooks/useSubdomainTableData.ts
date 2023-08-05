@@ -1,6 +1,6 @@
 import {
-	DomainMetricsCollection,
 	ConvertedTokenInfo,
+	DomainMetricsCollection,
 } from '@zero-tech/zns-sdk';
 import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 import { useZnsSdk } from 'lib/hooks/sdk';

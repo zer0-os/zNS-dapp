@@ -1,13 +1,13 @@
 import { DomainRequestAndContents, NftStatusCard } from 'lib/types';
 import {
-	SET_STAKING_REQUESTING_REQUEST,
-	SET_STAKING_REQUESTED_REQUEST,
-	SET_STAKING_APPROVING_REQUEST,
 	SET_STAKING_APPROVED_REQUEST,
-	SET_STAKING_FULFILLING_REQUEST,
+	SET_STAKING_APPROVING_REQUEST,
 	SET_STAKING_FULFILLED_REQUEST,
+	SET_STAKING_FULFILLING_REQUEST,
+	SET_STAKING_REQUESTED_REQUEST,
+	SET_STAKING_REQUESTING_REQUEST,
 } from './actionTypes';
-import { StakingState, StakingActions } from './types';
+import { StakingActions, StakingState } from './types';
 
 export const REDUCER_NAME = 'staking';
 

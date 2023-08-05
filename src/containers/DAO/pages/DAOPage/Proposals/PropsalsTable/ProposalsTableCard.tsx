@@ -1,10 +1,12 @@
-import React, { useMemo, useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
 // Lib
 import moment from 'moment';
 import { isEqual } from 'lodash';
 import removeMarkdown from 'markdown-to-text';
+// Types
+import type { Proposal } from '@zero-tech/zdao-sdk';
 import { ProposalState } from '@zero-tech/zdao-sdk';
 import { truncateString } from 'lib/utils/string';
 import { formatProposalStatus } from '../Proposals.helpers';
@@ -22,14 +24,11 @@ import { Chiclet } from 'components';
 import classNames from 'classnames';
 import styles from './ProposalsTableCard.module.scss';
 
-// Types
-import type { Proposal } from '@zero-tech/zdao-sdk';
-
 // Constants
 import {
 	DEFAULT_TIMMER_EXPIRED_LABEL,
-	PROPOSAL_TABLE_LOCATION_STATE_KEY,
 	PROPOSAL_TABLE_LOCATION_STATE,
+	PROPOSAL_TABLE_LOCATION_STATE_KEY,
 } from '../Proposals.constants';
 import { ChicletType } from 'components/Chiclet/Chiclet';
 
