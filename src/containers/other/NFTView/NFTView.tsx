@@ -2,7 +2,7 @@
 import React, { useCallback, useMemo, useEffect } from 'react';
 
 //- Web3 Imports
-import { useWeb3React } from '@web3-react/core'; // Wallet data
+import { useWeb3 } from 'lib/web3-connection/useWeb3'; // Wallet data
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wallet data
 
 //- Component Imports
@@ -62,7 +62,7 @@ const NFTView: React.FC<NFTViewProps> = ({
 	setClaimDropStage,
 }) => {
 	//- Web3 Wallet Data
-	const { account, chainId } = useWeb3React<Web3Provider>();
+	const { account, chainId } = useWeb3();
 
 	//- Current Domain Data
 	const {

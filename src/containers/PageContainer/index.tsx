@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 
 //- Library Imports
 import classnames from 'classnames';
-import { useWeb3React } from '@web3-react/core';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 // import { useEagerConnect } from 'lib/hooks/provider-hooks';
@@ -33,7 +33,7 @@ const PageContainer: React.FC = ({ children }) => {
 	 * Hooks Data
 	 */
 	const history = useHistory();
-	const { account, isActive } = useWeb3React<Web3Provider>();
+	const { account, isActive } = useWeb3();
 	const triedEagerConnect = true;
 	const {
 		domain: znsDomain,

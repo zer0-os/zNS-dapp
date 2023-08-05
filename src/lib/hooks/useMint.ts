@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 //- Web3 Imports
 import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 
 //- Library Imports
 import { ethers } from 'ethers';
@@ -98,7 +98,7 @@ export const useMint = (): UseMintReturn => {
 
 	const { addNotification } = useNotification();
 	const { gensInstance: zSaleInstance, claimInstance } = useZSaleSdk();
-	const { account, provider } = useWeb3React<Web3Provider>();
+	const { account, provider } = useWeb3();
 	// const basicController = useBasicController();
 	const { reduxState, reduxActions } = useMintRedux();
 

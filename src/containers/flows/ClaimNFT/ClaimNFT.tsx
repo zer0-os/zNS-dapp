@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
 //- Web3 Imports
-import { useWeb3React } from '@web3-react/core';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import { Web3Provider } from '@ethersproject/providers';
 
 //- Global Component Imports
@@ -57,7 +57,7 @@ const ClaimNFT = ({
 	//////////////////
 	// State & Data //
 	//////////////////
-	const { isActive } = useWeb3React<Web3Provider>();
+	const { isActive } = useWeb3();
 	const { push: goTo } = useHistory();
 	const [tokenID, setTokenID] = useState<string | undefined>();
 	const [currentStep, setCurrentStep] = useState<Step>(Step.Details);

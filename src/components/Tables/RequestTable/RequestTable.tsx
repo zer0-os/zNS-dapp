@@ -39,7 +39,7 @@ import styles from './RequestTable.module.scss';
 import grid from './assets/grid.svg';
 import list from './assets/list.svg';
 import { useZnsContracts } from 'lib/contracts';
-import { useWeb3React } from '@web3-react/core';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 
 //- Constants
 const DOMAIN_FILTER_OPTIONS = [
@@ -67,7 +67,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	//////////////////
 	// Custom Hooks //
 	//////////////////
-	const { account } = useWeb3React();
+	const { account } = useWeb3();
 	const staking = useStaking();
 	const znsContracts = useZnsContracts()!;
 	const yourRequests = useRequestsMadeByAccount(userId);

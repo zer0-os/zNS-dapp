@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 //-Library Imports
-import { useWeb3React } from '@web3-react/core';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 import {
 	ConvertedTokenInfo,
@@ -38,7 +38,7 @@ const SubdomainTableCard = (props: any) => {
 	// State & Data //
 	//////////////////
 
-	const walletContext = useWeb3React<Web3Provider>();
+	const walletContext = useWeb3();
 	const { account } = walletContext;
 	const { push: goTo } = useHistory();
 

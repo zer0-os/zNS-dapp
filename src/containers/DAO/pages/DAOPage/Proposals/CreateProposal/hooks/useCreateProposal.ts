@@ -1,6 +1,6 @@
 import { useState, useMemo, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useWeb3React } from '@web3-react/core';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 import type { zDAO } from '@zero-tech/zdao-sdk';
 import { getTokenOptionsFromAssets } from '../CreateProposal.helpers';
@@ -15,7 +15,7 @@ export const useCreateProposal = (dao?: zDAO) => {
 
 	// - Hooks
 	const history = useHistory();
-	const { isActive } = useWeb3React<Web3Provider>();
+	const { isActive } = useWeb3();
 	const { assets, isLoading: isAssetLoading } = useAssets(dao);
 	const { balance, isLoading: isLoadingBalance } = useBalance(
 		dao?.votingToken.token,

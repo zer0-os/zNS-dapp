@@ -11,7 +11,7 @@ import { FutureButton } from 'components';
 import { AcceptBid } from 'containers';
 
 // Type Imports
-import { useWeb3React } from '@web3-react/core';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import { Web3Provider } from '@ethersproject/providers';
 import { Bid } from '@zero-tech/zauction-sdk';
 import { ConvertedTokenInfo, Domain } from '@zero-tech/zns-sdk';
@@ -55,7 +55,7 @@ const BidList: React.FC<BidListProps> = ({
 	const [blockNumber, setBlockNumber] = useState<number>();
 	const [isAcceptBidModal, setIsAcceptBidModal] = useState(false);
 	const [acceptingBid, setAcceptingBid] = useState<Bid | undefined>(undefined);
-	const { provider, account } = useWeb3React<Web3Provider>();
+	const { provider, account } = useWeb3();
 
 	// Sort bids by date
 	const sortedBids = sortBidsByTime(bids);

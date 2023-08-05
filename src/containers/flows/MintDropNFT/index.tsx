@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
 // Web3 Imports
-import { useWeb3React } from '@web3-react/core';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import { useZnsContracts } from 'lib/contracts';
 import { Web3Provider } from '@ethersproject/providers';
 
@@ -47,7 +47,7 @@ const MintDropNFTFlowContainer = ({
 	const location = useLocation();
 
 	// Web3 hooks
-	const { account, provider } = useWeb3React<Web3Provider>();
+	const { account, provider } = useWeb3();
 
 	// Contracts
 	const contracts = useZnsContracts();

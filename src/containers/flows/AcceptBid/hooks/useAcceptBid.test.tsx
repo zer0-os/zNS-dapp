@@ -31,8 +31,8 @@ jest.mock('lib/hooks/sdk', () => ({
 	}),
 }));
 
-jest.mock('@web3-react/core', () => ({
-	useWeb3React: () => ({
+jest.mock('lib/web3-connection/useWeb3', () => ({
+	useWeb3: () => ({
 		library: {
 			getSigner: () => ({ isSigner: true }),
 		},

@@ -21,7 +21,7 @@ import {
 } from './MakeABid.constants';
 
 //- Library Imports
-import { useWeb3React } from '@web3-react/core';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import { useZnsSdk } from 'lib/hooks/sdk';
 import { Domain } from 'lib/types';
 import { useBidProvider } from 'lib/hooks/useBidProvider';
@@ -68,7 +68,7 @@ const MakeABid = ({
 
 	// Hooks
 	const { instance: sdk } = useZnsSdk();
-	const { account, provider } = useWeb3React();
+	const { account, provider } = useWeb3();
 	const { placeBid } = useBidProvider();
 	const { bidData, isLoading } = useBidData(domain.id);
 	const { addNotification } = useNotification();

@@ -28,7 +28,7 @@ import styles from './SideBar.module.scss';
 //- Library Imports
 import classNames from 'classnames/bind';
 import { appFromPathname, zNAFromPathname } from 'lib/utils';
-import { useWeb3React } from '@web3-react/core';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import { chainIdToNetworkType, NETWORK_TYPES } from 'lib/network';
 import { startCase, toLower } from 'lodash';
 
@@ -36,7 +36,7 @@ const cx = classNames.bind(styles);
 
 const SideBar = () => {
 	const { pathname } = useLocation();
-	const { chainId } = useWeb3React();
+	const { chainId } = useWeb3();
 
 	const navLinks = getNavLinks();
 

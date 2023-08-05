@@ -1,13 +1,7 @@
 import React from 'react';
-import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
-import { useWeb3React } from '@web3-react/core';
-import { FutureButton, Spinner } from 'components';
-import {
-	useConnectWalletButtonData,
-	// useConnectWalletButtonHandlers,
-} from './hooks';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import './_connect-wallet-button.scss';
-import { tryDeactivateConnector } from '../../../../../../lib/wallets/connections';
+import { tryDeactivateConnector } from 'lib/web3-connection/wallets/connections';
 import { Button } from '@zero-tech/zui/components';
 
 type ConnectWalletButtonProps = {
@@ -21,7 +15,7 @@ export const ConnectWalletButton: React.FC<ConnectWalletButtonProps> = ({
 	onConnectWallet,
 	className,
 }) => {
-	const { isActive, connector } = useWeb3React<Web3Provider>();
+	const { isActive, connector } = useWeb3();
 
 	const handleOnClick = isActive
 		? () => tryDeactivateConnector(connector)
@@ -33,28 +27,4 @@ export const ConnectWalletButton: React.FC<ConnectWalletButtonProps> = ({
 			{buttonText}
 		</Button>
 	);
-
-	// return (
-	// 	<>
-	// 		{formattedData.isConnected ? (
-	// 			<FutureButton
-	// 				glow
-	// 				onClick={handlers.handleDisconnectWallet}
-	// 				className={className}
-	// 			>
-	// 				{formattedData.disconnectTitle}
-	// 			</FutureButton>
-	// 		) : (
-	// 			<FutureButton glow onClick={onConnectWallet} className={className}>
-	// 				<div className="connect-wallet-button__container">
-	// 					{formattedData.isConnecting && <Spinner />}
-	//
-	// 					<strong className="connect-wallet-button__title">
-	// 						{formattedData.connectTitle}
-	// 					</strong>
-	// 				</div>
-	// 			</FutureButton>
-	// 		)}
-	// 	</>
-	// );
 };

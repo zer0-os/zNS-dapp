@@ -16,7 +16,7 @@ import { CancelBid, MakeABid } from 'containers';
 
 //- Library Imports
 import { ethers } from 'ethers';
-import { useWeb3React } from '@web3-react/core';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 
 //- Constants Imports
 import { AltText, Modal, TestId } from '../BidTable.constants';
@@ -28,7 +28,7 @@ import moreIcon from 'assets/more-vertical.svg';
 const BidTableRow = (props: any) => {
 	const [modal, setModal] = useState<Modal | undefined>();
 	const [selectedBid, setSelectedBid] = useState<BidTableData>();
-	const { account } = useWeb3React();
+	const { account } = useWeb3();
 
 	const bid: BidTableData = props.data;
 

@@ -8,7 +8,7 @@ import { useBidProvider } from 'lib/hooks/useBidProvider';
 import getPaymentTokenInfo from 'lib/paymentToken';
 
 //- Web3 Imports
-import { useWeb3React } from '@web3-react/core';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import { BigNumber, ethers } from 'ethers';
 import { Bid } from '@zero-tech/zauction-sdk';
 
@@ -29,7 +29,7 @@ const useBidTableData = (): UseBidTableDataReturn => {
 
 	const { getBidsForAccount } = useBidProvider();
 	const { instance: sdk } = useZnsSdk();
-	const { account } = useWeb3React();
+	const { account } = useWeb3();
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [bidData, setBidData] = useState<BidTableData[] | undefined>([]);

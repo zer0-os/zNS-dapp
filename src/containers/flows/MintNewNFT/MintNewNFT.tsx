@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 
 //- Web3 Imports
-import { useWeb3React } from '@web3-react/core';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import { Web3Provider } from '@ethersproject/providers';
 import { ethers } from 'ethers';
 
@@ -55,7 +55,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 	//////////
 
 	// Context
-	const context = useWeb3React<Web3Provider>();
+	const context = useWeb3();
 	const { account } = context; // account = connected wallet ID
 
 	// LOOT Balance

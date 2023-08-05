@@ -40,8 +40,8 @@ var mockRefetch = jest.fn();
 
 // BidButton uses useWeb3React internally
 // TODO: refactor this to mock buttons
-jest.mock('@web3-react/core', () => ({
-	useWeb3React: () => ({
+jest.mock('lib/web3-connection/useWeb3', () => ({
+	useWeb3: () => ({
 		account: '1',
 	}),
 }));

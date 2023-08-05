@@ -1,6 +1,6 @@
 import { Web3Provider } from '@ethersproject/providers';
 import { Registrar__factory } from '../types/factories/Registrar__factory';
-import { useWeb3React } from '@web3-react/core';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import { useMemo } from 'react';
 import addresses from './addresses';
 import { chainIdToNetworkType, defaultNetworkId } from './network';
@@ -46,7 +46,7 @@ export interface Contracts {
 }
 
 function useZnsContracts(): Contracts | null {
-	const context = useWeb3React<Web3Provider>();
+	const context = useWeb3();
 	const { provider, isActive, chainId } = context;
 
 	const contract = useMemo((): Contracts | null => {
@@ -103,7 +103,7 @@ function useZnsContracts(): Contracts | null {
 }
 
 function useContractAddresses(): ContractAddresses | undefined {
-	const context = useWeb3React<Web3Provider>();
+	const context = useWeb3();
 	const { provider, isActive, chainId } = context;
 	const networkAddresses = useMemo((): ContractAddresses | undefined => {
 		if (!provider) {

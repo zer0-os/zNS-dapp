@@ -7,7 +7,7 @@ import { ethers } from 'ethers';
 import { tryFunction } from 'lib/utils';
 
 //- Hook Imports
-import { useWeb3React } from '@web3-react/core';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import { useZnsSdk } from 'lib/hooks/sdk';
 import { Bid as zAuctionBid } from '@zero-tech/zauction-sdk/lib/api/types';
 import { PlaceBidStatus } from '@zero-tech/zauction-sdk';
@@ -90,7 +90,7 @@ export const useBidProvider = (): UseBidProviderReturn => {
 	// Hooks & State & Data //
 	//////////////////////////
 
-	const { provider } = useWeb3React<Web3Provider>();
+	const { provider } = useWeb3();
 	const { instance: sdk } = useZnsSdk();
 
 	const acceptBid = useCallback(

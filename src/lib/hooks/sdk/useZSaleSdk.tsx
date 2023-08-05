@@ -1,5 +1,5 @@
 import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import * as zsale from '@zero-tech/zsale-sdk';
 import { ethers } from 'ethers';
 import { RPC_URLS } from 'lib/connectors';
@@ -12,7 +12,7 @@ import React from 'react';
 
 export function useZSaleSdk() {
 	// TODO: Add suport to handle multiple contracts
-	const { provider, chainId } = useWeb3React<Web3Provider>();
+	const { provider, chainId } = useWeb3();
 	const instanceObject = React.useMemo(() => {
 		const web3Provider =
 			provider ||

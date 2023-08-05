@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { useWeb3React } from '@web3-react/core';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import {
 	chainIdToNetworkType,
 	defaultNetworkId,
@@ -31,7 +31,7 @@ type DaoSdkProviderProps = {
 export const ZdaoSdkProvider: React.FC<DaoSdkProviderProps> = ({
 	children,
 }) => {
-	const { provider, chainId, isActive } = useWeb3React<Web3Provider>(); // get provider for connected wallet
+	const { provider, chainId, isActive } = useWeb3(); // get provider for connected wallet
 
 	const [instance, setInstance] = useState<SDKInstance | undefined>();
 

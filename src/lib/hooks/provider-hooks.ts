@@ -1,5 +1,5 @@
 // import { useState, useEffect } from 'react';
-// import { useWeb3React } from '@web3-react/core';
+// import { useWeb3React } from 'lib/web3-connection/useWeb3';
 //
 // import { injected } from '../connectors';
 // import { connectorFromName } from 'components/ConnectToWallet/ConnectToWallet';

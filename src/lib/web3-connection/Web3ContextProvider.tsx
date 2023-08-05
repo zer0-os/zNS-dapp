@@ -1,13 +1,17 @@
-import { Web3ReactProvider } from '@web3-react/core';
-import { Connector } from '@web3-react/types';
 import React, { ReactNode, useEffect } from 'react';
 
+import { Web3ReactProvider } from '@web3-react/core';
+import { Connector } from '@web3-react/types';
 import {
 	ConnectionType,
 	getConnection,
 	PRIORITIZED_CONNECTORS,
-} from '../wallets/connections';
+} from './wallets/connections';
 
+/**
+ * Connects to the given connector.
+ * @param connector The connector to connect to.
+ */
 async function connect(connector: Connector) {
 	try {
 		if (connector.connectEagerly) {
@@ -20,6 +24,9 @@ async function connect(connector: Connector) {
 	}
 }
 
+/**
+ * Connects to all connectors that support eager connection.
+ */
 const connectEagerly = async () => {
 	await connect(getConnection(ConnectionType.INJECTED).connector);
 	await connect(getConnection(ConnectionType.WALLET_CONNECT).connector);

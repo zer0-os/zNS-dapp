@@ -3,7 +3,7 @@ import { useState, useCallback, useEffect, useRef } from 'react';
 
 //- Library Imports
 import { useZSaleSdk } from 'lib/hooks/sdk';
-import { useWeb3React } from '@web3-react/core';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import { Web3Provider } from '@ethersproject/providers';
 import { defaultNetworkId } from 'lib/network';
 import { useZnsDomain } from 'lib/hooks/useZnsDomain';
@@ -33,7 +33,7 @@ const useClaimCheck = (
 ): UseClaimCheckReturn => {
 	const isMounted = useRef<boolean>();
 	const { claimInstance: sdk } = useZSaleSdk();
-	const { chainId } = useWeb3React<Web3Provider>(); // get provider for connected wallet
+	const { chainId } = useWeb3(); // get provider for connected wallet
 	const znsDomain = useZnsDomain(tokenID, chainId || defaultNetworkId);
 	const domainName = znsDomain.domain?.name;
 	const [isCheckDataLoading, setIsCheckDataLoading] = useState<boolean>(false);

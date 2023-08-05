@@ -1,4 +1,4 @@
-import { useWeb3React } from '@web3-react/core';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import * as zns from '@zero-tech/zns-sdk';
 import React, { useEffect } from 'react';
 import { ethers } from 'ethers';
@@ -19,7 +19,7 @@ export const SdkContext = React.createContext({
 });
 
 export const ZnsSdkProvider = ({ children }: ZnsSdkProviderProps) => {
-	const { provider: web3Provider, chainId } = useWeb3React<Web3Provider>();
+	const { provider: web3Provider, chainId } = useWeb3();
 
 	const instance = React.useMemo(() => {
 		/**

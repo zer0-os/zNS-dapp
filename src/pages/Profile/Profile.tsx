@@ -19,7 +19,7 @@ import { useNavbar } from 'lib/hooks/useNavbar';
 import { COPY_LABELS, TABS } from './Profile.constants';
 import { chainIdToNetworkName } from 'lib/network';
 import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
-import { useWeb3React } from '@web3-react/core';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import { truncateWalletAddress } from 'lib/utils';
 
 // Styles
@@ -46,7 +46,7 @@ const r = (route: string) => {
  * @returns
  */
 const Profile = () => {
-	const { account, chainId } = useWeb3React();
+	const { account, chainId } = useWeb3();
 
 	// React-router stuff
 	const { length: canGoBack, goBack, push, location } = useHistory();

@@ -13,7 +13,7 @@ import useAcceptBid from './hooks/useAcceptBid';
 import { Metadata } from 'lib/types';
 import { formatBidAmount } from 'lib/utils';
 import useNotification from 'lib/hooks/useNotification';
-import { useWeb3React } from '@web3-react/core';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import { Bid } from '@zero-tech/zauction-sdk';
 import { useZnsSdk } from 'lib/hooks/sdk';
 
@@ -72,7 +72,7 @@ const AcceptBid = ({
 	// Hooks
 	const { accept, status } = useAcceptBid();
 	const { instance: sdk } = useZnsSdk();
-	const { account, provider } = useWeb3React();
+	const { account, provider } = useWeb3();
 
 	//- Notification State
 	const { addNotification } = useNotification();

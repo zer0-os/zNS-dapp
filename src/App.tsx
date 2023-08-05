@@ -15,10 +15,6 @@ import 'styles/main.scss';
 //- React Imports
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 
-//- Web3 Imports
-import { useWeb3React, Web3ReactProvider } from '@web3-react/core';
-import { Web3Provider } from '@ethersproject/providers';
-
 //- Library Imports
 import CacheBuster from 'react-cache-buster';
 import EnlistProvider from 'lib/providers/EnlistProvider';
@@ -35,7 +31,7 @@ import { ROUTES } from './constants/routes';
 import { Profile, Staking, ZNS } from './pages';
 import DAO from './pages/DAO/DAO';
 
-import { Web3ContextProvider } from './lib/providers/Web3ContextProvider';
+import { Web3ContextProvider } from 'lib/web3-connection/Web3ContextProvider';
 
 function App() {
 	console.log(

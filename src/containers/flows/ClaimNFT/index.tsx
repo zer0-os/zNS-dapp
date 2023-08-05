@@ -21,7 +21,7 @@ import { getDropStage } from '../MintDropNFT/helpers';
 //- Library Imports
 import useAsyncEffect from 'use-async-effect';
 import { useZSaleSdk } from 'lib/hooks/sdk';
-import { useWeb3React } from '@web3-react/core';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import { Web3Provider } from '@ethersproject/providers';
 import { ClaimableDomain } from '@zero-tech/zsale-sdk';
 import useMint from 'lib/hooks/useMint';
@@ -49,7 +49,7 @@ const ClaimNFTContainer = ({
 	const { push: goTo } = useHistory();
 	const { claimNFT } = useMint();
 	const { claimInstance } = useZSaleSdk();
-	const { account, provider } = useWeb3React<Web3Provider>();
+	const { account, provider } = useWeb3();
 	const [isWizardOpen, setIsWizardOpen] = useState<boolean>(false);
 	const [isConnectPromptOpen, setIsConnectPromptOpen] =
 		useState<boolean>(false);

@@ -2,13 +2,13 @@
 import React from 'react';
 
 //- Web3 Imports
-import { useWeb3React } from '@web3-react/core';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import {
 	ConnectionType,
 	getConnection,
 	tryActivateConnector,
 	tryDeactivateConnector,
-} from '../../lib/wallets/connections';
+} from 'lib/web3-connection/wallets/connections';
 
 //- Style Imports
 import WalletStyles from './Wallet.module.scss';
@@ -30,7 +30,7 @@ export type ConnectToWalletProps = {
 };
 
 const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
-	const { isActive, isActivating, connector } = useWeb3React();
+	const { isActive, isActivating, connector } = useWeb3();
 
 	const handleOnConnect = async (connector: ConnectionType) => {
 		try {
@@ -52,7 +52,7 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 	// 		</button>
 	// 	</div>
 	// );
-	// const walletContext = useWeb3React<Web3Provider>();
+	// const walletContext = useWeb3React();
 	// const { active, connector, activate, deactivate } = walletContext;
 	// const [isLoading, setIsLoading] = useState(false); //state for trigger the loading spinner
 	//

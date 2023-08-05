@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 
 // Component Imports
 import { FutureButton, TextButton } from 'components';
-import { useWeb3React } from '@web3-react/core';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import { Web3Provider } from '@ethersproject/providers';
 import { ConnectWalletPrompt } from 'containers';
 
@@ -28,7 +28,7 @@ const BidButton: React.FC<BidButtonProps> = ({
 	...rest
 }) => {
 	//- Wallet Data
-	const walletContext = useWeb3React<Web3Provider>();
+	const walletContext = useWeb3();
 	const { account } = walletContext;
 
 	const [isModalOpen, setIsModalOpen] = useState(false);

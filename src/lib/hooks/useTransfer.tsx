@@ -2,8 +2,7 @@
 import { useMemo, useCallback } from 'react';
 
 //- Web3 Imports
-import { useWeb3React } from '@web3-react/core';
-import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 
 // - Library Imports
 import { TransferSubmitParams } from 'lib/types';
@@ -31,7 +30,7 @@ export const useTransfer = (): UseTransferReturn => {
 
 	const { reduxState, reduxActions } = useTransferRedux();
 
-	const walletContext = useWeb3React<Web3Provider>();
+	const walletContext = useWeb3();
 	const { account, provider } = walletContext;
 
 	const transferRequest = useCallback(

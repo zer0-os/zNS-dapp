@@ -1,7 +1,7 @@
 import { useState, useMemo, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import { isEqual } from 'lodash';
-import { useWeb3React } from '@web3-react/core';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 import type { Proposal, zDAO } from '@zero-tech/zdao-sdk';
 import type { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
@@ -37,7 +37,7 @@ export const useCreateProposalForm = ({
 	tokenDropdownOptions: Option[];
 }) => {
 	// Web3
-	const { isActive, account, provider } = useWeb3React<Web3Provider>();
+	const { isActive, account, provider } = useWeb3();
 
 	// Proposals
 	const { fetch: refetchProposals } = useProposals();

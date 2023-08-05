@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { useWeb3React } from '@web3-react/core';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 import { DomainMetadata } from '@zero-tech/zns-sdk/lib/types';
 import { useZnsDomain } from 'lib/hooks/useZnsDomain';
@@ -13,7 +13,7 @@ import {
 import { defaultNetworkId } from 'lib/network';
 
 export const useDomainSettingsData = (domainId: string) => {
-	const { account, chainId } = useWeb3React<Web3Provider>();
+	const { account, chainId } = useWeb3();
 	const currentChainId = chainId || defaultNetworkId;
 	const myDomain = useZnsDomain(domainId, currentChainId);
 	const { domainId: znsDomainId, setDomainMetadata } = useCurrentDomain();
@@ -22,7 +22,7 @@ export const useDomainSettingsData = (domainId: string) => {
 		currentChainId,
 	);
 
-	const { provider } = useWeb3React<Web3Provider>();
+	const { provider } = useWeb3();
 
 	const [isLocked, setIsLocked] = useState<boolean>(true);
 	const [isChanged, setIsChanged] = useState<boolean>(false);

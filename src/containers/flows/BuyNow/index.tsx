@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import BuyNow, { Step } from './BuyNow';
 
 // Library Imports
-import { useWeb3React } from '@web3-react/core';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import useNotification from 'lib/hooks/useNotification';
 import { useZnsSdk } from 'lib/hooks/sdk';
 
@@ -32,7 +32,7 @@ const BuyNowContainer = ({
 	// Hooks
 	const { instance: sdk } = useZnsSdk();
 	const { getMetadata } = useMetadata();
-	const { account, provider } = useWeb3React();
+	const { account, provider } = useWeb3();
 	const { addNotification } = useNotification();
 
 	// State

@@ -2,7 +2,7 @@
 import { Artwork, FutureButton, Overlay, Spinner } from 'components';
 import React, { useState } from 'react';
 
-import { useWeb3React } from '@web3-react/core';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
 
 import { BidButton, BuyNowButton, MakeABid } from 'containers';
@@ -19,7 +19,7 @@ import useSubdomainData from './hooks/useSubdomainData';
 import { Modal } from './SubdomainTableCard.constants';
 
 const SubdomainTableRow = (props: any) => {
-	const { account } = useWeb3React();
+	const { account } = useWeb3();
 	const { push: goTo } = useHistory();
 
 	const domain = props.data;

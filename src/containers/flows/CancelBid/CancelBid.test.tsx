@@ -38,8 +38,8 @@ jest.mock('components/Wizard/Presets/NFTDetails', () => (props: any) => {
 	return <>NFT Details</>;
 });
 
-jest.mock('@web3-react/core', () => ({
-	useWeb3React: () => ({
+jest.mock('lib/web3-connection/useWeb3', () => ({
+	useWeb3: () => ({
 		library: {
 			getSigner: () => {},
 		},

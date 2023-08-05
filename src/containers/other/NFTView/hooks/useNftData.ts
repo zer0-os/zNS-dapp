@@ -2,7 +2,7 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 
 //- Web3 Imports
-import { useWeb3React } from '@web3-react/core'; // Wallet data
+import { useWeb3 } from 'lib/web3-connection/useWeb3'; // Wallet data
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wallet data
 import { ethers } from 'ethers';
 
@@ -37,7 +37,7 @@ interface UseNftDataReturn {
 
 export const useNftData = (): UseNftDataReturn => {
 	//- Web3 Wallet Data
-	const { account } = useWeb3React<Web3Provider>();
+	const { account } = useWeb3();
 
 	//- SDK
 	const { instance: sdk } = useZnsSdk();

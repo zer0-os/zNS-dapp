@@ -7,7 +7,7 @@
 import { useState } from 'react';
 
 //- Library Imports
-import { useWeb3React } from '@web3-react/core';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import { Bid } from '@zero-tech/zauction-sdk';
 import { useZnsSdk } from 'lib/hooks/sdk';
 
@@ -21,7 +21,7 @@ export type UseCancelBidReturn = {
 };
 
 const useCancelBid = (): UseCancelBidReturn => {
-	const { provider } = useWeb3React();
+	const { provider } = useWeb3();
 	const { instance: sdk } = useZnsSdk();
 
 	const [status, setStatus] = useState<string | undefined>();
