@@ -57,7 +57,7 @@ const ClaimNFT = ({
 	//////////////////
 	// State & Data //
 	//////////////////
-	const { active } = useWeb3React<Web3Provider>();
+	const { isActive } = useWeb3React<Web3Provider>();
 	const { push: goTo } = useHistory();
 	const [tokenID, setTokenID] = useState<string | undefined>();
 	const [currentStep, setCurrentStep] = useState<Step>(Step.Details);
@@ -133,11 +133,11 @@ const ClaimNFT = ({
 
 	// Set step if disconnected
 	useEffect(() => {
-		if (!active) {
+		if (!isActive) {
 			setCurrentStep(Step.Details);
 			setStepContent(StepContent.Details);
 		}
-	}, [active, currentStep]);
+	}, [isActive, currentStep]);
 
 	///////////////
 	// Fragments //
@@ -150,7 +150,7 @@ const ClaimNFT = ({
 					tokenID={tokenID}
 					isClaimDataLoading={isClaimDataLoading}
 					eligibleDomains={eligibleDomains}
-					isWalletConnected={active}
+					isWalletConnected={isActive}
 					currentStep={currentStep}
 					connectToWallet={openConnect}
 					onStartClaim={onStartClaim}
@@ -173,7 +173,7 @@ const ClaimNFT = ({
 		),
 		[StepContent.Minting]: (
 			<Details
-				isWalletConnected={active}
+				isWalletConnected={isActive}
 				currentStep={currentStep}
 				onFinish={onFinish}
 				isClaiming={isClaimingInProgress}

@@ -6,7 +6,7 @@ import { ConnectToWallet, FutureButton, Overlay } from 'components';
 
 // @todo change props from any type
 const ConnectWalletButton = (props: any) => {
-	const { active } = useWeb3React();
+	const { isActive } = useWeb3React();
 
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -25,7 +25,7 @@ const ConnectWalletButton = (props: any) => {
 					<ConnectToWallet onConnect={closeModal} />
 				</Overlay>
 			)}
-			<FutureButton {...props} glow={!active} onClick={openModal} />
+			<FutureButton {...props} glow={!isActive} onClick={openModal} />
 		</>
 	);
 };

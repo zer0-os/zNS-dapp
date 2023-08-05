@@ -32,7 +32,7 @@ const BuyNowContainer = ({
 	// Hooks
 	const { instance: sdk } = useZnsSdk();
 	const { getMetadata } = useMetadata();
-	const { account, library } = useWeb3React();
+	const { account, provider } = useWeb3React();
 	const { addNotification } = useNotification();
 
 	// State
@@ -58,7 +58,7 @@ const BuyNowContainer = ({
 		let approvalTx;
 		setError(undefined);
 		try {
-			if (!sdk || !sdk.zauction) {
+			if (!sdk || !sdk.zauction || !provider) {
 				throw Error('Failed to retrieve zAuction instance');
 			}
 
@@ -66,7 +66,7 @@ const BuyNowContainer = ({
 				setCurrentStep(Step.ApproveZAuctionWaiting);
 				approvalTx = await sdk.zauction.approveZAuctionToSpendTokensByDomain(
 					domainId,
-					library.getSigner(),
+					provider.getSigner(),
 				);
 				setCurrentStep(Step.ApproveZAuctionProcessing);
 			} catch (e) {
@@ -91,7 +91,7 @@ const BuyNowContainer = ({
 		setError(undefined);
 		setCurrentStep(Step.WaitingForWalletConfirmation);
 		try {
-			if (!sdk || !sdk.zauction) {
+			if (!sdk || !sdk.zauction || !provider) {
 				throw Error('Failed to retrieve zAuction instance');
 			}
 			const tx = await sdk.zauction.buyNow(
@@ -99,7 +99,7 @@ const BuyNowContainer = ({
 					amount: data!.buyNowPrice.toString(),
 					tokenId: domainId,
 				} as BuyNowParams,
-				library.getSigner(),
+				provider.getSigner(),
 			);
 			setCurrentStep(Step.Buying);
 			await tx.wait();
@@ -116,7 +116,7 @@ const BuyNowContainer = ({
 	};
 
 	const getData = async () => {
-		if (!library || !account) {
+		if (!provider || !account) {
 			return;
 		}
 		// Reset some state in case dependency changes
@@ -189,7 +189,7 @@ const BuyNowContainer = ({
 			isMounted.current = false;
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [account, domainId, library]);
+	}, [account, domainId, provider]);
 
 	return (
 		<BuyNow

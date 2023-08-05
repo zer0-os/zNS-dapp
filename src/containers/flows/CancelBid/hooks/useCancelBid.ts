@@ -21,7 +21,7 @@ export type UseCancelBidReturn = {
 };
 
 const useCancelBid = (): UseCancelBidReturn => {
-	const { library } = useWeb3React();
+	const { provider } = useWeb3React();
 	const { instance: sdk } = useZnsSdk();
 
 	const [status, setStatus] = useState<string | undefined>();
@@ -35,7 +35,7 @@ const useCancelBid = (): UseCancelBidReturn => {
 		const cancelBidOnChain =
 			bid.version === ZAuctionVersionType.V1 ? false : true;
 
-		if (!library) {
+		if (!provider) {
 			console.error(constants.ERRORS.CONSOLE);
 			throw new Error(constants.ERRORS.LIBRARY);
 		}
@@ -48,7 +48,7 @@ const useCancelBid = (): UseCancelBidReturn => {
 				tx = await sdk.zauction.cancelBid(
 					bid,
 					cancelBidOnChain,
-					library.getSigner(),
+					provider.getSigner(),
 				);
 			} catch (e) {
 				console.error(e);

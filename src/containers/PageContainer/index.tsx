@@ -7,7 +7,7 @@ import classnames from 'classnames';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
-import { useEagerConnect } from 'lib/hooks/provider-hooks';
+// import { useEagerConnect } from 'lib/hooks/provider-hooks';
 import { usePageWidth } from 'lib/hooks/usePageWidth';
 import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 import { useNotification } from 'lib/hooks/useNotification';
@@ -33,8 +33,8 @@ const PageContainer: React.FC = ({ children }) => {
 	 * Hooks Data
 	 */
 	const history = useHistory();
-	const { account, active } = useWeb3React<Web3Provider>();
-	const triedEagerConnect = useEagerConnect();
+	const { account, isActive } = useWeb3React<Web3Provider>();
+	const triedEagerConnect = true;
 	const {
 		domain: znsDomain,
 		domainMetadata,
@@ -72,7 +72,7 @@ const PageContainer: React.FC = ({ children }) => {
 			Object.values(WALLETS).includes(
 				localStorage.getItem(LOCAL_STORAGE_KEYS.CHOOSEN_WALLET) as WALLETS,
 			) &&
-			!active &&
+			!isActive &&
 			triedEagerConnect
 		) {
 			localStorage.removeItem(LOCAL_STORAGE_KEYS.CHOOSEN_WALLET);
@@ -80,7 +80,7 @@ const PageContainer: React.FC = ({ children }) => {
 
 		if (triedEagerConnect)
 			addNotification(
-				active
+				isActive
 					? WALLET_NOTIFICATIONS.CONNECTED
 					: WALLET_NOTIFICATIONS.DISCONNECTED,
 			);
@@ -89,7 +89,7 @@ const PageContainer: React.FC = ({ children }) => {
 		if (modal === Modal.Transfer || modal === Modal.Mint) {
 			closeModal();
 		}
-	}, [active]);
+	}, [isActive]);
 
 	useUpdateEffect(refetch, [minted, stakingFulFilled]);
 

@@ -15,14 +15,14 @@ export const useCreateProposal = (dao?: zDAO) => {
 
 	// - Hooks
 	const history = useHistory();
-	const { active } = useWeb3React<Web3Provider>();
+	const { isActive } = useWeb3React<Web3Provider>();
 	const { assets, isLoading: isAssetLoading } = useAssets(dao);
 	const { balance, isLoading: isLoadingBalance } = useBalance(
 		dao?.votingToken.token,
 	);
 
 	// - Data
-	const isLoading = active ? isAssetLoading : false;
+	const isLoading = isActive ? isAssetLoading : false;
 	const tokenDropdownOptions = useMemo(
 		() => getTokenOptionsFromAssets(assets),
 		[assets],
@@ -56,20 +56,24 @@ export const useCreateProposal = (dao?: zDAO) => {
 		isLoading: isLoading || isLoadingBalance,
 		notes: {
 			show:
-				!active || (active && !isLoading && tokenDropdownOptions.length === 0),
+				!isActive ||
+				(isActive && !isLoading && tokenDropdownOptions.length === 0),
 			ConnectWallet: {
-				show: !active,
+				show: !isActive,
 				onClick: handleShowConnectWallet,
 			},
 			Token: {
-				show: active && !isLoading && tokenDropdownOptions.length === 0,
+				show: isActive && !isLoading && tokenDropdownOptions.length === 0,
 				onClick: handleGoToDao,
 			},
 		},
 		triggerCancel,
 		showWalletConnectModal,
 		showForm:
-			active && !isLoading && tokenDropdownOptions.length > 0 && balance?.gt(0),
+			isActive &&
+			!isLoading &&
+			tokenDropdownOptions.length > 0 &&
+			balance?.gt(0),
 		tokenDropdownOptions,
 		handleGoToAllProposals,
 		handleHideConnectWallet,

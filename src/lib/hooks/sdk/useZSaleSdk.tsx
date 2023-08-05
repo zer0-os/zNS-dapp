@@ -12,10 +12,10 @@ import React from 'react';
 
 export function useZSaleSdk() {
 	// TODO: Add suport to handle multiple contracts
-	const { library, chainId } = useWeb3React<Web3Provider>();
+	const { provider, chainId } = useWeb3React<Web3Provider>();
 	const instanceObject = React.useMemo(() => {
 		const web3Provider =
-			library ||
+			provider ||
 			(new ethers.providers.JsonRpcProvider(
 				RPC_URLS[defaultNetworkId],
 			) as Web3Provider);
@@ -92,7 +92,7 @@ export function useZSaleSdk() {
 				throw new Error('SDK isn´t available for this chainId');
 			}
 		}
-	}, [chainId, library]);
+	}, [chainId, provider]);
 
 	(global as any).zsale = { ...instanceObject };
 

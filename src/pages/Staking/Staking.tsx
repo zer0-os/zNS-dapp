@@ -15,13 +15,13 @@ const Staking: React.FC = () => {
 		setNavbarTitle('Staking');
 	});
 
-	const { library, account, chainId } = useWeb3React();
+	const { provider, account, chainId } = useWeb3React();
 
 	return (
 		<div className={'zapp-reset'}>
 			<StakingZApp
 				provider={
-					library ??
+					provider ??
 					new ethers.providers.JsonRpcProvider(RPC_URLS[defaultNetworkId])
 				}
 				route={'wilder'}

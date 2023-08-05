@@ -90,7 +90,7 @@ export const useBidProvider = (): UseBidProviderReturn => {
 	// Hooks & State & Data //
 	//////////////////////////
 
-	const { library } = useWeb3React<Web3Provider>();
+	const { provider } = useWeb3React<Web3Provider>();
 	const { instance: sdk } = useZnsSdk();
 
 	const acceptBid = useCallback(
@@ -102,13 +102,13 @@ export const useBidProvider = (): UseBidProviderReturn => {
 
 				const bids = await sdk.zauction.listBids(bidData.tokenId);
 				const bid = bids.filter((b: any) => b.bidNonce === bidData.bidNonce)[0];
-				const tx = await sdk.zauction.acceptBid(bid, library!.getSigner());
+				const tx = await sdk.zauction.acceptBid(bid, provider!.getSigner());
 				return tx;
 			}, 'accept bid');
 
 			return tx;
 		},
-		[sdk, library],
+		[sdk, provider],
 	);
 
 	const getBidsForYourDomains = useCallback(async () => {
@@ -205,7 +205,7 @@ export const useBidProvider = (): UseBidProviderReturn => {
 				console.warn('No zAuctionInstance');
 				return;
 			}
-			if (!library) {
+			if (!provider) {
 				console.error('Could not find web3 library');
 				return;
 			}
@@ -216,7 +216,7 @@ export const useBidProvider = (): UseBidProviderReturn => {
 						domainId: domain.id,
 						bidAmount: ethers.utils.parseEther(bid.toString()),
 					},
-					library!.getSigner(),
+					provider!.getSigner(),
 					(status) => onPlaceBidStatusChange(status, onStep),
 				);
 				onStep('Generating bid...');
@@ -225,7 +225,7 @@ export const useBidProvider = (): UseBidProviderReturn => {
 				throw new Error('Rejected by wallet');
 			}
 		},
-		[sdk, library],
+		[sdk, provider],
 	);
 
 	return useMemo(

@@ -19,7 +19,7 @@ export const SdkContext = React.createContext({
 });
 
 export const ZnsSdkProvider = ({ children }: ZnsSdkProviderProps) => {
-	const { library, chainId } = useWeb3React<Web3Provider>();
+	const { provider: web3Provider, chainId } = useWeb3React<Web3Provider>();
 
 	const instance = React.useMemo(() => {
 		/**
@@ -27,7 +27,7 @@ export const ZnsSdkProvider = ({ children }: ZnsSdkProviderProps) => {
 		 * a provider using the Infura URL for the selected chain
 		 */
 		const provider =
-			library ||
+			web3Provider ||
 			new ethers.providers.JsonRpcProvider(RPC_URLS[defaultNetworkId]);
 		const network = chainIdToNetworkType(chainId);
 
@@ -63,7 +63,7 @@ export const ZnsSdkProvider = ({ children }: ZnsSdkProviderProps) => {
 				throw new Error('SDK isn´t available for this chainId');
 			}
 		}
-	}, [library, chainId]);
+	}, [web3Provider, chainId]);
 
 	useEffect(() => {
 		const keys = Object.keys(instance).filter(

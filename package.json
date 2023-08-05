@@ -4,6 +4,7 @@
 	"private": true,
 	"dependencies": {
 		"@apollo/client": "^3.3.13",
+		"@coinbase/wallet-sdk": "^3.7.1",
 		"@ethersproject/abi": "^5.1.0",
 		"@ethersproject/abstract-signer": "^5.1.0",
 		"@ethersproject/address": "^5.1.0",
@@ -26,17 +27,22 @@
 		"@uiw/react-md-editor": "^3.12.3",
 		"@web3-react/abstract-connector": "^6.0.7",
 		"@web3-react/authereum-connector": "^6.1.9",
-		"@web3-react/core": "^6.1.9",
+		"@web3-react/coinbase-wallet": "^8.2.0",
+		"@web3-react/core": "^8.2.0",
 		"@web3-react/fortmatic-connector": "^6.1.6",
 		"@web3-react/frame-connector": "^6.0.9",
 		"@web3-react/injected-connector": "^6.0.7",
 		"@web3-react/ledger-connector": "^6.1.9",
 		"@web3-react/magic-connector": "^6.1.9",
+		"@web3-react/metamask": "^8.2.1",
+		"@web3-react/network": "^8.2.0",
 		"@web3-react/network-connector": "^6.1.9",
 		"@web3-react/portis-connector": "^6.1.9",
 		"@web3-react/torus-connector": "^6.1.9",
 		"@web3-react/trezor-connector": "^6.1.9",
+		"@web3-react/types": "^8.2.0",
 		"@web3-react/walletconnect-connector": "6.2.4",
+		"@web3-react/walletconnect-v2": "^8.3.7",
 		"@web3-react/walletlink-connector": "^6.1.9",
 		"@zero-tech/zapp-staking": "^0.7.1",
 		"@zero-tech/zauction-sdk": "0.2.12",
@@ -111,18 +117,11 @@
 			"react-app/jest"
 		]
 	},
-	"browserslist": {
-		"production": [
-			">0.2%",
-			"not dead",
-			"not op_mini all"
-		],
-		"development": [
-			"last 1 chrome version",
-			"last 1 firefox version",
-			"last 1 safari version"
-		]
-	},
+	"browserslist": [
+		">0.2%",
+		"not dead",
+		"not op_mini all"
+	],
 	"devDependencies": {
 		"@craco/craco": "^6.4.5",
 		"@graphql-codegen/cli": "1.21.3",

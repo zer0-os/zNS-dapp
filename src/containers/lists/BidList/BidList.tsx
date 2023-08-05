@@ -55,7 +55,7 @@ const BidList: React.FC<BidListProps> = ({
 	const [blockNumber, setBlockNumber] = useState<number>();
 	const [isAcceptBidModal, setIsAcceptBidModal] = useState(false);
 	const [acceptingBid, setAcceptingBid] = useState<Bid | undefined>(undefined);
-	const { library, account } = useWeb3React<Web3Provider>();
+	const { provider, account } = useWeb3React<Web3Provider>();
 
 	// Sort bids by date
 	const sortedBids = sortBidsByTime(bids);
@@ -66,17 +66,17 @@ const BidList: React.FC<BidListProps> = ({
 		: sortedBids;
 
 	useEffect(() => {
-		if (library) {
-			library.getBlockNumber().then((bn) => {
+		if (provider) {
+			provider.getBlockNumber().then((bn) => {
 				setBlockNumber(bn);
 			});
-			library.on('block', setBlockNumber);
+			provider.on('block', setBlockNumber);
 			return () => {
-				library.removeListener('block', setBlockNumber);
+				provider.removeListener('block', setBlockNumber);
 				setBlockNumber(undefined);
 			};
 		}
-	}, [library]);
+	}, [provider]);
 
 	///////////////
 	// Functions //

@@ -72,7 +72,7 @@ const AcceptBid = ({
 	// Hooks
 	const { accept, status } = useAcceptBid();
 	const { instance: sdk } = useZnsSdk();
-	const { account, library } = useWeb3React();
+	const { account, provider } = useWeb3React();
 
 	//- Notification State
 	const { addNotification } = useNotification();
@@ -94,7 +94,7 @@ const AcceptBid = ({
 
 	// Check zAuction Approval
 	const checkZAuctionApproval = () => {
-		if (!sdk || !library || !account || !acceptingBid) {
+		if (!sdk || !provider || !account || !acceptingBid) {
 			return;
 		}
 		setError(undefined);
@@ -123,7 +123,7 @@ const AcceptBid = ({
 
 	// Approve zAuction Flow
 	const approveZAuction = () => {
-		if (!sdk || !library || !account || !acceptingBid) {
+		if (!sdk || !provider || !account || !acceptingBid) {
 			return;
 		}
 		setError(undefined);
@@ -132,7 +132,7 @@ const AcceptBid = ({
 			try {
 				const tx = await sdk.zauction.approveZAuctionToTransferNftsByBid(
 					acceptingBid,
-					library.getSigner(),
+					provider.getSigner(),
 				);
 				try {
 					setStepContent(StepContent.ApprovingZAuction);

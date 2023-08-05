@@ -22,7 +22,7 @@ export const useDomainSettingsData = (domainId: string) => {
 		currentChainId,
 	);
 
-	const { library } = useWeb3React<Web3Provider>();
+	const { provider } = useWeb3React<Web3Provider>();
 
 	const [isLocked, setIsLocked] = useState<boolean>(true);
 	const [isChanged, setIsChanged] = useState<boolean>(false);
@@ -108,7 +108,7 @@ export const useDomainSettingsData = (domainId: string) => {
 			unavailableDomainNames,
 			unlockable,
 		},
-		library,
+		library: provider,
 		setDomainMetadata,
 	};
 };

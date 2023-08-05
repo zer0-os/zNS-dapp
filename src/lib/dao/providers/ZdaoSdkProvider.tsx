@@ -31,7 +31,7 @@ type DaoSdkProviderProps = {
 export const ZdaoSdkProvider: React.FC<DaoSdkProviderProps> = ({
 	children,
 }) => {
-	const { library, chainId, active } = useWeb3React<Web3Provider>(); // get provider for connected wallet
+	const { provider, chainId, isActive } = useWeb3React<Web3Provider>(); // get provider for connected wallet
 
 	const [instance, setInstance] = useState<SDKInstance | undefined>();
 
@@ -42,8 +42,8 @@ export const ZdaoSdkProvider: React.FC<DaoSdkProviderProps> = ({
 		setInstance(undefined);
 
 		// Get provider, or initialise default provider if wallet is not connected
-		const provider =
-			library || new ethers.providers.JsonRpcProvider(RPC_URLS[selectedChain]);
+		const sdkProvider =
+			provider || new ethers.providers.JsonRpcProvider(RPC_URLS[selectedChain]);
 
 		if (network !== NETWORK_TYPES.MAINNET && network !== NETWORK_TYPES.GOERLI) {
 			throw new Error('Network not supported');
@@ -53,7 +53,7 @@ export const ZdaoSdkProvider: React.FC<DaoSdkProviderProps> = ({
 			Object.values(WALLETS).includes(
 				localStorage.getItem(LOCAL_STORAGE_KEYS.CHOOSEN_WALLET) as WALLETS,
 			) &&
-			!active
+			!isActive
 		) {
 			// it is still loading wallet connected account
 			return;
@@ -65,14 +65,14 @@ export const ZdaoSdkProvider: React.FC<DaoSdkProviderProps> = ({
 				: developmentConfiguration;
 
 		// Create SDK configuration object
-		const config: Config = createConfig(provider, 'snapshot.mypinata.cloud');
+		const config: Config = createConfig(sdkProvider, 'snapshot.mypinata.cloud');
 
 		const sdk = createSDKInstance(config);
 
 		setInstance(sdk);
-	}, [library, active, network, selectedChain]);
+	}, [provider, isActive, network, selectedChain]);
 
-	useUpdateEffect(createInstance, [library, active, network, selectedChain]);
+	useUpdateEffect(createInstance, [provider, isActive, network, selectedChain]);
 	useDidMount(() => {
 		createInstance();
 	});
