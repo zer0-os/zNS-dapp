@@ -213,7 +213,7 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 						onClick={() => handleOnConnect(ConnectionType.WALLET_CONNECT)}
 						className={getWalletOptionStyle(WALLETS.WALLET_CONNECT)}
 					>
-						<span>Wallet Connect</span>
+						<span>WalletConnect</span>
 						<div>
 							<Image alt="wallet connect" src={walletConnectIcon} />
 						</div>
