@@ -1,11 +1,11 @@
 import {
-	SET_TRANSFERRING_REQUEST,
 	SET_TRANSFERRED_REQUEST,
+	SET_TRANSFERRING_REQUEST,
 } from './actionTypes';
 import {
-	TransferRequestPayload,
-	SetTransferringRequest,
 	SetTransferredRequest,
+	SetTransferringRequest,
+	TransferRequestPayload,
 } from './types';
 
 /**

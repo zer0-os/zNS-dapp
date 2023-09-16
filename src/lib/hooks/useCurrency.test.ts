@@ -1,10 +1,10 @@
 import { renderHook } from 'lib/testUtils';
 import {
-	getWildPriceUsdRequest as reduxGetWildPriceUsdRequest,
 	getLootPriceUsdRequest as reduxGetLootPriceUsdRequest,
-	getZeroPriceUsdRequest as reduxGetZeroPriceUsdRequest,
 	getWildPricePercentageChangeRequest as reduxGetWildPricePercentageChangeRequest,
+	getWildPriceUsdRequest as reduxGetWildPriceUsdRequest,
 	getZeroPricePercentageChangeRequest as reduxGetZeroPricePercentageChangeRequest,
+	getZeroPriceUsdRequest as reduxGetZeroPriceUsdRequest,
 } from 'store/currency/actions';
 import { currencyReady } from 'store/currency/currency.mockData';
 import useCurrency, { CurrencyHook } from './useCurrency';

@@ -1,5 +1,5 @@
 //- React Imports
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 //- Style Imports
 import styles from './Tooltip.module.css';

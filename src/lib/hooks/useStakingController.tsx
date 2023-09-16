@@ -2,6 +2,7 @@ import { useZnsContracts } from 'lib/contracts';
 import { tryFunction } from 'lib/utils';
 import { Maybe, NftParams } from 'lib/types';
 import { ethers } from 'ethers';
+
 export interface DomainRequestParams {
 	requestor: string;
 	stakeAmount: string;

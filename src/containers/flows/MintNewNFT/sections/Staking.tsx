@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 //- React Imports
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 //- Type Imports
 import { TokenStakeType } from '../types';
@@ -9,7 +9,7 @@ import { TokenStakeType } from '../types';
 import styles from '../MintNewNFT.module.scss';
 
 //- Component Imports
-import { TextInput, FutureButton } from 'components';
+import { FutureButton, TextInput } from 'components';
 
 type StakingProps = {
 	balance: number | undefined;

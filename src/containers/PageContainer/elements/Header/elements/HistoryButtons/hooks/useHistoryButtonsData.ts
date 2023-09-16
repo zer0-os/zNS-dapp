@@ -1,4 +1,4 @@
-import { useState, useRef, useMemo } from 'react';
+import { useMemo, useRef, useState } from 'react';
 
 type UseHistoryButtonsDataProps = {
 	props: {

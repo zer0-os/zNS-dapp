@@ -3,17 +3,17 @@ import React from 'react';
 
 //- Components Imports
 import {
-	Overlay,
-	IconButton,
 	FutureButton,
+	IconButton,
 	LoadingIndicator,
+	Overlay,
 } from 'components';
 
 //- Constants Imports
 import {
-	DomainSettingsModalType,
-	DomainSettingsModalStatus,
 	DOMAIN_SETTINGS_MODALS,
+	DomainSettingsModalStatus,
+	DomainSettingsModalType,
 } from '../../DomainSettings.constants';
 
 //- Assets Imports

@@ -1,6 +1,5 @@
-import { Web3Provider } from '@ethersproject/providers';
 import { Registrar__factory } from '../types/factories/Registrar__factory';
-import { useWeb3React } from '@web3-react/core';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import { useMemo } from 'react';
 import addresses from './addresses';
 import { chainIdToNetworkType, defaultNetworkId } from './network';
@@ -46,14 +45,14 @@ export interface Contracts {
 }
 
 function useZnsContracts(): Contracts | null {
-	const context = useWeb3React<Web3Provider>();
-	const { library, active, chainId } = context;
+	const context = useWeb3();
+	const { provider, isActive, chainId } = context;
 
 	const contract = useMemo((): Contracts | null => {
 		let contracts;
 		let signer: ethers.Signer | ethers.providers.Provider =
 			new ethers.VoidSigner(ethers.constants.AddressZero);
-		if (!library) {
+		if (!provider) {
 			if (RPC_URLS[defaultNetworkId]) {
 				signer = new ethers.providers.JsonRpcProvider(
 					RPC_URLS[defaultNetworkId],
@@ -68,7 +67,7 @@ function useZnsContracts(): Contracts | null {
 			}
 
 			contracts = addresses[chainIdToNetworkType(chainId)];
-			signer = library.getSigner();
+			signer = provider.getSigner();
 		}
 
 		if (!contracts) {
@@ -98,21 +97,21 @@ function useZnsContracts(): Contracts | null {
 			),
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [active, library, chainId]);
+	}, [isActive, provider, chainId]);
 	return contract;
 }
 
 function useContractAddresses(): ContractAddresses | undefined {
-	const context = useWeb3React<Web3Provider>();
-	const { library, active, chainId } = context;
+	const context = useWeb3();
+	const { provider, isActive, chainId } = context;
 	const networkAddresses = useMemo((): ContractAddresses | undefined => {
-		if (!library) {
+		if (!provider) {
 			return addresses[chainIdToNetworkType(defaultNetworkId)];
 		}
 
 		return addresses[chainIdToNetworkType(chainId)];
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [active, library, chainId]);
+	}, [isActive, provider, chainId]);
 	return networkAddresses;
 }
 

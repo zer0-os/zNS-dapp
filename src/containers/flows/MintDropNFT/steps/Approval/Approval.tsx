@@ -5,8 +5,8 @@ import React, { useEffect, useState } from 'react';
 import { ERC20, WhitelistSimpleSale } from 'types';
 
 import {
-	getSaleContractApprovalStatus,
 	approveSaleContract,
+	getSaleContractApprovalStatus,
 } from '../../helpers';
 
 // Style Imports

@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 
 //- Type Imports
-import { Domain, DefaultDomain } from 'lib/types';
+import { DefaultDomain, Domain } from 'lib/types';
 
 // emailjs
 import emailjs from 'emailjs-com';

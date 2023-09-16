@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 //- Style Imports
 import styles from './Enlist.module.scss';
 
 //- Component Imports
-import { TextInput, FutureButton, Image } from 'components';
+import { FutureButton, Image, TextInput } from 'components';
 
 //- Library Imports
 import { getMetadata } from 'lib/metadata';

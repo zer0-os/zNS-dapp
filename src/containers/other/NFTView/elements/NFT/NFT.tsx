@@ -2,7 +2,7 @@
 import { useCallback } from 'react';
 
 //- Component Imports
-import { Detail, NFTMedia, Tooltip, OptionDropdown } from 'components';
+import { Detail, NFTMedia, OptionDropdown, Tooltip } from 'components';
 
 //- Asset Imports
 import shareIcon from '../../assets/share.svg';

@@ -4,8 +4,8 @@ import {
 } from './actionTypes';
 import {
 	Notification,
-	NotificationsState,
 	NotificationsActions,
+	NotificationsState,
 } from './types';
 
 export const REDUCER_NAME = 'notifications';

@@ -129,7 +129,6 @@ textarea {
 html,
 body {
 	height: 100%;
-	overflow: hidden;
 	touch-action: pan-x pan-y;
 }
 
@@ -401,4 +400,39 @@ button {
 
 .glow-text-blue {
 	text-shadow: #{colors.$text-glow-primary};
+}
+
+/*
+ *
+ * Resets
+ *
+ */
+
+.zapp-reset {
+	main {
+		padding: 0;
+		margin: 0;
+		max-width: 100%;
+	}
+
+	[class*="ZAppContent_Container"] {
+		overflow-y: visible !important;
+		overflow: visible !important;
+		height: unset;
+	}
+
+	[class*="ZAppContent_Scroll"] {
+		overflow-y: visible !important;
+		overflow: visible !important;
+	}
+}
+
+[class*="ConnectWallet_Container"] {
+	p {
+		padding: 0 !important;
+	}
+
+	button {
+		display: none !important;
+	}
 }

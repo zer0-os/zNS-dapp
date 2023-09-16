@@ -1,4 +1,4 @@
-import { useEffect, EffectCallback } from 'react';
+import { EffectCallback, useEffect } from 'react';
 
 /**
  * Invokes callback on React component mount.

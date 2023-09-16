@@ -3,8 +3,8 @@ import {
 	REMOVE_NOTIFICATION_REQUEST,
 } from './actionTypes';
 import {
-	Notification,
 	AddNotificationRequest,
+	Notification,
 	RemoveNotificationRequest,
 } from './types';
 import reducer, { INITIAL_STATE } from './reducer';

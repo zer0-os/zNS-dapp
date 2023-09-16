@@ -7,7 +7,7 @@ import classNames from 'classnames';
 import { useCreateProposal } from './hooks';
 
 // - Component
-import { FutureButton, Overlay, ConnectToWallet } from 'components';
+import { ConnectToWallet, FutureButton, Overlay } from 'components';
 
 // - Styles
 import styles from './CreateProposal.module.scss';

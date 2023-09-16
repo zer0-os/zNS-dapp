@@ -8,7 +8,7 @@ import { useMint } from 'lib/hooks/useMint';
 import { useTransfer } from 'lib/hooks/useTransfer';
 import { useNavbar } from 'lib/hooks/useNavbar';
 import useMvpVersion from 'lib/hooks/useMvpVersion';
-import { Maybe, DisplayParentDomain, Metadata } from 'lib/types';
+import { DisplayParentDomain, Maybe, Metadata } from 'lib/types';
 
 //- Hooks Imports
 import { useHeaderData, useHeaderHandlers } from '../Header/hooks';
@@ -16,10 +16,10 @@ import { useHeaderData, useHeaderHandlers } from '../Header/hooks';
 //- Components Imports
 import {
 	ConnectWalletButton,
-	MintButton,
-	StatusButtons,
-	ProfileButton,
 	InfoButton,
+	MintButton,
+	ProfileButton,
+	StatusButtons,
 } from '../Header/elements';
 
 //- Constants Imports

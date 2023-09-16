@@ -1,11 +1,11 @@
-import { useMemo, useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useCallback, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
-	getWildPriceUsdRequest,
 	getLootPriceUsdRequest,
-	getZeroPriceUsdRequest,
 	getWildPricePercentageChangeRequest,
+	getWildPriceUsdRequest,
 	getZeroPricePercentageChangeRequest,
+	getZeroPriceUsdRequest,
 } from 'store/currency/actions';
 import { getCurrency } from 'store/currency/selectors';
 import { useDidMount } from './useDidMount';

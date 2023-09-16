@@ -1,12 +1,12 @@
 import { useState } from 'react';
 
-import { useWeb3React } from '@web3-react/core';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 
 import { ConnectToWallet, FutureButton, Overlay } from 'components';
 
 // @todo change props from any type
 const ConnectWalletButton = (props: any) => {
-	const { active } = useWeb3React();
+	const { isActive } = useWeb3();
 
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -25,7 +25,7 @@ const ConnectWalletButton = (props: any) => {
 					<ConnectToWallet onConnect={closeModal} />
 				</Overlay>
 			)}
-			<FutureButton {...props} glow={!active} onClick={openModal} />
+			<FutureButton {...props} glow={!isActive} onClick={openModal} />
 		</>
 	);
 };

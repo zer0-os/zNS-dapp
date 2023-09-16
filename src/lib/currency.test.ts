@@ -1,6 +1,6 @@
 import { parseEther } from '@ethersproject/units';
 import { BigNumber } from 'ethers';
-import { displayEtherToFiat, toFiat, displayEther } from './currency';
+import { displayEther, displayEtherToFiat, toFiat } from './currency';
 
 //////////////////////
 // f:: displayEther //

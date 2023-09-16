@@ -1,5 +1,5 @@
 //- React Imports
-import React, { useState, useRef } from 'react';
+import React, { useRef, useState } from 'react';
 
 // Library Imports
 import { useOnClickOutside } from 'lib/hooks/useOnClickOutside';

@@ -1,5 +1,5 @@
 //- Components Imports
-import { Wizard, EtherInput, FutureButton } from 'components';
+import { EtherInput, FutureButton, Wizard } from 'components';
 
 //- Type Imports
 import { Step } from '../TransferOwnership.types';

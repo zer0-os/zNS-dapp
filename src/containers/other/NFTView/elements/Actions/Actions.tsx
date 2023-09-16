@@ -13,7 +13,7 @@ import { formatEther } from '@ethersproject/units';
 import { Bid } from '@zero-tech/zns-sdk/lib/zAuction';
 
 //- Types Imports
-import { ActionBlock, ACTION_TYPES } from './Actions.types';
+import { ACTION_TYPES, ActionBlock } from './Actions.types';
 
 //- Constants Imports
 import { Labels } from 'constants/labels';

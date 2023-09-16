@@ -1,8 +1,8 @@
 import {
-	SET_TRANSFERRING_REQUEST,
 	SET_TRANSFERRED_REQUEST,
+	SET_TRANSFERRING_REQUEST,
 } from './actionTypes';
-import { SetTransferringRequest, SetTransferredRequest } from './types';
+import { SetTransferredRequest, SetTransferringRequest } from './types';
 import reducer, { INITIAL_STATE } from './reducer';
 import {
 	TRANSFER_SUBMIT_PARAMS_1,

@@ -1,21 +1,21 @@
-import { useMemo, useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useCallback, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from 'store';
 import {
-	setStakingRequestingRequest as reduxSetStakingRequestingRequest,
-	setStakingRequestedRequest as reduxSetStakingRequestedRequest,
-	setStakingApprovingRequest as reduxSetStakingApprovingRequest,
 	setStakingApprovedRequest as reduxSetStakingApprovedRequest,
-	setStakingFulfillingRequest as reduxSetStakingFulfillingRequest,
+	setStakingApprovingRequest as reduxSetStakingApprovingRequest,
 	setStakingFulfilledRequest as reduxSetStakingFulfilledRequest,
+	setStakingFulfillingRequest as reduxSetStakingFulfillingRequest,
+	setStakingRequestedRequest as reduxSetStakingRequestedRequest,
+	setStakingRequestingRequest as reduxSetStakingRequestingRequest,
 } from 'store/staking/actions';
 import {
-	getStakingRequesting,
-	getStakingRequested,
-	getStakingApproving,
 	getStakingApproved,
-	getStakingFulfilling,
+	getStakingApproving,
 	getStakingFulfilled,
+	getStakingFulfilling,
+	getStakingRequested,
+	getStakingRequesting,
 } from 'store/staking/selectors';
 import { DomainRequestAndContents, NftStatusCard } from 'lib/types';
 import { StakingState } from '../types';

@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React, { FC, useState } from 'react';
-import type { Proposal, Choice } from '@zero-tech/zdao-sdk';
+import type { Choice, Proposal } from '@zero-tech/zdao-sdk';
 import { truncateWalletAddress } from 'lib/utils';
 import { useCurrentDao } from 'lib/dao/providers/CurrentDaoProvider';
 import { Overlay, Wizard } from 'components';

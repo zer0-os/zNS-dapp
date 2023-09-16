@@ -7,7 +7,7 @@ import { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
 
 //- Library Imports
 import { ethers } from 'ethers';
-import { useWeb3React } from '@web3-react/core';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 
 //- Constants Imports
 import { AltText, Labels, Modal, TestId } from '../BidTable.constants';
@@ -22,7 +22,7 @@ import { ActionKeys, BidTableData } from '../BidTable.types';
 import usePageWidth from 'lib/hooks/usePageWidth';
 
 //- Utils Imports
-import { handleDomainNameWidth, getTableActions } from '../BidTable.utils';
+import { getTableActions, handleDomainNameWidth } from '../BidTable.utils';
 
 //- Styles Imports
 import styles from './BidTableCard.module.scss';
@@ -32,7 +32,7 @@ const BidTableCard = (props: any) => {
 	const dimensions = usePageWidth();
 	const [modal, setModal] = useState<Modal | undefined>();
 	const [selectedBid, setSelectedBid] = useState<BidTableData>();
-	const { account } = useWeb3React();
+	const { account } = useWeb3();
 
 	const bid: BidTableData = props.data;
 

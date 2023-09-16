@@ -9,7 +9,7 @@ import { useStaking } from 'lib/hooks/useStaking';
 import useNotification from 'lib/hooks/useNotification';
 
 //- Component Imports
-import { Image, FutureButton } from 'components';
+import { FutureButton, Image } from 'components';
 
 //- Hook Imports
 import useMint from 'lib/hooks/useMint';
@@ -23,10 +23,10 @@ import styles from './MintPreview.module.scss';
 //- Constants Imports
 import { CLAIM_FLOW_NOTIFICATIONS } from 'constants/notifications';
 import {
-	TITLE,
 	ALT_TEXT,
-	MESSAGES,
 	BUTTON_TEXT,
+	MESSAGES,
+	TITLE,
 } from './MintPreview.constants';
 import { ZNA } from 'constants/zna';
 import { ROUTES } from 'constants/routes';

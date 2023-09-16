@@ -2,21 +2,21 @@ import React from 'react';
 
 // - Library
 import type { zDAO } from '@zero-tech/zdao-sdk';
-import classNames from 'classnames/bind';
+import classNames from 'classnames';
 
 // - Hooks
 import { useCreateProposalForm } from './hooks';
 
 // - Component
 import {
-	MarkDownEditor,
-	OptionDropdown,
-	TextInputWithTopPlaceHolder,
-	Tooltip,
-	QuestionButton,
 	EtherscanLink,
 	FutureButton,
+	MarkDownEditor,
+	OptionDropdown,
 	Overlay,
+	QuestionButton,
+	TextInputWithTopPlaceHolder,
+	Tooltip,
 	Wizard,
 } from 'components';
 
@@ -27,9 +27,9 @@ import { VotingDetailItem } from './CreateProposal.types';
 // - Constants
 import {
 	ProposalCreateSections,
+	ProposalFormConfirmModalText,
 	ProposalInputFieldKeys,
 	ProposalInputFields,
-	ProposalFormConfirmModalText,
 } from './CreateProposal.constants';
 
 // - Helpers

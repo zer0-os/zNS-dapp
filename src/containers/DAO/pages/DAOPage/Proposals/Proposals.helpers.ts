@@ -1,5 +1,5 @@
 import { formatUnits } from 'ethers/lib/utils';
-import type { zDAO, Proposal, TokenMetaData, Token } from '@zero-tech/zdao-sdk';
+import type { Proposal, Token, TokenMetaData, zDAO } from '@zero-tech/zdao-sdk';
 import { ProposalState } from '@zero-tech/zdao-sdk';
 import { isEmpty } from 'lodash';
 import moment from 'moment';

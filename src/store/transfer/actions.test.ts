@@ -1,9 +1,9 @@
 import {
-	SET_TRANSFERRING_REQUEST,
 	SET_TRANSFERRED_REQUEST,
+	SET_TRANSFERRING_REQUEST,
 } from './actionTypes';
-import { SetTransferringRequest, SetTransferredRequest } from './types';
-import { setTransferringRequest, setTransferredRequest } from './actions';
+import { SetTransferredRequest, SetTransferringRequest } from './types';
+import { setTransferredRequest, setTransferringRequest } from './actions';
 import {
 	TRANSFER_SUBMIT_PARAMS_1,
 	TRANSFER_SUBMIT_PARAMS_2,

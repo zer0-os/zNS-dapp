@@ -3,24 +3,23 @@ import { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
 // Web3 Imports
-import { useWeb3React } from '@web3-react/core';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import { useZnsContracts } from 'lib/contracts';
-import { Web3Provider } from '@ethersproject/providers';
 
 // Component Imports
 import { MintDropNFTBanner, Overlay } from 'components';
 import MintDropNFTWizard from './MintDropNFTWizard';
 
 // Library Imports
-import { Stage, DropData, TransactionData } from './types';
-import { getBannerLabel, getBannerButtonText } from './labels';
+import { DropData, Stage, TransactionData } from './types';
+import { getBannerButtonText, getBannerLabel } from './labels';
 import useMint from 'lib/hooks/useMint';
 import {
-	getDropData,
-	getUserEligibility,
-	getNumberPurchasedByUser,
 	getBalanceEth,
+	getDropData,
 	getMaxPurchasesPerUser,
+	getNumberPurchasedByUser,
+	getUserEligibility,
 } from './helpers';
 import { useZSaleSdk } from 'lib/hooks/sdk';
 import useAsyncEffect from 'use-async-effect';
@@ -47,7 +46,7 @@ const MintDropNFTFlowContainer = ({
 	const location = useLocation();
 
 	// Web3 hooks
-	const { account, library } = useWeb3React<Web3Provider>();
+	const { account, provider } = useWeb3();
 
 	// Contracts
 	const contracts = useZnsContracts();
@@ -252,7 +251,7 @@ const MintDropNFTFlowContainer = ({
 			isMounted = false;
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [library, zSaleInstance, isSaleHalted]);
+	}, [provider, zSaleInstance, isSaleHalted]);
 
 	/**
 	 * Gets user eligibility
@@ -263,7 +262,7 @@ const MintDropNFTFlowContainer = ({
 			return;
 		}
 		// Get user data if wallet connected
-		if (account && library) {
+		if (account && provider) {
 			getUserEligibility(account, zSaleInstance).then((d) => {
 				if (isMounted && d !== undefined) {
 					setIsUserWhitelisted(d);
@@ -280,19 +279,19 @@ const MintDropNFTFlowContainer = ({
 		return () => {
 			isMounted = false;
 		};
-	}, [account, library, zSaleInstance, isSaleHalted, dropStage]);
+	}, [account, provider, zSaleInstance, isSaleHalted, dropStage]);
 
 	/**
 	 * Get user-specific variables whenever mint amount or account changes
 	 */
 	useEffect(() => {
 		let isMounted = true;
-		if (!zSaleInstance || !library || isSaleHalted) {
+		if (!zSaleInstance || !provider || isSaleHalted) {
 			return;
 		}
 		// Get user data if wallet connected
-		if (account && library && wildTokenContract) {
-			getBalanceEth(library.getSigner()).then((d) => {
+		if (account && provider && wildTokenContract) {
+			getBalanceEth(provider.getSigner()).then((d) => {
 				if (isMounted && d !== undefined) {
 					setBalanceEth(d);
 				}
@@ -311,14 +310,14 @@ const MintDropNFTFlowContainer = ({
 			isMounted = false;
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [numMinted, account, library, zSaleInstance]);
+	}, [numMinted, account, provider, zSaleInstance]);
 
 	/**
 	 * Gets and sets what stage the sale is in
 	 */
 	useEffect(() => {
 		let isMounted = true;
-		if (!zSaleInstance || isSaleHalted || !library) {
+		if (!zSaleInstance || isSaleHalted || !provider) {
 			return;
 		}
 
@@ -370,7 +369,7 @@ const MintDropNFTFlowContainer = ({
 			isMounted = false;
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [hasCountdownFinished, refetch, library, zSaleInstance]);
+	}, [hasCountdownFinished, refetch, provider, zSaleInstance]);
 
 	/**
 	 * Listens for changes to drop stage, and handles UI accordingly
@@ -382,7 +381,7 @@ const MintDropNFTFlowContainer = ({
 			(dropStage === Stage.Public || dropStage === Stage.Whitelist) &&
 			!isSaleHalted &&
 			account &&
-			library
+			provider
 		) {
 			// Fetch minted count periodically
 			timer = setInterval(async () => {
@@ -400,7 +399,7 @@ const MintDropNFTFlowContainer = ({
 			timer && clearInterval(timer);
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [dropStage, zSaleInstance, isSaleHalted, account, library]);
+	}, [dropStage, zSaleInstance, isSaleHalted, account, provider]);
 
 	/**
 	 * Gets sale price on SDK instance or library change
@@ -408,7 +407,7 @@ const MintDropNFTFlowContainer = ({
 	useAsyncEffect(async () => {
 		const price = await zSaleInstance.getSalePrice();
 		setPricePerNFT(Number(price));
-	}, [zSaleInstance, library, dropStage]);
+	}, [zSaleInstance, provider, dropStage]);
 
 	// useAsyncEffect(async () => {
 	// 	const interval = setInterval(async () => {

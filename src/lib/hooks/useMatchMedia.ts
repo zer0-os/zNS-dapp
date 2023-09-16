@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const mediaQueries = {
 	phone: '(min-width: 320px) and (max-width: 568px)',

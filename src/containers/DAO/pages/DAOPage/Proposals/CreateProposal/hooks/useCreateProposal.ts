@@ -1,7 +1,6 @@
-import { useState, useMemo, useCallback } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useWeb3React } from '@web3-react/core';
-import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import type { zDAO } from '@zero-tech/zdao-sdk';
 import { getTokenOptionsFromAssets } from '../CreateProposal.helpers';
 import { DAO_CREATE_PROPOSAL } from '../../Proposals.constants';
@@ -15,14 +14,14 @@ export const useCreateProposal = (dao?: zDAO) => {
 
 	// - Hooks
 	const history = useHistory();
-	const { active } = useWeb3React<Web3Provider>();
+	const { isActive } = useWeb3();
 	const { assets, isLoading: isAssetLoading } = useAssets(dao);
 	const { balance, isLoading: isLoadingBalance } = useBalance(
 		dao?.votingToken.token,
 	);
 
 	// - Data
-	const isLoading = active ? isAssetLoading : false;
+	const isLoading = isActive ? isAssetLoading : false;
 	const tokenDropdownOptions = useMemo(
 		() => getTokenOptionsFromAssets(assets),
 		[assets],
@@ -56,20 +55,24 @@ export const useCreateProposal = (dao?: zDAO) => {
 		isLoading: isLoading || isLoadingBalance,
 		notes: {
 			show:
-				!active || (active && !isLoading && tokenDropdownOptions.length === 0),
+				!isActive ||
+				(isActive && !isLoading && tokenDropdownOptions.length === 0),
 			ConnectWallet: {
-				show: !active,
+				show: !isActive,
 				onClick: handleShowConnectWallet,
 			},
 			Token: {
-				show: active && !isLoading && tokenDropdownOptions.length === 0,
+				show: isActive && !isLoading && tokenDropdownOptions.length === 0,
 				onClick: handleGoToDao,
 			},
 		},
 		triggerCancel,
 		showWalletConnectModal,
 		showForm:
-			active && !isLoading && tokenDropdownOptions.length > 0 && balance?.gt(0),
+			isActive &&
+			!isLoading &&
+			tokenDropdownOptions.length > 0 &&
+			balance?.gt(0),
 		tokenDropdownOptions,
 		handleGoToAllProposals,
 		handleHideConnectWallet,

@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import styles from './GenericTable.module.scss';
-import { LoadingIndicator, IconButton, SearchBar } from 'components';
+import { IconButton, LoadingIndicator, SearchBar } from 'components';
 import { usePropsState } from 'lib/hooks/usePropsState';
 import { useInfiniteScroll } from 'lib/hooks/useInfiniteScroll';
 import grid from './assets/grid.svg';

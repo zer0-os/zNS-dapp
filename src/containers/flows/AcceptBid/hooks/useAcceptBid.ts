@@ -7,7 +7,7 @@
 import { useState } from 'react';
 
 //- Library Imports
-import { useWeb3React } from '@web3-react/core';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import { Bid } from '@zero-tech/zauction-sdk';
 import { useZnsSdk } from 'lib/hooks/sdk';
 
@@ -20,13 +20,13 @@ export type UseAcceptBidReturn = {
 };
 
 const useAcceptBid = (): UseAcceptBidReturn => {
-	const { library } = useWeb3React();
+	const { provider } = useWeb3();
 	const { instance: sdk } = useZnsSdk();
 
 	const [status, setStatus] = useState<string | undefined>();
 
 	const accept = async (bid: Bid) => {
-		if (!library) {
+		if (!provider) {
 			console.error('Could not find web3 library');
 			throw new Error(ERRORS.LIBRARY);
 		}
@@ -36,7 +36,7 @@ const useAcceptBid = (): UseAcceptBidReturn => {
 			setStatus(MESSAGES.TEXT_WAITING_FOR_WALLET);
 			let tx;
 			try {
-				tx = await sdk.zauction.acceptBid(bid, library.getSigner());
+				tx = await sdk.zauction.acceptBid(bid, provider.getSigner());
 			} catch (err) {
 				console.error(err);
 				if (err.message.includes(MESSAGES.DATA_CONSUMED)) {

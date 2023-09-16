@@ -1,13 +1,12 @@
 //- React Imports
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 //- Web3 Imports
-import { useWeb3React } from '@web3-react/core';
-import { Web3Provider } from '@ethersproject/providers';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 
 //- Global Component Imports
-import { Wizard, StepBar } from 'components';
+import { StepBar, Wizard } from 'components';
 
 //- Library Imports
 import { ClaimableDomain } from '@zero-tech/zsale-sdk';
@@ -17,14 +16,14 @@ import Details from './components/WizardSteps/Details/Details';
 import Claiming from './components/WizardSteps/Claiming/Claiming';
 
 //- Types Imports
-import { StepContent, Step, ClaimData } from './ClaimNFT.types';
+import { ClaimData, Step, StepContent } from './ClaimNFT.types';
 
 //- Constants Imports
 import {
+	DOMAINS,
+	LOADING_TEXT,
 	STEP_BAR_HEADING,
 	STEP_CONTENT_TITLES,
-	LOADING_TEXT,
-	DOMAINS,
 } from './ClaimNFT.constants';
 import { ROUTES } from 'constants/routes';
 
@@ -57,7 +56,7 @@ const ClaimNFT = ({
 	//////////////////
 	// State & Data //
 	//////////////////
-	const { active } = useWeb3React<Web3Provider>();
+	const { isActive } = useWeb3();
 	const { push: goTo } = useHistory();
 	const [tokenID, setTokenID] = useState<string | undefined>();
 	const [currentStep, setCurrentStep] = useState<Step>(Step.Details);
@@ -133,11 +132,11 @@ const ClaimNFT = ({
 
 	// Set step if disconnected
 	useEffect(() => {
-		if (!active) {
+		if (!isActive) {
 			setCurrentStep(Step.Details);
 			setStepContent(StepContent.Details);
 		}
-	}, [active, currentStep]);
+	}, [isActive, currentStep]);
 
 	///////////////
 	// Fragments //
@@ -150,7 +149,7 @@ const ClaimNFT = ({
 					tokenID={tokenID}
 					isClaimDataLoading={isClaimDataLoading}
 					eligibleDomains={eligibleDomains}
-					isWalletConnected={active}
+					isWalletConnected={isActive}
 					currentStep={currentStep}
 					connectToWallet={openConnect}
 					onStartClaim={onStartClaim}
@@ -173,7 +172,7 @@ const ClaimNFT = ({
 		),
 		[StepContent.Minting]: (
 			<Details
-				isWalletConnected={active}
+				isWalletConnected={isActive}
 				currentStep={currentStep}
 				onFinish={onFinish}
 				isClaiming={isClaimingInProgress}

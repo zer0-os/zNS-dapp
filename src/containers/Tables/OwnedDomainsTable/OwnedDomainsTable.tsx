@@ -1,5 +1,5 @@
 // Library Imports
-import { useWeb3React } from '@web3-react/core';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import useOwnedDomains from 'lib/hooks/useOwnedDomains';
 
 // Component Imports
@@ -17,7 +17,7 @@ const OwnedDomainsTable = () => {
 	///////////
 	//  Data //
 	///////////
-	const { account } = useWeb3React();
+	const { account } = useWeb3();
 	const { isLoading, ownedDomains, refetch } = useOwnedDomains(account);
 
 	// filter owned domains by network

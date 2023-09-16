@@ -1,7 +1,7 @@
-import { SET_NAVBAR_TITLE, SET_NAVBAR_SEARCHING_STATUS } from './actionTypes';
-import { SetNavbarTitle, SetNavbarSearchingStatus } from './types';
+import { SET_NAVBAR_SEARCHING_STATUS, SET_NAVBAR_TITLE } from './actionTypes';
+import { SetNavbarSearchingStatus, SetNavbarTitle } from './types';
 import reducer, { INITIAL_STATE } from './reducer';
-import { NAVBAR_TITLE, NAVBAR_IS_SEARCHING } from './navbar.mockData';
+import { NAVBAR_IS_SEARCHING, NAVBAR_TITLE } from './navbar.mockData';
 
 describe('navbar.reducer', () => {
 	it('should be able to set navbar title', () => {

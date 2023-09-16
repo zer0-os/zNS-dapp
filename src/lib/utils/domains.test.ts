@@ -1,4 +1,4 @@
-import { getAspectRatioForZna, getParentZna, getNetworkZNA } from './domains';
+import { getAspectRatioForZna, getNetworkZNA, getParentZna } from './domains';
 import { AspectRatio } from 'constants/aspectRatios';
 
 //////////////////////////////

@@ -1,5 +1,5 @@
 //- React Imports
-import React, { useState, useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 
 //- Library Imports
 import { DomainSearch } from 'lib/hooks/useDomainSearch';

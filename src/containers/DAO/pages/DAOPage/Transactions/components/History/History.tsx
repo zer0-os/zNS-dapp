@@ -2,8 +2,7 @@
 import React, { useMemo } from 'react';
 
 // Lib
-import { HistoryItem } from './History.types';
-import { Groups } from './History.types';
+import { Groups, HistoryItem } from './History.types';
 import { LABELS } from './History.constants';
 import { getGroupFromDate } from './History.helpers';
 

@@ -1,5 +1,5 @@
-import { SET_NAVBAR_TITLE, SET_NAVBAR_SEARCHING_STATUS } from './actionTypes';
-import { NavbarState, NavbarActions } from './types';
+import { SET_NAVBAR_SEARCHING_STATUS, SET_NAVBAR_TITLE } from './actionTypes';
+import { NavbarActions, NavbarState } from './types';
 
 export const REDUCER_NAME = 'navbar';
 

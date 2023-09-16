@@ -11,25 +11,24 @@ import { useProposals } from 'lib/dao/providers/ProposalsProvider';
 // Lib
 import moment from 'moment';
 import { isEqual } from 'lodash';
+// Types
+import type { Proposal } from '@zero-tech/zdao-sdk';
 import { ProposalState } from '@zero-tech/zdao-sdk';
 import { truncateString } from 'lib/utils/string';
 import {
-	formatProposalStatus,
 	formatProposalEndTime,
+	formatProposalStatus,
 } from '../Proposals.helpers';
 
 // Styles
-import classNames from 'classnames/bind';
+import classNames from 'classnames';
 import styles from './ProposalsTableRow.module.scss';
-
-// Types
-import type { Proposal } from '@zero-tech/zdao-sdk';
 
 // Constants
 import {
 	DEFAULT_TIMMER_INTERVAL,
-	PROPOSAL_TABLE_LOCATION_STATE_KEY,
 	PROPOSAL_TABLE_LOCATION_STATE,
+	PROPOSAL_TABLE_LOCATION_STATE_KEY,
 } from '../Proposals.constants';
 
 interface ProposalsTableRowProps {

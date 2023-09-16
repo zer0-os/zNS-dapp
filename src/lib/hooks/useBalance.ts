@@ -1,7 +1,7 @@
 import { useZnsSdk } from 'lib/hooks/sdk';
 import { useEffect, useState } from 'react';
 import { BigNumber } from 'ethers';
-import { useWeb3React } from '@web3-react/core';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 
 /**
  * Gets a user's balance as part of the parent
@@ -12,7 +12,7 @@ import { useWeb3React } from '@web3-react/core';
  */
 const useBalance = (tokenId?: string) => {
 	const { instance: znsSdk } = useZnsSdk();
-	const { account } = useWeb3React();
+	const { account } = useWeb3();
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [balance, setBalance] = useState<BigNumber | undefined>();

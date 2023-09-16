@@ -1,9 +1,10 @@
 {
 	"name": "zns-dapp",
-	"version": "0.21.0",
+	"version": "0.22.0",
 	"private": true,
 	"dependencies": {
 		"@apollo/client": "^3.3.13",
+		"@coinbase/wallet-sdk": "^3.7.1",
 		"@ethersproject/abi": "^5.1.0",
 		"@ethersproject/abstract-signer": "^5.1.0",
 		"@ethersproject/address": "^5.1.0",
@@ -26,24 +27,31 @@
 		"@uiw/react-md-editor": "^3.12.3",
 		"@web3-react/abstract-connector": "^6.0.7",
 		"@web3-react/authereum-connector": "^6.1.9",
-		"@web3-react/core": "^6.1.9",
+		"@web3-react/coinbase-wallet": "^8.2.0",
+		"@web3-react/core": "^8.2.0",
 		"@web3-react/fortmatic-connector": "^6.1.6",
 		"@web3-react/frame-connector": "^6.0.9",
 		"@web3-react/injected-connector": "^6.0.7",
 		"@web3-react/ledger-connector": "^6.1.9",
 		"@web3-react/magic-connector": "^6.1.9",
+		"@web3-react/metamask": "^8.2.1",
+		"@web3-react/network": "^8.2.0",
 		"@web3-react/network-connector": "^6.1.9",
 		"@web3-react/portis-connector": "^6.1.9",
 		"@web3-react/torus-connector": "^6.1.9",
 		"@web3-react/trezor-connector": "^6.1.9",
+		"@web3-react/types": "^8.2.0",
 		"@web3-react/walletconnect-connector": "6.2.4",
+		"@web3-react/walletconnect-v2": "^8.3.7",
 		"@web3-react/walletlink-connector": "^6.1.9",
+		"@zero-tech/zapp-staking": "^0.9.0",
 		"@zero-tech/zauction-sdk": "0.2.12",
 		"@zero-tech/zdao-sdk": "0.14.1",
 		"@zero-tech/zero-contracts": "^0.0.7",
 		"@zero-tech/zfi-sdk": "0.2.2",
 		"@zero-tech/zns-sdk": "0.9.3",
 		"@zero-tech/zsale-sdk": "0.1.6",
+		"@zero-tech/zui": "^0.25.1",
 		"apollo": "^2.32.5",
 		"autosize": "^5.0.1",
 		"big-integer": "^1.6.48",
@@ -92,11 +100,11 @@
 		"web-vitals": "^1.1.1"
 	},
 	"scripts": {
-		"start": "react-scripts start",
-		"build": "npm run generate-meta-tag && react-scripts build",
-		"test": "react-scripts test --detectOpenHandles --maxWorkers=2",
-		"testci": "react-scripts test --coverage",
-		"eject": "react-scripts eject",
+		"start": "craco start",
+		"build": "npm run generate-meta-tag && craco build",
+		"test": "craco test --detectOpenHandles --maxWorkers=2",
+		"testci": "craco test --coverage",
+		"eject": "craco eject",
 		"typegen": "typechain --target ethers-v5 --outDir src/types \"src/abi/**/*.json\"",
 		"lint": "eslint src --ext .ts",
 		"apollo:generate": "apollo codegen:generate --excludes=node_modules/* --includes=**/*.ts --endpoint=https://api.thegraph.com/subgraphs/name/zer0-os/zns-kovan  --target=typescript --tagName=gql",
@@ -109,19 +117,13 @@
 			"react-app/jest"
 		]
 	},
-	"browserslist": {
-		"production": [
-			">0.2%",
-			"not dead",
-			"not op_mini all"
-		],
-		"development": [
-			"last 1 chrome version",
-			"last 1 firefox version",
-			"last 1 safari version"
-		]
-	},
+	"browserslist": [
+		">0.2%",
+		"not dead",
+		"not op_mini all"
+	],
 	"devDependencies": {
+		"@craco/craco": "^6.4.5",
 		"@graphql-codegen/cli": "1.21.3",
 		"@graphql-codegen/introspection": "1.18.1",
 		"@graphql-codegen/typescript": "1.21.1",
@@ -139,6 +141,7 @@
 		"@types/react-dom": "^17.0.3",
 		"@types/react-table": "^7.0.29",
 		"@types/react-window": "^1.8.2",
+		"craco-babel-loader": "^1.0.4",
 		"husky": "^4.3.8",
 		"lint-staged": "^11.1.2",
 		"prettier": "^2.2.1",

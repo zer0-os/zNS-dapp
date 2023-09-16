@@ -1,13 +1,12 @@
 import RaffleRegistration from './RaffleRegistration';
-import { useWeb3React } from '@web3-react/core';
-import { Web3Provider } from '@ethersproject/providers';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import { Maybe } from 'lib/types';
 
 type RegistrationContainerProps = {
 	closeOverlay: () => void;
 };
 const RegistrationContainer = (props: RegistrationContainerProps) => {
-	const { account, active, library, chainId } = useWeb3React<Web3Provider>();
+	const { account, isActive, provider, chainId } = useWeb3();
 	const drop = 'Kicks-S2';
 
 	const submit = async (
@@ -95,10 +94,10 @@ const RegistrationContainer = (props: RegistrationContainerProps) => {
 	};
 
 	const signMessage = async () => {
-		if (!library) {
+		if (!provider) {
 			throw new Error('Failed to find Web3 provider');
 		}
-		const signer = library.getSigner();
+		const signer = provider.getSigner();
 		let signedBid: Maybe<string>;
 		try {
 			signedBid = await signer?.signMessage(
@@ -133,7 +132,7 @@ const RegistrationContainer = (props: RegistrationContainerProps) => {
 
 	return (
 		<RaffleRegistration
-			isWalletConnected={active}
+			isWalletConnected={isActive}
 			account={account || ''}
 			drop={drop}
 			onSubmit={submit}

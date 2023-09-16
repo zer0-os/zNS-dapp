@@ -7,7 +7,7 @@ import { truncateWalletAddress } from 'lib/utils';
 import { URLS } from 'constants/urls';
 
 // Styles
-import classNames from 'classnames/bind';
+import classNames from 'classnames';
 import styles from './EtherscanLink.module.scss';
 
 // - Types

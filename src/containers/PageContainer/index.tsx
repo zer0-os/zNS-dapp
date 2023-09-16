@@ -4,10 +4,9 @@ import { useHistory } from 'react-router-dom';
 
 //- Library Imports
 import classnames from 'classnames';
-import { useWeb3React } from '@web3-react/core';
-import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
-import { useEagerConnect } from 'lib/hooks/provider-hooks';
+// import { useEagerConnect } from 'lib/hooks/provider-hooks';
 import { usePageWidth } from 'lib/hooks/usePageWidth';
 import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 import { useNotification } from 'lib/hooks/useNotification';
@@ -16,8 +15,8 @@ import { useStaking } from 'lib/hooks/useStaking';
 import useScrollDetection from 'lib/hooks/useScrollDetection';
 
 //- Components Imports
-import { SideBar, ScrollToTop, NotificationDrawer } from 'components';
-import { Header, Modals, useModal, Actions, Touchbar } from './elements';
+import { NotificationDrawer, ScrollToTop, SideBar } from 'components';
+import { Actions, Header, Modals, Touchbar, useModal } from './elements';
 
 //- Constants Imports
 import { LOCAL_STORAGE_KEYS } from 'constants/localStorage';
@@ -33,8 +32,8 @@ const PageContainer: React.FC = ({ children }) => {
 	 * Hooks Data
 	 */
 	const history = useHistory();
-	const { account, active } = useWeb3React<Web3Provider>();
-	const triedEagerConnect = useEagerConnect();
+	const { account, isActive } = useWeb3();
+	const triedEagerConnect = true;
 	const {
 		domain: znsDomain,
 		domainMetadata,
@@ -72,7 +71,7 @@ const PageContainer: React.FC = ({ children }) => {
 			Object.values(WALLETS).includes(
 				localStorage.getItem(LOCAL_STORAGE_KEYS.CHOOSEN_WALLET) as WALLETS,
 			) &&
-			!active &&
+			!isActive &&
 			triedEagerConnect
 		) {
 			localStorage.removeItem(LOCAL_STORAGE_KEYS.CHOOSEN_WALLET);
@@ -80,7 +79,7 @@ const PageContainer: React.FC = ({ children }) => {
 
 		if (triedEagerConnect)
 			addNotification(
-				active
+				isActive
 					? WALLET_NOTIFICATIONS.CONNECTED
 					: WALLET_NOTIFICATIONS.DISCONNECTED,
 			);
@@ -89,7 +88,7 @@ const PageContainer: React.FC = ({ children }) => {
 		if (modal === Modal.Transfer || modal === Modal.Mint) {
 			closeModal();
 		}
-	}, [active]);
+	}, [isActive]);
 
 	useUpdateEffect(refetch, [minted, stakingFulFilled]);
 

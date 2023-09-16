@@ -1,4 +1,4 @@
-import { UploadMetadata, AdditionalMetadata } from 'lib/types';
+import { AdditionalMetadata, UploadMetadata } from 'lib/types';
 
 export * from './domains';
 export * from './number';

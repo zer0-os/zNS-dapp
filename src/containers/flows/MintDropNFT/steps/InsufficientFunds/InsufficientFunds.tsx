@@ -2,7 +2,6 @@
 import { FutureButton } from 'components';
 
 // Library Imports
-
 // Style Imports
 import styles from './InsufficientFunds.module.scss';
 

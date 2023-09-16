@@ -19,7 +19,7 @@ import { useNavbar } from 'lib/hooks/useNavbar';
 import { COPY_LABELS, TABS } from './Profile.constants';
 import { chainIdToNetworkName } from 'lib/network';
 import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
-import { useWeb3React } from '@web3-react/core';
+import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import { truncateWalletAddress } from 'lib/utils';
 
 // Styles
@@ -28,7 +28,7 @@ import classNames from 'classnames/bind';
 import { ArrowLeft } from 'react-feather';
 import userIcon from 'assets/user_icon.svg';
 
-const cx = classNames.bind(styles);
+const cx = classNames.bind(styles) as (...args: any) => string;
 
 /**
  * Converts a route to a Profile route
@@ -46,7 +46,7 @@ const r = (route: string) => {
  * @returns
  */
 const Profile = () => {
-	const { account, chainId } = useWeb3React();
+	const { account, chainId } = useWeb3();
 
 	// React-router stuff
 	const { length: canGoBack, goBack, push, location } = useHistory();
@@ -154,11 +154,7 @@ const Profile = () => {
 				{account && chainId && (
 					<Tooltip placement="bottom-center" text={copyLabel}>
 						<button
-							className={classNames(
-								styles.Account,
-								'border-rounded',
-								'no-select',
-							)}
+							className={cx(styles.Account, 'border-rounded', 'no-select')}
 							onClick={copyAddress}
 							onMouseEnter={() => setIsAccountHovered(true)}
 							onMouseLeave={() => setIsAccountHovered(false)}

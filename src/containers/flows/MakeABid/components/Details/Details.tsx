@@ -2,7 +2,7 @@
 import { useState } from 'react';
 
 //- Components Imports
-import { Wizard, FutureButton, TextInput } from 'components';
+import { FutureButton, TextInput, Wizard } from 'components';
 import { Modals } from '../Modals';
 
 //- Types Imports
@@ -12,11 +12,11 @@ import { StepContent } from '../../MakeABid.types';
 import { Labels } from 'constants/labels';
 
 import {
-	MESSAGES,
 	BUTTONS,
-	PLACE_BID_LABELS,
-	getBidAmountText,
 	getBalanceString,
+	getBidAmountText,
+	MESSAGES,
+	PLACE_BID_LABELS,
 } from '../../MakeABid.constants';
 
 //- Styles Imports

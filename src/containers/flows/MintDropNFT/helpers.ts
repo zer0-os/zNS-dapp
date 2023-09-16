@@ -9,8 +9,8 @@ import {
 } from '@zero-tech/zsale-sdk/';
 
 //- Types Improts
-import { Stage, DropData } from './types';
-import { WhitelistSimpleSale, ERC20 } from 'types';
+import { DropData, Stage } from './types';
+import { ERC20, WhitelistSimpleSale } from 'types';
 
 const TEST_MODE = false;
 const TEST_STATE: SaleStatus = SaleStatus.PrivateSale;
