@@ -45,13 +45,14 @@ function App() {
 				<Switch>
 					<CurrentDomainProvider>
 						<PageContainer>
-							<Route path={ROUTES.MARKET} component={ZNS} />
-							<Route path={ROUTES.STAKING} component={Staking} />
-							<Route path={ROUTES.ZDAO} component={DAO} />
-							<Route path={ROUTES.PROFILE} component={Profile} />
-							<Route exact path="/wilder/staking/pools">
-								<Redirect to={ROUTES.STAKING} />
+							<Route path={'/:znsRoute/daos'}>
+								<DAO />
 							</Route>
+							<Route path={'/staking'}>
+								<Staking />
+							</Route>
+							<Route path={ROUTES.MARKET} component={ZNS} />
+							<Route path={ROUTES.PROFILE} component={Profile} />
 							<Route exact path="/">
 								<Redirect to="/market" />
 							</Route>
