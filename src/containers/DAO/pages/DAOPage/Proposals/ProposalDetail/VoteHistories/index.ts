@@ -1,1 +1,0 @@
-export { VoteHistories } from './VoteHistories';
