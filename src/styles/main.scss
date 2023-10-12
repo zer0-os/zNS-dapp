@@ -415,19 +415,23 @@ button {
 		max-width: 100%;
 	}
 
-	[class*="ZAppContent_Container"] {
+	[class*='ZAppContent_Container'] {
 		overflow-y: visible !important;
 		overflow: visible !important;
 		height: unset;
 	}
 
-	[class*="ZAppContent_Scroll"] {
+	[class*='ZAppContent_Scroll'] {
 		overflow-y: visible !important;
 		overflow: visible !important;
 	}
+
+	[class*='TransactionList_ArrowIcon'] {
+		box-sizing: initial;
+	}
 }
 
-[class*="ConnectWallet_Container"] {
+[class*='ConnectWallet_Container'] {
 	p {
 		padding: 0 !important;
 	}
