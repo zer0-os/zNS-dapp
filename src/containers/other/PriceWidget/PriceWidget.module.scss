@@ -8,7 +8,7 @@
 	cursor: pointer;
 
 	&:hover .Details {
-		background-color: #{colors.$purple-10};
+		background-color: var(--color-greyscale-1);
 	}
 
 	.Details {
@@ -19,7 +19,7 @@
 		background: none;
 		height: 100%;
 		padding: 16px;
-		border: 1px solid #{colors.$purple-15};
+		border: 1px solid var(--color-greyscale-3);
 		border-radius: #{borders.$radius-primary};
 		z-index: 0;
 		transition: all 0.2s ease-in-out 0s;
@@ -31,8 +31,7 @@
 	cursor: default;
 	padding: 32px;
 	border-radius: #{borders.$radius-primary};
-	background: #{colors.$purple-10};
-	border: 1px solid #{colors.$bossanova};
+	background: var(--color-primary-2);
 }
 
 .CurrentPriceContainer {
@@ -45,7 +44,7 @@
 	font-size: 10px;
 	font-weight: #{typography.$font-weight-regular};
 	line-height: 12.1px;
-	color: #{colors.$grey-lighter-2};
+	color: var(--color-greyscale-11);
 }
 
 .CurrentPriceSml {
@@ -53,8 +52,7 @@
 	font-weight: #{typography.$font-weight-bold};
 	line-height: 14.5px;
 	padding: 2px 6px 0 0;
-	color: #{colors.$text-primary};
-	text-shadow: #{colors.$text-glow-primary};
+	color: var(--color-primary-12);
 }
 
 .CurrentPriceLrg {
@@ -62,8 +60,7 @@
 	font-weight: #{typography.$font-weight-bold};
 	line-height: 24px;
 	padding: 0 6px 0 0;
-	color: #{colors.$text-primary};
-	text-shadow: #{colors.$text-glow-primary};
+	color: var(--color-primary-12);
 }
 
 .PercentageChange {
@@ -94,7 +91,7 @@
 		text-shadow: none;
 		background-color: transparent;
 		padding-right: 6px;
-		color: #{colors.$grey-lighter-4};
+		color: var(--color-secondary-11);
 	}
 
 	&:hover {
@@ -143,7 +140,7 @@
 		font-size: #{typography.$size-small};
 		line-height: 17px;
 		text-shadow: unset;
-		color: #{colors.$blue};
+		color: var(--color-secondary-11);
 		padding-top: 10px;
 	}
 }
