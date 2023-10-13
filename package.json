@@ -44,7 +44,7 @@
 		"@web3-react/walletconnect-connector": "6.2.4",
 		"@web3-react/walletconnect-v2": "^8.3.7",
 		"@web3-react/walletlink-connector": "^6.1.9",
-		"@zero-tech/zapp-daos": "^0.13.0",
+		"@zero-tech/zapp-daos": "^0.14.0",
 		"@zero-tech/zapp-staking": "^0.9.0",
 		"@zero-tech/zauction-sdk": "0.2.12",
 		"@zero-tech/zdao-sdk": "0.14.1",
