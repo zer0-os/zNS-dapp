@@ -14,6 +14,6 @@ export const IS_DEFAULT_NETWORK = ROOT_DOMAIN.length === 0;
  */
 export const DOMAIN_LOGOS = {
 	WILDER_WORLD:
-		'https://res.cloudinary.com/fact0ry/image/upload/c_fill,h_32,q_100,w_32/logos/wilderworld.svg',
+		'https://res.cloudinary.com/fact0ry/image/upload/c_fit,h_32,q_100,w_32/logos/wilder-orange.png',
 	ZERO: 'https://res.cloudinary.com/fact0ry/image/upload/c_fill,h_32,q_100,w_32/logos/zero.svg',
 };

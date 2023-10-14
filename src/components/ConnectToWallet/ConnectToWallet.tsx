@@ -188,15 +188,6 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 			{!isActivating && (
 				<ul>
 					<li
-						onClick={() => handleOnConnect(ConnectionType.COINBASE_WALLET)}
-						className={getWalletOptionStyle(WALLETS.COINBASE)}
-					>
-						<span>Coinbase Wallet</span>
-						<div>
-							<Image alt="coinbase wallet" src={coinbaseWalletIcon} />
-						</div>
-					</li>
-					<li
 						onClick={() => handleOnConnect(ConnectionType.INJECTED)}
 						className={getWalletOptionStyle(WALLETS.METAMASK)}
 					>
@@ -207,6 +198,15 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 								alt="metamask"
 								src={metamaskIcon}
 							/>
+						</div>
+					</li>
+					<li
+						onClick={() => handleOnConnect(ConnectionType.COINBASE_WALLET)}
+						className={getWalletOptionStyle(WALLETS.COINBASE)}
+					>
+						<span>Coinbase Wallet</span>
+						<div>
+							<Image alt="coinbase wallet" src={coinbaseWalletIcon} />
 						</div>
 					</li>
 					<li

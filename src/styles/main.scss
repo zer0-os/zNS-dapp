@@ -426,6 +426,10 @@ button {
 		overflow: visible !important;
 	}
 
+	[class*='CreateProposal_Message'] button {
+		display: none;
+	}
+
 	[class*='TransactionList_ArrowIcon'] {
 		box-sizing: initial;
 	}
