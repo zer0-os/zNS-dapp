@@ -74,7 +74,7 @@ const SideBar = () => {
 							<li key={`${l.label}`}>
 								<Link
 									to={l.route}
-									className={cx({ Selected: pathname.startsWith(l.route) })}
+									className={cx({ Selected: pathname.includes(l.route) })}
 								>
 									<div
 										className={cx(

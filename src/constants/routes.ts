@@ -8,7 +8,7 @@ export enum ROUTES {
 	STAKING_DEPOSITS = '/deposits',
 
 	// ----- zDao ----- //
-	ZDAO = '/dao',
+	ZDAO = '/daos',
 	ZDAO_ASSETS = '/assets',
 	ZDAO_TRANSACTIONS = '/transactions',
 	ZDAO_PROPOSALS = '/proposals',

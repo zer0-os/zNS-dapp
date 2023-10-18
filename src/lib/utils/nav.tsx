@@ -20,7 +20,7 @@ export const getNavLinks = () => {
 		},
 		{
 			label: 'DAOs',
-			route: ROUTES.ZDAO,
+			route: '/0.wilder' + ROUTES.ZDAO,
 			icon: (stroke: string) => <DAOIcon title={TITLES.ZDAO} stroke={stroke} />,
 		},
 		{

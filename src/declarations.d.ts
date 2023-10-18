@@ -18,6 +18,10 @@ declare global {
 
 window.ethereum = window.ethereum || undefined;
 
+declare module '@zero-tech/zapp-daos' {
+	const DaosApp: () => JSX.Element;
+}
+
 declare module '@zero-tech/zapp-staking' {
 	const ZAppStaking: () => JSX.Element;
 }
