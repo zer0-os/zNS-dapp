@@ -98,7 +98,7 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 					</li>
 					<li
 						onClick={() => handleOnConnect(ConnectionType.COINBASE_WALLET)}
-						className={getWalletOptionStyle(WALLETS.COINBASE)}
+						className={WalletStyles.wallet}
 					>
 						<span>Coinbase Wallet</span>
 						<div>
