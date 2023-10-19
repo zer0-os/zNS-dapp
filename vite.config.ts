@@ -41,10 +41,6 @@ export default defineConfig({
 		},
 	},
 	build: {
-		sourcemap: false,
 		outDir: 'build',
-		rollupOptions: {
-			external: ['graphql'],
-		},
 	},
 });
