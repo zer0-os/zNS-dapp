@@ -3,7 +3,6 @@
 	"version": "0.23.0",
 	"private": true,
 	"dependencies": {
-		"@apollo/client": "^3.8.6",
 		"@coinbase/wallet-sdk": "^3.7.1",
 		"@ethersproject/abi": "^5.1.0",
 		"@ethersproject/contracts": "^5.1.0",
