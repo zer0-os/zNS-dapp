@@ -4,6 +4,12 @@ import viteTsconfigPaths from 'vite-tsconfig-paths';
 import { resolve } from 'path';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
 
+const viteEnv = Object.keys(process.env).forEach((key) => {
+	if (key.startsWith(`VITE_`)) {
+		viteEnv[`import.meta.env.${key}`] = process.env[key];
+	}
+});
+
 export default defineConfig({
 	base: '/',
 	plugins: [
@@ -21,6 +27,9 @@ export default defineConfig({
 		react(),
 		viteTsconfigPaths(),
 	],
+	define: {
+		viteEnv,
+	},
 	server: {
 		open: false,
 		port: 3000,
