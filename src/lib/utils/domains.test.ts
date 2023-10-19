@@ -50,16 +50,16 @@ describe('getNetworkZNA', () => {
 
 		beforeEach(() => {
 			jest.resetModules();
-			import.meta.env = { ...env, VITE_APP_NETWORK: '' };
+			import.meta.env = { ...env, VITE_NETWORK: '' };
 		});
 
 		afterEach(() => {
 			import.meta.env = env;
 		});
 
-		it('mock VITE_APP_NETWORK success', () => {
-			expect(import.meta.env.VITE_APP_NETWORK).toBe('');
-			expect(import.meta.env.VITE_APP_NETWORK).not.toBe('wilder');
+		it('mock VITE_NETWORK success', () => {
+			expect(import.meta.env.VITE_NETWORK).toBe('');
+			expect(import.meta.env.VITE_NETWORK).not.toBe('wilder');
 		});
 
 		it('when .env network variable is not set - two subdomains', () => {
@@ -80,16 +80,16 @@ describe('getNetworkZNA', () => {
 
 		beforeEach(() => {
 			jest.resetModules();
-			import.meta.env = { ...env, VITE_APP_NETWORK: 'wilder' };
+			import.meta.env = { ...env, VITE_NETWORK: 'wilder' };
 		});
 
 		afterEach(() => {
 			import.meta.env = env;
 		});
 
-		it('mock VITE_APP_NETWORK success', () => {
-			expect(import.meta.env.VITE_APP_NETWORK).toBe('wilder');
-			expect(import.meta.env.VITE_APP_NETWORK).not.toBe('');
+		it('mock VITE_NETWORK success', () => {
+			expect(import.meta.env.VITE_NETWORK).toBe('wilder');
+			expect(import.meta.env.VITE_NETWORK).not.toBe('');
 		});
 
 		it('when .env network variable is set - two subdomains', () => {

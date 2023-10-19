@@ -13,7 +13,7 @@ const DAO: React.FC = () => {
 	const { setNavbarTitle } = useNavbar();
 
 	useDidMount(() => {
-		document.title = import.meta.env.VITE_APP_TITLE + ' | DAOs';
+		document.title = import.meta.env.VITE_TITLE + ' | DAOs';
 		setNavbarTitle('DAOs');
 	});
 

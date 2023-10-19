@@ -35,7 +35,7 @@ import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/react';
 import { WagmiConfig } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
 
-const projectId = import.meta.env.VITE_APP_WALLET_CONNECT_PROJECT_ID;
+const projectId = import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID;
 
 const metadata = {
 	name: 'WWMM',
@@ -51,7 +51,7 @@ createWeb3Modal({ wagmiConfig, projectId, chains });
 
 function App() {
 	console.log(
-		`%c${import.meta.env.VITE_APP_TITLE} - v${version}`,
+		`%c${import.meta.env.VITE_TITLE} - v${version}`,
 		'display: block; border: 3px solid #52cbff; border-radius: 7px; padding: 10px; margin: 8px;',
 	);
 

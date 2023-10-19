@@ -131,7 +131,7 @@ export const getAspectRatioForZna = (zna: string): AspectRatio | undefined => {
 
 // Parse ZNA
 export const getNetworkZNA = (zna: string) => {
-	return (import.meta.env.VITE_APP_NETWORK ?? '') !== ''
+	return (import.meta.env.VITE_NETWORK ?? '') !== ''
 		? zna.split('.').splice(1).join('.')
 		: zna;
 };

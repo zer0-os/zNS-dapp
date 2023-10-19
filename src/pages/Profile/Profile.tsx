@@ -55,7 +55,7 @@ const Profile = () => {
 
 	useDidMount(() => {
 		setNavbarTitle('Your Profile');
-		document.title = import.meta.env.VITE_APP_TITLE + ' | Profile';
+		document.title = import.meta.env.VITE_TITLE + ' | Profile';
 	});
 
 	///////////////

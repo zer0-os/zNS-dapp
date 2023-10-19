@@ -12,7 +12,7 @@ const Staking: React.FC = () => {
 	const { setNavbarTitle } = useNavbar();
 
 	useDidMount(() => {
-		document.title = import.meta.env.VITE_APP_TITLE + ' | Staking';
+		document.title = import.meta.env.VITE_TITLE + ' | Staking';
 		setNavbarTitle('Staking');
 	});
 

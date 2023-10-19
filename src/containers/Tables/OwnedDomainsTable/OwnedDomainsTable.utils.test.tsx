@@ -23,7 +23,7 @@ describe('getActions', () => {
 
 	beforeEach(() => {
 		jest.resetModules();
-		import.meta.env = { ...env, VITE_APP_NETWORK: '' };
+		import.meta.env = { ...env, VITE_NETWORK: '' };
 	});
 
 	afterEach(() => {
@@ -58,7 +58,7 @@ describe('filterOwnedDomainsByNetwork', () => {
 
 		beforeEach(() => {
 			jest.resetModules();
-			import.meta.env = { ...env, VITE_APP_NETWORK: '' };
+			import.meta.env = { ...env, VITE_NETWORK: '' };
 		});
 
 		afterEach(() => {
@@ -66,9 +66,9 @@ describe('filterOwnedDomainsByNetwork', () => {
 		});
 
 		// check environment variable has been set correctly
-		it('mock VITE_APP_NETWORK success', () => {
-			expect(import.meta.env.VITE_APP_NETWORK).toBe('');
-			expect(import.meta.env.VITE_APP_NETWORK).not.toBe(
+		it('mock VITE_NETWORK success', () => {
+			expect(import.meta.env.VITE_NETWORK).toBe('');
+			expect(import.meta.env.VITE_NETWORK).not.toBe(
 				TEST_NETWORK.TEST_NETWORK_ONE,
 			);
 		});
@@ -108,7 +108,7 @@ describe('filterOwnedDomainsByNetwork', () => {
 			jest.resetModules();
 			import.meta.env = {
 				...env,
-				VITE_APP_NETWORK: TEST_NETWORK.TEST_NETWORK_ONE,
+				VITE_NETWORK: TEST_NETWORK.TEST_NETWORK_ONE,
 			};
 		});
 
@@ -117,11 +117,9 @@ describe('filterOwnedDomainsByNetwork', () => {
 		});
 
 		// check environment variable has been set correctly
-		it('mock VITE_APP_NETWORK success', () => {
-			expect(import.meta.env.VITE_APP_NETWORK).toBe(
-				TEST_NETWORK.TEST_NETWORK_ONE,
-			);
-			expect(import.meta.env.VITE_APP_NETWORK).not.toBe('');
+		it('mock VITE_NETWORK success', () => {
+			expect(import.meta.env.VITE_NETWORK).toBe(TEST_NETWORK.TEST_NETWORK_ONE);
+			expect(import.meta.env.VITE_NETWORK).not.toBe('');
 		});
 
 		describe('when there are existing owned domains', () => {
@@ -189,7 +187,7 @@ describe('filterOwnedDomainsByNetwork', () => {
 			jest.resetModules();
 			import.meta.env = {
 				...env,
-				VITE_APP_NETWORK: TEST_NETWORK.TEST_NETWORK_TWO,
+				VITE_NETWORK: TEST_NETWORK.TEST_NETWORK_TWO,
 			};
 		});
 
@@ -198,11 +196,9 @@ describe('filterOwnedDomainsByNetwork', () => {
 		});
 
 		// check environment variable has been set correctly
-		it('mock VITE_APP_NETWORK success', () => {
-			expect(import.meta.env.VITE_APP_NETWORK).toBe(
-				TEST_NETWORK.TEST_NETWORK_TWO,
-			);
-			expect(import.meta.env.VITE_APP_NETWORK).not.toBe('');
+		it('mock VITE_NETWORK success', () => {
+			expect(import.meta.env.VITE_NETWORK).toBe(TEST_NETWORK.TEST_NETWORK_TWO);
+			expect(import.meta.env.VITE_NETWORK).not.toBe('');
 		});
 
 		describe('when there are existing owned domains', () => {

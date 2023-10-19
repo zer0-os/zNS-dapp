@@ -7,7 +7,7 @@ import { DefaultDomain, Domain } from 'lib/types';
 // emailjs
 import emailjs from 'emailjs-com';
 
-emailjs.init(import.meta.env.VITE_APP_EMAILJS_USER!);
+emailjs.init(import.meta.env.VITE_EMAILJS_USER!);
 
 type context = {
 	enlisting: Domain | undefined;

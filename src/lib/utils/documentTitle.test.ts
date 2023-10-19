@@ -16,8 +16,8 @@ describe('updateDocumentTitle', () => {
 			jest.resetModules();
 			import.meta.env = {
 				...env,
-				VITE_APP_NETWORK: '',
-				VITE_APP_TITLE: 'Zero',
+				VITE_NETWORK: '',
+				VITE_TITLE: 'Zero',
 			};
 		});
 
@@ -25,9 +25,9 @@ describe('updateDocumentTitle', () => {
 			import.meta.env = env;
 		});
 
-		it('mock VITE_APP_NETWORK success', () => {
-			expect(import.meta.env.VITE_APP_NETWORK).toBe('');
-			expect(import.meta.env.VITE_APP_NETWORK).not.toBe('wilder');
+		it('mock VITE_NETWORK success', () => {
+			expect(import.meta.env.VITE_NETWORK).toBe('');
+			expect(import.meta.env.VITE_NETWORK).not.toBe('wilder');
 		});
 
 		describe('when Marketplace dApp', () => {
@@ -116,8 +116,8 @@ describe('updateDocumentTitle', () => {
 			jest.resetModules();
 			import.meta.env = {
 				...env,
-				VITE_APP_NETWORK: 'wilder',
-				VITE_APP_TITLE: 'Wilder World',
+				VITE_NETWORK: 'wilder',
+				VITE_TITLE: 'Wilder World',
 			};
 		});
 
