@@ -45,5 +45,6 @@ export default defineConfig({
 		rollupOptions: {
 			external: ['graphql'],
 		},
+		outDir: 'build',
 	},
 });
