@@ -19,6 +19,11 @@ type ZNAProps = {
 
 const cx = classNames.bind(styles);
 
+interface Segment {
+	name: string;
+	location: string;
+}
+
 const ZNALink: React.FC<ZNAProps> = ({ className, style }) => {
 	const { pathname } = useLocation();
 	const zna = zNAFromPathname(pathname);
@@ -30,9 +35,11 @@ const ZNALink: React.FC<ZNAProps> = ({ className, style }) => {
 		? ROOT_DOMAIN
 		: (IS_DEFAULT_NETWORK ? '' : ROOT_DOMAIN + '.') + zna;
 
-	const splitZna = adjustedZna.split('.').map((z) => z.replace('.', ''));
+	const splitZna = adjustedZna
+		.split('.')
+		.map((z: string) => z.replace('.', ''));
 
-	const segments = splitZna.map((s, index) => {
+	const segments: Segment[] = splitZna.map((s: string, index: number) => {
 		const name = index === 0 ? s : s;
 
 		let location =
@@ -65,7 +72,7 @@ const ZNALink: React.FC<ZNAProps> = ({ className, style }) => {
 			) : (
 				<span className={styles.Root}>0://</span>
 			)}
-			{segments.map((s, index) => (
+			{segments.map((s: Segment, index: number) => (
 				<Link
 					key={`segment-key: ${s.location}`}
 					style={{ textDecoration: 'none', color: 'white' }}

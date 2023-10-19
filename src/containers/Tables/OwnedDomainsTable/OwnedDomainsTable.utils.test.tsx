@@ -19,15 +19,15 @@ import {
 ////////////////////
 
 describe('getActions', () => {
-	const env = process.env;
+	const env = import.meta.env;
 
 	beforeEach(() => {
 		jest.resetModules();
-		process.env = { ...env, REACT_APP_NETWORK: '' };
+		import.meta.env = { ...env, VITE_APP_NETWORK: '' };
 	});
 
 	afterEach(() => {
-		process.env = env;
+		import.meta.env = env;
 	});
 
 	describe('when there are existing bids', () => {
@@ -54,21 +54,21 @@ describe('getActions', () => {
 
 describe('filterOwnedDomainsByNetwork', () => {
 	describe('Default Network (no network set)', () => {
-		const env = process.env;
+		const env = import.meta.env;
 
 		beforeEach(() => {
 			jest.resetModules();
-			process.env = { ...env, REACT_APP_NETWORK: '' };
+			import.meta.env = { ...env, VITE_APP_NETWORK: '' };
 		});
 
 		afterEach(() => {
-			process.env = env;
+			import.meta.env = env;
 		});
 
 		// check environment variable has been set correctly
-		it('mock REACT_APP_NETWORK success', () => {
-			expect(process.env.REACT_APP_NETWORK).toBe('');
-			expect(process.env.REACT_APP_NETWORK).not.toBe(
+		it('mock VITE_APP_NETWORK success', () => {
+			expect(import.meta.env.VITE_APP_NETWORK).toBe('');
+			expect(import.meta.env.VITE_APP_NETWORK).not.toBe(
 				TEST_NETWORK.TEST_NETWORK_ONE,
 			);
 		});
@@ -102,24 +102,26 @@ describe('filterOwnedDomainsByNetwork', () => {
 	});
 
 	describe('Network Variable (network set: test-network-one)', () => {
-		const env = process.env;
+		const env = import.meta.env;
 
 		beforeEach(() => {
 			jest.resetModules();
-			process.env = {
+			import.meta.env = {
 				...env,
-				REACT_APP_NETWORK: TEST_NETWORK.TEST_NETWORK_ONE,
+				VITE_APP_NETWORK: TEST_NETWORK.TEST_NETWORK_ONE,
 			};
 		});
 
 		afterEach(() => {
-			process.env = env;
+			import.meta.env = env;
 		});
 
 		// check environment variable has been set correctly
-		it('mock REACT_APP_NETWORK success', () => {
-			expect(process.env.REACT_APP_NETWORK).toBe(TEST_NETWORK.TEST_NETWORK_ONE);
-			expect(process.env.REACT_APP_NETWORK).not.toBe('');
+		it('mock VITE_APP_NETWORK success', () => {
+			expect(import.meta.env.VITE_APP_NETWORK).toBe(
+				TEST_NETWORK.TEST_NETWORK_ONE,
+			);
+			expect(import.meta.env.VITE_APP_NETWORK).not.toBe('');
 		});
 
 		describe('when there are existing owned domains', () => {
@@ -181,24 +183,26 @@ describe('filterOwnedDomainsByNetwork', () => {
 	});
 
 	describe('Network Variable (network set: test-network-two)', () => {
-		const env = process.env;
+		const env = import.meta.env;
 
 		beforeEach(() => {
 			jest.resetModules();
-			process.env = {
+			import.meta.env = {
 				...env,
-				REACT_APP_NETWORK: TEST_NETWORK.TEST_NETWORK_TWO,
+				VITE_APP_NETWORK: TEST_NETWORK.TEST_NETWORK_TWO,
 			};
 		});
 
 		afterEach(() => {
-			process.env = env;
+			import.meta.env = env;
 		});
 
 		// check environment variable has been set correctly
-		it('mock REACT_APP_NETWORK success', () => {
-			expect(process.env.REACT_APP_NETWORK).toBe(TEST_NETWORK.TEST_NETWORK_TWO);
-			expect(process.env.REACT_APP_NETWORK).not.toBe('');
+		it('mock VITE_APP_NETWORK success', () => {
+			expect(import.meta.env.VITE_APP_NETWORK).toBe(
+				TEST_NETWORK.TEST_NETWORK_TWO,
+			);
+			expect(import.meta.env.VITE_APP_NETWORK).not.toBe('');
 		});
 
 		describe('when there are existing owned domains', () => {

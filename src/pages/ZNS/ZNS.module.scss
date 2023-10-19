@@ -1,5 +1,5 @@
-@use 'styles/variables/dimensions';
-@use 'styles/variables/colors';
+@use '@/styles/variables/dimensions';
+@use '@/styles/variables/colors';
 
 .Dots {
 	--dot-size: 5px;

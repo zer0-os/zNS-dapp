@@ -10,8 +10,8 @@ export function buildCoinbaseWalletConnector() {
 				new CoinbaseWallet({
 					actions,
 					options: {
-						appName: process.env.REACT_APP_TITLE!,
-						url: process.env.REACT_APP_RPC_URL_1!,
+						appName: import.meta.env.VITE_APP_TITLE!,
+						url: import.meta.env.VITE_APP_RPC_URL_1!,
 					},
 					onError: onConnectionError,
 				}),

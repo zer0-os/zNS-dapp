@@ -14,7 +14,7 @@
 //- Banners
 export { default as CountdownBanner } from './Banners/CountdownBanner/CountdownBanner';
 export { default as MessageBanner } from './Banners/MessageBanner/MessageBanner';
-export { default as NextDrop } from './Banners/NextDrop/NextDrop.js';
+export { default as NextDrop } from './Banners/NextDrop/NextDrop';
 export { default as MintDropNFTBanner } from './Banners/MintDropNFTBanner/MintDropNFTBanner';
 
 //- Buttons
@@ -22,7 +22,7 @@ export { default as FilterButton } from './Buttons/FilterButton/FilterButton';
 export { default as FutureButton } from './Buttons/FutureButton/FutureButton';
 export { default as IconButton } from './Buttons/IconButton/IconButton';
 export { default as NumberButton } from './Buttons/NumberButton/NumberButton';
-export { default as ProfileButton } from './Buttons/ProfileButton/ProfileButton.js';
+export { default as ProfileButton } from './Buttons/ProfileButton/ProfileButton';
 export { default as TextButton } from './Buttons/TextButton/TextButton';
 export { default as ToggleButton } from './Buttons/ToggleButton/ToggleButton';
 export { default as QuestionButton } from './Buttons/QuestionButton/QuestionButton';
@@ -58,14 +58,12 @@ export { default as MarkDownViewer } from './MarkDown/MarkDownViewer';
 export { default as TabBar } from './NavBars/TabBar/TabBar';
 
 //- Tables
-export { default as RequestTable } from './Tables/RequestTable/RequestTable';
 export { default as GenericTable } from './Tables/GenericTable/GenericTable';
 
 //- Other
 export { default as ArrowLink } from './ArrowLink/ArrowLink';
 export { default as Artwork } from './Artwork/Artwork';
-export { default as ConnectToWallet } from './ConnectToWallet/ConnectToWallet';
-export { default as CopyInput } from './CopyInput/CopyInput.js';
+export { default as CopyInput } from './CopyInput/CopyInput';
 export { default as Detail } from './Detail/Detail';
 export { default as HorizontalScroll } from './HorizontalScroll/HorizontalScroll';
 export { default as Image } from './Image/Image';
@@ -76,10 +74,10 @@ export { default as TransferPreview } from './TransferPreview/TransferPreview';
 export { default as Notification } from './Notification/Notification';
 export { default as NotificationDrawer } from './NotificationDrawer/NotificationDrawer';
 export { default as Overlay } from './Overlay/Overlay';
-export { default as SearchBar } from './SearchBar/SearchBar.js';
+export { default as SearchBar } from './SearchBar/SearchBar';
 export { default as SideBar } from './SideBar/SideBar';
 export { default as Spinner } from './Spinner/Spinner';
-export { default as ToggleSection } from './ToggleSection/ToggleSection.js';
+export { default as ToggleSection } from './ToggleSection/ToggleSection';
 export { default as TooltipLegacy } from './TooltipLegacy/Tooltip';
 export { default as Tooltip } from './Tooltip/Tooltip';
 export { default as WilderIcon } from './WilderIcon/WilderIcon';
@@ -107,5 +105,5 @@ export { default as ToggleSwitch } from './Switch/ToggleSwitch/ToggleSwitch';
 export { default as ScrollToTop } from './ScrollToTop/ScrollToTop';
 
 //- To be implemented
-// export { default as CopyInput } from './CopyInput/CopyInput.js'
-// export { default as Table } from './Table/Table.js'
+// export { default as CopyInput } from './CopyInput/CopyInput'
+// export { default as Table } from './Table/Table'

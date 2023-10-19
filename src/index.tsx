@@ -1,3 +1,6 @@
+// @ts-ignore
+window.global ||= window;
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
@@ -9,7 +12,7 @@ if (window.ethereum) {
 }
 
 // @ts-ignore
-window.Buffer = Buffer;
+// window.Buffer = Buffer;
 
 ReactDOM.render(
 	<React.StrictMode>

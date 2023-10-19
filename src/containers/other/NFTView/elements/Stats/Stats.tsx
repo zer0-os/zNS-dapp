@@ -94,6 +94,7 @@ export const Stats: React.FC<StatsProps> = ({
 		const lastSaleStat: Stat = {
 			fieldName: 'Last Sale',
 			title:
+				// @ts-ignore
 				(domainMetrics?.lastSale ?? 0) > 0
 					? Number(
 							ethers.utils.formatEther(domainMetrics!.lastSale),
@@ -102,6 +103,7 @@ export const Stats: React.FC<StatsProps> = ({
 					  paymentTokenInfo.symbol
 					: 'No sales',
 			subTitle:
+				// @ts-ignore
 				(domainMetrics?.lastSale ?? 0) > 0 &&
 				Number(paymentTokenInfo.priceInUsd) > 0
 					? `$${toFiat(

@@ -41,11 +41,12 @@ export const ACTIONS = [
 export const filterOwnedDomainsByNetwork = (domains?: Domain[]) => {
 	if (!domains) {
 		return domains;
-	} else if ((process.env.REACT_APP_NETWORK ?? '') === '') {
+	} else if ((import.meta.env.VITE_APP_NETWORK ?? '') === '') {
 		return domains;
 	} else {
 		const onNetworkOwnedDomains = domains?.filter(
-			(domain) => domain.name.split('.')[0] === process.env.REACT_APP_NETWORK,
+			(domain) =>
+				domain.name.split('.')[0] === import.meta.env.VITE_APP_NETWORK,
 		);
 		return onNetworkOwnedDomains;
 	}

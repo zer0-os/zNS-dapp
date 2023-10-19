@@ -1,8 +1,8 @@
-@use 'styles/variables/dimensions';
-@use 'styles/variables/typography';
-@use 'styles/variables/borders';
-@use 'styles/variables/animations';
-@use 'styles/variables/colors';
+@use '@/styles/variables/dimensions';
+@use '@/styles/variables/typography';
+@use '@/styles/variables/borders';
+@use '@/styles/variables/animations';
+@use '@/styles/variables/colors';
 
 .domain-settings-body {
 	&__blocked {

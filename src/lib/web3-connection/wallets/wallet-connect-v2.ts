@@ -11,9 +11,9 @@ export function buildWalletConnectConnector() {
 					actions,
 					options: {
 						chains: [1],
-						rpc: process.env.REACT_APP_RPC_URL_1,
+						rpc: import.meta.env.VITE_APP_RPC_URL_1,
 						showQrModal: true,
-						projectId: process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID!,
+						projectId: import.meta.env.VITE_APP_WALLET_CONNECT_PROJECT_ID!,
 						qrModalOptions: {
 							themeMode: 'dark',
 							themeVariables: {
@@ -21,7 +21,7 @@ export function buildWalletConnectConnector() {
 							},
 						},
 					},
-					defaultChainId: parseInt(process.env.REACT_APP_CHAIN_ID! ?? 1),
+					defaultChainId: parseInt(import.meta.env.VITE_APP_CHAIN_ID! ?? 1),
 					onError: onConnectionError,
 				}),
 		);

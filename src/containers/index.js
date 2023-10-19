@@ -48,7 +48,6 @@ export { default as BannerContainer } from './other/BannerContainer/BannerContai
 export { default as NFTView } from './other/NFTView/NFTView';
 export { default as PageHeader } from './other/PageHeader/PageHeader';
 export { default as PriceWidget } from './other/PriceWidget/PriceWidget';
-export { default as Request } from './other/Request/Request';
 
 // Legacy
 export { default as Enlist } from './legacy/Enlist/Enlist';

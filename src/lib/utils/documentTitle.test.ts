@@ -10,20 +10,24 @@ import { updateDocumentTitle } from './documentTitle';
 
 describe('updateDocumentTitle', () => {
 	describe('Default Network (no network set)', () => {
-		const env = process.env;
+		const env = import.meta.env;
 
 		beforeEach(() => {
 			jest.resetModules();
-			process.env = { ...env, REACT_APP_NETWORK: '', REACT_APP_TITLE: 'Zero' };
+			import.meta.env = {
+				...env,
+				VITE_APP_NETWORK: '',
+				VITE_APP_TITLE: 'Zero',
+			};
 		});
 
 		afterEach(() => {
-			process.env = env;
+			import.meta.env = env;
 		});
 
-		it('mock REACT_APP_NETWORK success', () => {
-			expect(process.env.REACT_APP_NETWORK).toBe('');
-			expect(process.env.REACT_APP_NETWORK).not.toBe('wilder');
+		it('mock VITE_APP_NETWORK success', () => {
+			expect(import.meta.env.VITE_APP_NETWORK).toBe('');
+			expect(import.meta.env.VITE_APP_NETWORK).not.toBe('wilder');
 		});
 
 		describe('when Marketplace dApp', () => {
@@ -106,19 +110,19 @@ describe('updateDocumentTitle', () => {
 	});
 
 	describe('Network Variable (network set)', () => {
-		const env = process.env;
+		const env = import.meta.env;
 
 		beforeEach(() => {
 			jest.resetModules();
-			process.env = {
+			import.meta.env = {
 				...env,
-				REACT_APP_NETWORK: 'wilder',
-				REACT_APP_TITLE: 'Wilder World',
+				VITE_APP_NETWORK: 'wilder',
+				VITE_APP_TITLE: 'Wilder World',
 			};
 		});
 
 		afterEach(() => {
-			process.env = env;
+			import.meta.env = env;
 		});
 
 		describe('when Marketplace dApp', () => {

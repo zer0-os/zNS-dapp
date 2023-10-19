@@ -1,6 +1,6 @@
-@use 'styles/variables/typography';
-@use 'styles/variables/colors';
-@use 'styles/variables/animations';
+@use '@/styles/variables/typography';
+@use '@/styles/variables/colors';
+@use '@/styles/variables/animations';
 
 $width: 400px;
 $gutter: 16px;

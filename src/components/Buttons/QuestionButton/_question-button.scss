@@ -1,6 +1,6 @@
-@use 'styles/variables/borders';
-@use 'styles/variables/animations';
-@use 'styles/variables/colors';
+@use '@/styles/variables/borders';
+@use '@/styles/variables/animations';
+@use '@/styles/variables/colors';
 
 .question-button {
 	position: relative;

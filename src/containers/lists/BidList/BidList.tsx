@@ -23,7 +23,7 @@ import { MESSAGES } from './BidList.constants';
 import { Metadata } from 'lib/types';
 import { sortBidsByTime } from 'lib/utils/bids';
 
-const moment = require('moment');
+import moment from 'moment';
 
 export type BidListProps = {
 	bids: Bid[];

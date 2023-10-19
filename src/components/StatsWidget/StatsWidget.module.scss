@@ -1,7 +1,7 @@
-@use 'styles/variables/dimensions';
-@use 'styles/variables/typography';
-@use 'styles/variables/borders';
-@use 'styles/variables/colors';
+@use '@/styles/variables/dimensions';
+@use '@/styles/variables/typography';
+@use '@/styles/variables/borders';
+@use '@/styles/variables/colors';
 
 .StatsWidget {
 	border-radius: #{borders.$radius-primary};

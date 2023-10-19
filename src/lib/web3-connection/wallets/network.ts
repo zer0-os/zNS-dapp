@@ -8,8 +8,8 @@ export function buildNetworkConnector() {
 		(actions) =>
 			new Network({
 				actions,
-				urlMap: process.env.REACT_APP_RPC_URL_1!,
-				defaultChainId: (process.env.REACT_APP_DEFAULT_NETWORK as any) ?? 1,
+				urlMap: import.meta.env.VITE_APP_RPC_URL_1!,
+				defaultChainId: (import.meta.env.VITE_APP_DEFAULT_NETWORK as any) ?? 1,
 			}),
 	);
 	const networkConnection: Connection = {

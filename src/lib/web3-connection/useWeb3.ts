@@ -1,11 +1,15 @@
-import { useWeb3React as useWeb3ReactCore } from '@web3-react/core';
-import { defaultNetworkId } from '../network';
+import { useAccount, useChainId } from 'wagmi';
+import { useEthersProvider } from './ethers';
 
 export const useWeb3 = () => {
-	const web3React = useWeb3ReactCore();
+	const { address: account, isConnected: isActive } = useAccount();
+	const chainId = useChainId();
+	const provider = useEthersProvider({ chainId });
 
 	return {
-		...web3React,
-		chainId: web3React.chainId ?? defaultNetworkId ?? 1,
+		account,
+		isActive,
+		provider,
+		chainId: chainId,
 	};
 };

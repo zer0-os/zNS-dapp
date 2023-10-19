@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 //- Component Imports
-import { ConnectToWallet, MintDropNFTBanner, Overlay } from 'components';
+import { MintDropNFTBanner, Overlay } from 'components';
 import ClaimNFT from '../ClaimNFT/ClaimNFT';
 
 //- Types Imports
@@ -27,6 +27,7 @@ import useMint from 'lib/hooks/useMint';
 
 //- Style Imports
 import styles from './ClaimNFTContainer.module.scss';
+import { useWeb3Modal } from '@web3modal/wagmi/react';
 
 export type ClaimNFTContainerProps = {
 	requireBanner?: boolean;
@@ -41,6 +42,8 @@ const ClaimNFTContainer = ({
 	onClose,
 	setClaimDropStage,
 }: ClaimNFTContainerProps) => {
+	const { open: openWeb3Modal } = useWeb3Modal();
+
 	//////////////////
 	// State & Data //
 	//////////////////
@@ -50,8 +53,6 @@ const ClaimNFTContainer = ({
 	const { claimInstance } = useZSaleSdk();
 	const { account, provider } = useWeb3();
 	const [isWizardOpen, setIsWizardOpen] = useState<boolean>(false);
-	const [isConnectPromptOpen, setIsConnectPromptOpen] =
-		useState<boolean>(false);
 	const [failedToLoad, setFailedToLoad] = useState<boolean>(false);
 	const [hasCountdownFinished, setHasCountdownFinished] =
 		useState<boolean>(false);
@@ -93,11 +94,7 @@ const ClaimNFTContainer = ({
 	};
 
 	const openConnect = () => {
-		setIsConnectPromptOpen(true);
-	};
-
-	const closeConnect = () => {
-		setIsConnectPromptOpen(false);
+		openWeb3Modal();
 	};
 
 	const countdownFinished = () => {
@@ -340,11 +337,6 @@ const ClaimNFTContainer = ({
 
 	return (
 		<>
-			{isConnectPromptOpen && (
-				<Overlay open onClose={closeConnect}>
-					<ConnectToWallet onConnect={closeConnect} />
-				</Overlay>
-			)}
 			{isWizardOpen && (
 				<Overlay open onClose={closeWizard}>
 					<ClaimNFT
