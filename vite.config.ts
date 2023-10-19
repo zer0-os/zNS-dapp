@@ -58,6 +58,7 @@ export default defineConfig({
 					modules: { Buffer: ['buffer', 'Buffer'] },
 				}),
 			],
+			external: ['graphql'],
 		},
 	},
 });
