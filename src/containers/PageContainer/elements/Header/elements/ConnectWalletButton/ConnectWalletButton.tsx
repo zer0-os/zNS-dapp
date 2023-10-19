@@ -1,7 +1,6 @@
 import React from 'react';
 import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import './_connect-wallet-button.scss';
-import { tryDeactivateConnector } from 'lib/web3-connection/wallets/connections';
 import { Button } from '@zero-tech/zui/components';
 import { useWeb3Modal, useWeb3ModalState } from '@web3modal/wagmi/react';
 

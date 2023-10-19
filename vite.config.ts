@@ -1,9 +1,7 @@
-import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import { defineConfig } from 'vite';
 import viteTsconfigPaths from 'vite-tsconfig-paths';
 import { resolve } from 'path';
-import inject from '@rollup/plugin-inject';
-
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
 
 export default defineConfig({
@@ -42,22 +40,9 @@ export default defineConfig({
 			generateScopedName: '[name]_[local]_[hash:base64:5]',
 		},
 	},
-	define: {
-		// By default, Vite doesn't include shims for NodeJS/
-		// necessary for segment analytics lib to work
-		// global: {},
-		// process: {
-		// 	env,
-		// },
-	},
 	build: {
-		cssCodeSplit: false,
+		sourcemap: false,
 		rollupOptions: {
-			plugins: [
-				inject({
-					modules: { Buffer: ['buffer', 'Buffer'] },
-				}),
-			],
 			external: ['graphql'],
 		},
 	},

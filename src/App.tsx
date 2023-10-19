@@ -1,7 +1,6 @@
 import { version } from '../package.json';
 
 //- React Imports
-import React from 'react';
 import { Provider as ReduxProvider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 
@@ -30,8 +29,6 @@ import { ZUIProvider } from '@zero-tech/zui/ZUIProvider';
 import { ROUTES } from './constants/routes';
 import { Profile, Staking, ZNS } from './pages';
 import DAO from './pages/DAO/DAO';
-
-import { Web3ContextProvider } from 'lib/web3-connection/Web3ContextProvider';
 
 import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/react';
 
@@ -94,19 +91,17 @@ function wrappedApp() {
 		>
 			<ReduxProvider store={store}>
 				<WagmiConfig config={wagmiConfig}>
-					<Web3ContextProvider>
-						<ZnsSdkProvider>
-							{/* Our Hooks  */}
-							<MvpVersionProvider>
-								<EnlistProvider>
-									<ZUIProvider>
-										<ThemeEngine theme={Themes.Dark} />
-										<App />
-									</ZUIProvider>
-								</EnlistProvider>
-							</MvpVersionProvider>
-						</ZnsSdkProvider>
-					</Web3ContextProvider>
+					<ZnsSdkProvider>
+						{/* Our Hooks  */}
+						<MvpVersionProvider>
+							<EnlistProvider>
+								<ZUIProvider>
+									<ThemeEngine theme={Themes.Dark} />
+									<App />
+								</ZUIProvider>
+							</EnlistProvider>
+						</MvpVersionProvider>
+					</ZnsSdkProvider>
 				</WagmiConfig>
 			</ReduxProvider>
 		</CacheBuster>
