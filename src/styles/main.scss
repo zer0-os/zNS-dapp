@@ -438,19 +438,12 @@ button {
 		z-index: 3;
 	}
 
-	[class*='VoteFooter-module_Button'] {
-		pointer-events: none;
-		background: none;
-		border: none;
+	[class*='_DaosAssetsView'] thead {
+		z-index: 3 !important;
+	}
 
-		[class*='content'] {
-		font-weight: normal;
-			color: var(--color-primary-12) !important;
-		}
-
-		&::after {
-			all: unset !important;
-		}
+	[class*='ProposalTable'] thead {
+		z-index: 3 !important;
 	}
 }
 

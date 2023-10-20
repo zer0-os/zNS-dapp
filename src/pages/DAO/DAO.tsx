@@ -8,6 +8,7 @@ import React from 'react';
 // @ts-ignore
 import { DaosApp } from '@zero-tech/zapp-daos';
 import { Switch } from 'react-router-dom';
+import { useWeb3Modal } from '@web3modal/wagmi/react';
 
 const DAO: React.FC = () => {
 	const { setNavbarTitle } = useNavbar();
@@ -18,6 +19,7 @@ const DAO: React.FC = () => {
 	});
 
 	const { provider, account, chainId } = useWeb3();
+	const { open } = useWeb3Modal();
 
 	return (
 		<div className={'zapp-reset'}>
@@ -31,7 +33,7 @@ const DAO: React.FC = () => {
 					web3={{
 						chainId: (chainId as any) ?? 1,
 						address: account as string | undefined,
-						connectWallet: () => {},
+						connectWallet: open,
 					}}
 				/>
 			</Switch>
