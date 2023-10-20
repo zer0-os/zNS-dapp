@@ -415,27 +415,46 @@ button {
 		max-width: 100%;
 	}
 
-	[class*='ZAppContent_Container'] {
+	[class*='ZAppContent-module_Container'] {
 		overflow-y: visible !important;
 		overflow: visible !important;
 		height: unset;
 	}
 
-	[class*='ZAppContent_Scroll'] {
+	[class*='ZAppContent-module_Scroll'] {
 		overflow-y: visible !important;
 		overflow: visible !important;
 	}
 
-	[class*='CreateProposal_Message'] button {
+	[class*='CreateProposal-module_Message'] button {
 		display: none;
 	}
 
-	[class*='TransactionList_ArrowIcon'] {
+	[class*='TransactionList-module_ArrowIcon'] {
 		box-sizing: initial;
+	}
+
+	[class*='_DaosTable'] thead {
+		z-index: 3;
+	}
+
+	[class*='VoteFooter-module_Button'] {
+		pointer-events: none;
+		background: none;
+		border: none;
+
+		[class*='content'] {
+		font-weight: normal;
+			color: var(--color-primary-12) !important;
+		}
+
+		&::after {
+			all: unset !important;
+		}
 	}
 }
 
-[class*='ConnectWallet_Container'] {
+[class*='ConnectWallet-module_Container'] {
 	p {
 		padding: 0 !important;
 	}

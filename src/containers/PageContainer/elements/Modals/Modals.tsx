@@ -5,7 +5,7 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { MintNewNFT } from 'containers';
 
 // Component-Imports
-import { ConnectToWallet, Overlay } from 'components';
+import { Overlay } from 'components';
 
 //-Library Imports
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
@@ -83,13 +83,6 @@ export const Modals: React.FC<ModalsProps> = ({
 				open={isSearching}
 				onClose={() => {}}
 			/>
-
-			{/* Connect Wallet Modal */}
-			{modal === Modal.Wallet && (
-				<Overlay centered open onClose={closeModal}>
-					<ConnectToWallet onConnect={closeModal} />
-				</Overlay>
-			)}
 
 			{/* Mint Modal */}
 			{modal === Modal.Mint && (

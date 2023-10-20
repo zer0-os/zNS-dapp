@@ -1,6 +1,6 @@
-@use 'styles/variables/typography';
-@use 'styles/variables/colors';
-@use 'styles/variables/animations';
+@use '@/styles/variables/typography';
+@use '@/styles/variables/colors';
+@use '@/styles/variables/animations';
 
 .TextInputTopPlaceholderWrapper {
 	position: relative;

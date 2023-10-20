@@ -72,6 +72,8 @@ const Tooltip: React.FC<TooltipProps> = ({
 		</span>
 	);
 
+	const { style, ...props } = layerProps;
+
 	// We're using framer-motion for our enter / exit animations.
 	// This is why we need to wrap our actual tooltip inside `<AnimatePresence />`.
 	return (
@@ -85,9 +87,8 @@ const Tooltip: React.FC<TooltipProps> = ({
 								Padded: deepPadding,
 							})}
 							{...animationProps}
-							{...layerProps}
-							// TODO: this ensures tooltip content is displayed when on a modal - also fixes domain settings tooltips that were hidden
-							{...(layerProps.style.zIndex = 999999)}
+							{...props}
+							style={{ ...style, zIndex: 9999 }}
 						>
 							{text}
 							<Arrow {...arrowProps} className={styles.Arrow} />

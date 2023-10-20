@@ -1,6 +1,6 @@
 {
-	"short_name": "Zero",
-	"name": "Zero Live",
+	"short_name": "WWMM",
+	"name": "Wilder World Metaverse Market",
 	"icons": [
 		{
 			"src": "https://res.cloudinary.com/fact0ry/image/upload/w_192,h_192/v1655958535/logos/zero-favicon.png",
@@ -13,7 +13,7 @@
 			"sizes": "512x512"
 		}
 	],
-	"theme_color": "#ffffff",
-	"background_color": "#ffffff",
+	"theme_color": "#09090A",
+	"background_color": "#09090A",
 	"display": "standalone"
 }

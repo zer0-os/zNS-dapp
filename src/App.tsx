@@ -1,7 +1,6 @@
 import { version } from '../package.json';
 
 //- React Imports
-import React from 'react';
 import { Provider as ReduxProvider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 
@@ -31,11 +30,28 @@ import { ROUTES } from './constants/routes';
 import { Profile, Staking, ZNS } from './pages';
 import DAO from './pages/DAO/DAO';
 
-import { Web3ContextProvider } from 'lib/web3-connection/Web3ContextProvider';
+import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/react';
+
+import { WagmiConfig } from 'wagmi';
+import { mainnet } from 'wagmi/chains';
+
+const projectId = import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID;
+
+const metadata = {
+	name: 'WWMM',
+	description: 'Wilder World Metaverse Market',
+	url: 'https://app.wilderworld.com/',
+	icons: ['https://avatars.githubusercontent.com/u/37784886'],
+};
+
+const chains = [mainnet];
+const wagmiConfig = defaultWagmiConfig({ chains, projectId, metadata });
+
+createWeb3Modal({ wagmiConfig, projectId, chains });
 
 function App() {
 	console.log(
-		`%c${process.env.REACT_APP_TITLE} - v${version}`,
+		`%c${import.meta.env.VITE_TITLE} - v${version}`,
 		'display: block; border: 3px solid #52cbff; border-radius: 7px; padding: 10px; margin: 8px;',
 	);
 
@@ -65,7 +81,7 @@ function App() {
 }
 
 function wrappedApp() {
-	const isProduction = process.env.NODE_ENV === 'production';
+	const isProduction = import.meta.env.NODE_ENV === 'production';
 
 	return (
 		<CacheBuster
@@ -74,7 +90,7 @@ function wrappedApp() {
 			isVerboseMode={true}
 		>
 			<ReduxProvider store={store}>
-				<Web3ContextProvider>
+				<WagmiConfig config={wagmiConfig}>
 					<ZnsSdkProvider>
 						{/* Our Hooks  */}
 						<MvpVersionProvider>
@@ -86,7 +102,7 @@ function wrappedApp() {
 							</EnlistProvider>
 						</MvpVersionProvider>
 					</ZnsSdkProvider>
-				</Web3ContextProvider>
+				</WagmiConfig>
 			</ReduxProvider>
 		</CacheBuster>
 	);

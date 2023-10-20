@@ -140,7 +140,7 @@ const DomainStep = ({
 	// Inputs to capture proposed buy now price
 	const Inputs = () => (
 		<>
-			{(domain.currentBuyNowPrice ?? 0) > 0 && (
+			{domain?.currentBuyNowPrice && domain.currentBuyNowPrice.gt(0) && (
 				<div>
 					<p>
 						This NFT has an existing buy now price of{' '}

@@ -6,16 +6,18 @@ import React from 'react';
 import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import { StakingZApp } from '@zero-tech/zapp-staking';
 import { useNavbar } from '../../lib/hooks/useNavbar';
+import { useWeb3Modal } from '@web3modal/wagmi/react';
 
 const Staking: React.FC = () => {
 	const { setNavbarTitle } = useNavbar();
 
 	useDidMount(() => {
-		document.title = process.env.REACT_APP_TITLE + ' | Staking';
+		document.title = import.meta.env.VITE_TITLE + ' | Staking';
 		setNavbarTitle('Staking');
 	});
 
 	const { provider, account, chainId } = useWeb3();
+	const { open } = useWeb3Modal();
 
 	return (
 		<div className={'zapp-reset'}>
@@ -28,7 +30,7 @@ const Staking: React.FC = () => {
 				web3={{
 					chainId: (chainId as any) ?? 1,
 					address: account as string | undefined,
-					connectWallet: () => {},
+					connectWallet: open,
 				}}
 			/>
 		</div>

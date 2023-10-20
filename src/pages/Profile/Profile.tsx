@@ -1,8 +1,7 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 
 // Components
 import { ConnectWalletButton } from 'containers';
-import { Tooltip } from 'components';
 import {
 	Link,
 	Redirect,
@@ -16,17 +15,13 @@ import {
 import { ROUTES } from 'constants/routes';
 import { useDidMount } from 'lib/hooks/useDidMount';
 import { useNavbar } from 'lib/hooks/useNavbar';
-import { COPY_LABELS, TABS } from './Profile.constants';
-import { chainIdToNetworkName } from 'lib/network';
-import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
+import { TABS } from './Profile.constants';
 import { useWeb3 } from 'lib/web3-connection/useWeb3';
-import { truncateWalletAddress } from 'lib/utils';
 
 // Styles
 import styles from './Profile.module.scss';
 import classNames from 'classnames/bind';
 import { ArrowLeft } from 'react-feather';
-import userIcon from 'assets/user_icon.svg';
 
 const cx = classNames.bind(styles) as (...args: any) => string;
 
@@ -46,7 +41,7 @@ const r = (route: string) => {
  * @returns
  */
 const Profile = () => {
-	const { account, chainId } = useWeb3();
+	const { account } = useWeb3();
 
 	// React-router stuff
 	const { length: canGoBack, goBack, push, location } = useHistory();
@@ -54,29 +49,13 @@ const Profile = () => {
 
 	const { setNavbarTitle } = useNavbar();
 
-	/**
-	 * Need to handle account hovers here, as we have a label
-	 * change depending on "is hovered" and "has been clicked"
-	 */
-	const [copyLabel, setCopyLabel] = useState<string>(COPY_LABELS.DEFAULT);
-	const [isAccountHovered, setIsAccountHovered] = useState<boolean>(false);
-
 	/////////////
 	// Effects //
 	/////////////
 
-	/**
-	 * Reset the copy label every time we hover/unhover
-	 */
-	useUpdateEffect(() => {
-		if (isAccountHovered) {
-			setCopyLabel(COPY_LABELS.DEFAULT);
-		}
-	}, [isAccountHovered]);
-
 	useDidMount(() => {
 		setNavbarTitle('Your Profile');
-		document.title = process.env.REACT_APP_TITLE + ' | Profile';
+		document.title = import.meta.env.VITE_TITLE + ' | Profile';
 	});
 
 	///////////////
@@ -91,17 +70,6 @@ const Profile = () => {
 			goBack();
 		} else {
 			push(ROUTES.MARKET);
-		}
-	};
-
-	/**
-	 * Copies the profile wallet address
-	 * Changes copy label to "copied"
-	 */
-	const copyAddress = () => {
-		if (account) {
-			navigator.clipboard.writeText(account);
-			setCopyLabel(COPY_LABELS.COPIED);
 		}
 	};
 
@@ -151,22 +119,7 @@ const Profile = () => {
 				<button className={styles.Back} onClick={onBack}>
 					<ArrowLeft color="white" /> <span>My Profile</span>
 				</button>
-				{account && chainId && (
-					<Tooltip placement="bottom-center" text={copyLabel}>
-						<button
-							className={cx(styles.Account, 'border-rounded', 'no-select')}
-							onClick={copyAddress}
-							onMouseEnter={() => setIsAccountHovered(true)}
-							onMouseLeave={() => setIsAccountHovered(false)}
-						>
-							<img alt="user icon" src={userIcon} />
-							<div className={styles.Details}>
-								<span>{chainIdToNetworkName(chainId)}</span>
-								<span>{truncateWalletAddress(account, 4)}</span>
-							</div>
-						</button>
-					</Tooltip>
-				)}
+				<w3m-account-button balance="hide" />
 			</div>
 			{account ? (
 				Content

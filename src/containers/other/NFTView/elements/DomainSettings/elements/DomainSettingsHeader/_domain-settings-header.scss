@@ -1,6 +1,6 @@
-@use 'styles/variables/dimensions';
-@use 'styles/variables/typography';
-@use 'styles/variables/colors';
+@use '@/styles/variables/dimensions';
+@use '@/styles/variables/typography';
+@use '@/styles/variables/colors';
 
 .domain-settings__modal-header {
 	flex-shrink: 0;

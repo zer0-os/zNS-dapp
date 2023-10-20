@@ -15,21 +15,21 @@ export const updateDocumentTitle = (
 	// set title
 	if (
 		zna.length > 0 &&
-		zna !== process.env.REACT_APP_NETWORK &&
+		zna !== import.meta.env.VITE_NETWORK &&
 		domainMetadataTitle
 	) {
-		document.title = process.env.REACT_APP_TITLE + ' | ' + domainMetadataTitle;
+		document.title = import.meta.env.VITE_TITLE + ' | ' + domainMetadataTitle;
 	} else {
 		if (isMarketTitle) {
-			document.title = process.env.REACT_APP_TITLE + ' | NFTs';
+			document.title = import.meta.env.VITE_TITLE + ' | NFTs';
 		} else if (isZDAOTitle) {
-			document.title = process.env.REACT_APP_TITLE + ' | DAOs';
+			document.title = import.meta.env.VITE_TITLE + ' | DAOs';
 		} else if (isStakingTitle) {
-			document.title = process.env.REACT_APP_TITLE + ' | Staking';
+			document.title = import.meta.env.VITE_TITLE + ' | Staking';
 		} else if (isProfileTitle) {
-			document.title = process.env.REACT_APP_TITLE + ' | Profile';
+			document.title = import.meta.env.VITE_TITLE + ' | Profile';
 		} else {
-			document.title = String(process.env.REACT_APP_TITLE);
+			document.title = String(import.meta.env.VITE_TITLE);
 		}
 	}
 };

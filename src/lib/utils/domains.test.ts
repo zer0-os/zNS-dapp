@@ -46,20 +46,20 @@ describe('getParentZna', () => {
 
 describe('getNetworkZNA', () => {
 	describe('Default Network (no network set)', () => {
-		const env = process.env;
+		const env = import.meta.env;
 
 		beforeEach(() => {
 			jest.resetModules();
-			process.env = { ...env, REACT_APP_NETWORK: '' };
+			import.meta.env = { ...env, VITE_NETWORK: '' };
 		});
 
 		afterEach(() => {
-			process.env = env;
+			import.meta.env = env;
 		});
 
-		it('mock REACT_APP_NETWORK success', () => {
-			expect(process.env.REACT_APP_NETWORK).toBe('');
-			expect(process.env.REACT_APP_NETWORK).not.toBe('wilder');
+		it('mock VITE_NETWORK success', () => {
+			expect(import.meta.env.VITE_NETWORK).toBe('');
+			expect(import.meta.env.VITE_NETWORK).not.toBe('wilder');
 		});
 
 		it('when .env network variable is not set - two subdomains', () => {
@@ -76,20 +76,20 @@ describe('getNetworkZNA', () => {
 	});
 
 	describe('Network Variable (network set)', () => {
-		const env = process.env;
+		const env = import.meta.env;
 
 		beforeEach(() => {
 			jest.resetModules();
-			process.env = { ...env, REACT_APP_NETWORK: 'wilder' };
+			import.meta.env = { ...env, VITE_NETWORK: 'wilder' };
 		});
 
 		afterEach(() => {
-			process.env = env;
+			import.meta.env = env;
 		});
 
-		it('mock REACT_APP_NETWORK success', () => {
-			expect(process.env.REACT_APP_NETWORK).toBe('wilder');
-			expect(process.env.REACT_APP_NETWORK).not.toBe('');
+		it('mock VITE_NETWORK success', () => {
+			expect(import.meta.env.VITE_NETWORK).toBe('wilder');
+			expect(import.meta.env.VITE_NETWORK).not.toBe('');
 		});
 
 		it('when .env network variable is set - two subdomains', () => {

@@ -1,6 +1,6 @@
-@use 'styles/variables/dimensions';
-@use 'styles/variables/typography';
-@use 'styles/variables/colors';
+@use '@/styles/variables/dimensions';
+@use '@/styles/variables/typography';
+@use '@/styles/variables/colors';
 
 .Container {
 	display: flex;

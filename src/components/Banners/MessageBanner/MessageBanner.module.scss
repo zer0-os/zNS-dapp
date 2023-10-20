@@ -1,8 +1,8 @@
 /* Mobile First */
-@use 'styles/variables/typography';
-@use 'styles/variables/borders';
-@use 'styles/variables/animations';
-@use 'styles/variables/colors';
+@use '@/styles/variables/typography';
+@use '@/styles/variables/borders';
+@use '@/styles/variables/animations';
+@use '@/styles/variables/colors';
 
 .Container {
 	width: 100%;

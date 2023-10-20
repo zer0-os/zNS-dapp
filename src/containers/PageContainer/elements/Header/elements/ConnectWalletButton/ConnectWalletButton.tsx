@@ -1,8 +1,8 @@
 import React from 'react';
 import { useWeb3 } from 'lib/web3-connection/useWeb3';
 import './_connect-wallet-button.scss';
-import { tryDeactivateConnector } from 'lib/web3-connection/wallets/connections';
 import { Button } from '@zero-tech/zui/components';
+import { useWeb3Modal, useWeb3ModalState } from '@web3modal/wagmi/react';
 
 type ConnectWalletButtonProps = {
 	isDesktop?: boolean;
@@ -11,20 +11,20 @@ type ConnectWalletButtonProps = {
 };
 
 export const ConnectWalletButton: React.FC<ConnectWalletButtonProps> = ({
-	isDesktop,
-	onConnectWallet,
 	className,
 }) => {
-	const { isActive, connector } = useWeb3();
+	const { isActive } = useWeb3();
+	const { open: isModalOpen } = useWeb3ModalState();
 
-	const handleOnClick = isActive
-		? () => tryDeactivateConnector(connector)
-		: onConnectWallet;
-	const buttonText = isActive ? 'Disconnect' : 'Connect';
+	const { open } = useWeb3Modal();
 
-	return (
-		<Button onPress={handleOnClick} className={className}>
-			{buttonText}
-		</Button>
-	);
+	if (isActive) {
+		return <w3m-account-button balance="hide" />;
+	} else {
+		return (
+			<Button isLoading={isModalOpen} onPress={open} className={className}>
+				Connect
+			</Button>
+		);
+	}
 };
