@@ -32,6 +32,7 @@ export default defineConfig({
 			'react-dom': resolve('node_modules/react-dom'),
 			'react-router': resolve('node_modules/react-router'),
 			'react-router-dom': resolve('node_modules/react-router-dom'),
+			'remark-emoji': resolve('node_modules/remark-emoji'),
 		},
 	},
 	css: {
