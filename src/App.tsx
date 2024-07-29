@@ -27,7 +27,7 @@ import { ThemeEngine } from '@zero-tech/zui/components';
 import { Themes } from '@zero-tech/zui/components/ThemeEngine';
 import { ZUIProvider } from '@zero-tech/zui/ZUIProvider';
 import { ROUTES } from './constants/routes';
-import { Profile, Staking, ZNS } from './pages';
+import { Profile, Staking } from './pages';
 import DAO from './pages/DAO/DAO';
 
 import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/react';
@@ -58,23 +58,22 @@ function App() {
 	return (
 		<ConnectedRouter history={history}>
 			<BrowserRouter>
-				<Switch>
-					<CurrentDomainProvider>
-						<PageContainer>
+				<CurrentDomainProvider>
+					<PageContainer>
+						<Switch>
 							<Route path={'/:znsRoute/daos'}>
 								<DAO />
 							</Route>
 							<Route path={'/staking'}>
 								<Staking />
 							</Route>
-							<Route path={ROUTES.MARKET} component={ZNS} />
 							<Route path={ROUTES.PROFILE} component={Profile} />
-							<Route exact path="/">
-								<Redirect to="/market" />
+							<Route>
+								<Redirect to="/0.wilder/daos" />
 							</Route>
-						</PageContainer>
-					</CurrentDomainProvider>
-				</Switch>
+						</Switch>
+					</PageContainer>
+				</CurrentDomainProvider>
 			</BrowserRouter>
 		</ConnectedRouter>
 	);
