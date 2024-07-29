@@ -1,9 +1,8 @@
 //- Routes Imports
 import { ROUTES } from '../../constants/routes';
-import { DAOIcon, MarketIcon, ProfileIcon, StakingIcon } from 'components';
+import { DAOIcon, ProfileIcon, StakingIcon } from 'components';
 
 export const TITLES = {
-	MARKET: 'MARKET',
 	ZDAO: 'ZDAO',
 	STAKING: 'STAKING',
 	PROFILE: 'PROFILE',
@@ -11,13 +10,6 @@ export const TITLES = {
 
 export const getNavLinks = () => {
 	const LINKS = [
-		{
-			label: 'NFTs',
-			route: ROUTES.MARKET,
-			icon: (stroke: string) => (
-				<MarketIcon title={TITLES.MARKET} stroke={stroke} />
-			),
-		},
 		{
 			label: 'DAOs',
 			route: '/0.wilder' + ROUTES.ZDAO,
