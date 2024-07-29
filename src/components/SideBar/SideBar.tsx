@@ -55,18 +55,7 @@ const SideBar = () => {
 		<div className={styles.BorderContainer}>
 			<div className={styles.Container}>
 				<div className={styles.LinkContainer}>
-					<Link
-						className={styles.HomeLink}
-						to={
-							isDefaultNetworkRootPath
-								? isProfilePath
-									? ROUTES.MARKET
-									: app
-								: !IS_DEFAULT_NETWORK
-								? ROUTES.MARKET
-								: ROUTES.MARKET + '/' + zna.split('.')[0]
-						}
-					>
+					<Link className={styles.HomeLink} to={'/'}>
 						<img alt={ALT_TEXT.APP_LOGO} src={networkLogo} />
 					</Link>
 					<ul className={styles.Links}>
