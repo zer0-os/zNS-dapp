@@ -1,6 +1,6 @@
 {
 	"name": "zns-dapp",
-	"version": "0.24.0",
+	"version": "0.24.1",
 	"private": true,
 	"dependencies": {
 		"@coinbase/wallet-sdk": "^3.7.1",
