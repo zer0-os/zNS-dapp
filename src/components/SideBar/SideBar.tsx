@@ -55,9 +55,9 @@ const SideBar = () => {
 		<div className={styles.BorderContainer}>
 			<div className={styles.Container}>
 				<div className={styles.LinkContainer}>
-					<Link className={styles.HomeLink} to={'/'}>
+					{/* <Link className={styles.HomeLink} to={'/'}>
 						<img alt={ALT_TEXT.APP_LOGO} src={networkLogo} />
-					</Link>
+					</Link> */}
 					<ul className={styles.Links}>
 						{navLinks.map((l) => (
 							<li key={`${l.label}`}>
